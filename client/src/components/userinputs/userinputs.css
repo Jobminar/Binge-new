@@ -1,0 +1,127 @@
+.logo-img-input{
+    width: 10rem;
+    height: 10rem;
+}
+.dateandtime-input{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.inputs-con{
+    
+    /* border: 1px solid green; */
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   align-items: center;
+}
+.events{
+    display: flex;
+    /* flex-wrap: wrap; */
+    justify-content: center;
+    align-items: center;
+    margin: 2rem;
+    align-items: center;
+    column-gap: 2rem;
+    color: ;
+    /* border: 1px solid green; */
+}
+/* mini-home.css */
+
+/* Hide the default checkbox */
+.events-sub input[type='checkbox'] {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    /* Additional styles to position the custom checkbox */
+    width: 30px; /* Adjust size as needed */
+    height: 10px; /* Adjust size as needed */
+    border: 1px solid #999; /* Border to mimic checkbox */
+    border-radius: 3px; /* Rounded corners for checkbox */
+    outline: none; /* Remove focus outline */
+    cursor: pointer; /* Show pointer on hover */
+    vertical-align: middle; /* Align vertically with label */
+    margin-right: 5px; /* Adjust space between checkbox and label */
+  }
+  
+  /* Style the custom checkbox when checked */
+  .events-sub input[type='checkbox']:checked {
+    background-color: #00cc5c; /* Change background color when checked */
+    border-color: #00cc5c; /* Change border color when checked */
+  }
+  
+  /* Style label to align with the custom checkbox */
+  .events-sub label {
+    vertical-align: middle; /* Aligns the label vertically with the checkbox */
+    font-family: Oswald;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 30px;
+    letter-spacing: 0em;
+    text-align: center;
+    color: rgba(249, 197, 197, 1);
+
+  }
+  
+.nextstep-result-con{
+    display: grid;
+    grid-template-columns: 60% 40%;
+    justify-content: space-between;
+    align-items: center;
+    /* border: 1px solid green; */
+    /* height: 10rem; */
+    margin: 2rem;
+}
+.result-con{
+    display: flex;
+    flex-direction: column;
+    justify-content: right;
+    align-items: end;
+    /* border: 1px solid green; */
+}
+
+.nextstep{
+   /* border: 1px solid green; */
+   padding: 0rem;
+
+}
+.nextstep img{
+    width: 10rem;
+    height: 5rem;
+    padding: 0rem;
+}
+
+.result-input{
+    font-family: IBM Plex Sans;
+    font-size: 40px;
+    font-weight: 400;
+    line-height: 45px;
+    letter-spacing: 0em;
+    text-align: center;
+    color: rgba(249, 197, 197, 1);
+        padding-top: 0rem;
+        margin: 0rem;
+        
+        
+}
+.taxes{
+    font-family: IBM Plex Sans;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 21px;
+    letter-spacing: 0em;
+    text-align: center;
+    color: rgba(250, 192, 180, 1);
+
+}
+.events-sub{
+    display: flex;
+   
+    /* border: 1px solid green; */
+    justify-content: center;
+    align-items: center;
+}
+.input-event{
+    border: 5px solid green;
+    margin: 0rem;
+}

@@ -1,0 +1,37 @@
+.aboutus-con{
+    background: linear-gradient(180deg, #000000 59.96%, #B46161 100%);
+
+}
+.aboutus-main-con{
+    width: auto;
+    height: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0rem 2rem;
+}
+.aboutus-main-con h1{
+    color: white;
+    font-family: Oswald;
+    font-size: 96px;
+    font-weight: 400;
+    line-height: 142px;
+    letter-spacing: 0em;
+    text-align: center;
+
+}
+.company-info{
+    font-family: IBM Plex Sans;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 26px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: rgba(250, 192, 180, 1);
+    padding:0rem 2rem;
+}
+.react-carousel{
+    width: auto;
+    height: 20rem;
+    border: 1px solid green;
+}

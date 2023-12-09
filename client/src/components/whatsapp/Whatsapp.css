@@ -1,0 +1,132 @@
+/* Whatsapp.css */
+
+/* General styling */
+.whatsapp-container {
+
+  height: 100vh;
+}
+
+.gradient-background {
+  background-size: cover;
+  background-position: center;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.overlay {
+ 
+  background: linear-gradient(to bottom, #303030, #484848, #303030);
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  margin:0
+}
+
+/* Header styling */
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.logo {
+  width: 100px;
+  height: auto;
+}
+
+.dynamic-effect {
+  color: white;
+  transition: transform 0.3s ease-in-out;
+}
+
+.dynamic-effect:hover {
+  transform: scale(1.1);
+}
+
+/* Card and details styling */
+/* Default styling for .whatsapp-card */
+/* Default styling for .whatsapp-card */
+.whatsapp-card {
+  margin: 3em;
+  background: linear-gradient(to right, #008000, #486747, #008000);
+  border-radius: 10px;
+  padding: 20px;
+  text-align: left;
+}
+
+/* Landscape mode styles for larger screens */
+@media only screen and (min-width: 768px) and (orientation: landscape) {
+  .whatsapp-card {
+    padding: 15px; /* Adjust padding for landscape mode on larger screens */
+  }
+}
+
+/* Landscape mode styles for smaller screens (e.g., smartphones) */
+@media only screen and (max-width: 480px) and (orientation: landscape) {
+  .whatsapp-card {
+    padding: 10px; /* Further adjust padding for landscape mode on smaller screens */
+  }
+}
+
+
+
+.payment-details {
+  margin-top: 20px;
+}
+
+/* Button styling */
+.btn-home,
+.btn-success {
+  background-color: #008000;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.hover-effect:hover {
+  filter: brightness(1.2);
+}
+
+/* Animation for card entrance */
+.whatsapp-card {
+  opacity: 0;
+  transform: translateY(-20px);
+  animation: fadeInUp 0.5s forwards ease-in-out;
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Media queries for responsiveness */
+@media only screen and (max-width: 600px) {
+  .whatsapp-card {
+    padding: 15px;
+  }
+  
+  .btn-home,
+  .btn-success {
+    padding: 8px 15px;
+  }
+}
+
+/* Additional gradients */
+.additional-gradient-1 {
+  background: linear-gradient(to right, #ff4500, #ff6347, #ff4500);
+}
+
+.additional-gradient-2 {
+  background: linear-gradient(to right, #4169e1, #87cefa, #4169e1);
+}
+
+.additional-gradient-3 {
+  background: linear-gradient(to right, #800080, #ba55d3, #800080);
+}
