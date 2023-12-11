@@ -101,7 +101,7 @@ const TheatrePrice = () => {
       noOfPeople: noOfPeople + 5,
     };
   };
-
+//commit the data
   return (
     <div id="main-container" className="mt-3">
       <h2 id="main-title" className="text-center mb-4">
@@ -116,7 +116,7 @@ const TheatrePrice = () => {
       >
         Add Pricing
       </button>
- {/* Beigin */}
+ 
       <PricingPopup
         show={showPricingPopup}
         handleClose={handleClosePricingPopup}
