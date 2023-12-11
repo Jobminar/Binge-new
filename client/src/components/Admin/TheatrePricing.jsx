@@ -116,7 +116,7 @@ const TheatrePrice = () => {
       >
         Add Pricing
       </button>
-
+ {/* Beigin */}
       <PricingPopup
         show={showPricingPopup}
         handleClose={handleClosePricingPopup}
