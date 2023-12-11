@@ -1,6 +1,7 @@
 import "./cake.css";
 import sampleData from "./cakedata.js";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
 import logo from "../../assets/images/logo.png";
@@ -9,8 +10,11 @@ import calender from "../../assets/images/calender-logo.png";
 import timelogo from "../../assets/images/time-logo.png";
 import nextstep from "../../assets/images/Frame 12.png";
 import { useState } from "react";
+import CakeList from "./getcake.jsx";
 
 const Cake = () => {
+  const [cakes, setCakes] = useState([]);
+
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -60,6 +64,56 @@ const Cake = () => {
     });
   };
 
+// get cake----------------------------------------
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+      const response = await fetch('https://binge-be.onrender.com/getcakes', {
+        headers: {
+          // Your headers here if needed
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch data');
+      }
+
+      const data = await response.json();
+      setCakes(data);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      // setError('Error fetching data. Please try again later.');
+    } finally {
+      // setLoading(false);
+    }
+  };
+
+  fetchData();
+}, []);
+
+// delete cake
+// const handleDelete = async (cakeId) => {
+//   try {
+//     const response = await fetch(`https://binge-be.onrender.com/cakes/${cakeId}`, {
+//       method: 'DELETE',
+//       headers: {
+//         // Your headers here if needed
+//       },
+//     });
+
+//     if (!response.ok) {
+//       throw new Error('Failed to delete cake');
+//     }
+
+//     // Filter out the deleted cake from the state
+//     setCakes((prevCakes) => prevCakes.filter((cake) => cake._id !== cakeId));
+//   } catch (error) {
+//     console.error('Error deleting cake:', error);
+//     // setError('Error deleting cake. Please try again later.');
+//   }
+// };
+
+
   return (
     <>
       <div className="cake-con">
@@ -89,27 +143,30 @@ const Cake = () => {
         </div>
         <h1 className="cake-headding">CAKE</h1>
         <div className="cake-shop">
-          {sampleData.map((item, index) => (
+          {cakes.map((cake, index) => (
             <div key={index}>
               <div className="cake-box">
-                <img
-                  src={item.imageUrl}
-                  alt={item.name}
-                  className="cake-image"
-                />
-                <p className="cakename">{item.name}</p>
-                <p className="price">{item.price}</p>
+              
+                <img className="cake-image" src={`data:image/jpeg;base64,${cake.image}`} alt={cake.cakeName} />
+
+                
+             
+               
+                <p className="cakename">{cake.cakeName}</p>
+                <p className="price">{cake.price}</p>
                 <input
                   type="checkbox"
                   id="checkbox1"
                   name="checkbox1"
-                  onClick={() => calculateCount(parseInt(item.price), index)}
+                  onClick={() => calculateCount(parseInt(cake.price), index)}
                   checked={checkedItems[index]}
                 />
               </div>
             </div>
           ))}
+          
         </div>
+
         <h1 className="result">
           Total :  <span>{count + priceFromState}</span>
         </h1>

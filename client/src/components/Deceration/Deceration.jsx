@@ -2,7 +2,8 @@ import "./Deceration.css";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
-import Decerationdata from "./Decerationdata";
+import { useEffect } from "react";
+
 
 import logo from "../../assets/images/logo.png";
 import grid from "../../assets/images/grid.png";
@@ -11,6 +12,8 @@ import time from "../../assets/images/time-logo.png";
 import nextstep from "../../assets/images/Frame 12.png";
 
 const Deceration = () => {
+  const [decorations, setDecorations] = useState([]);
+
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -52,6 +55,34 @@ const Deceration = () => {
     });
   };
 
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('https://binge-be.onrender.com/getdecorations', {
+          headers: {
+            // Your headers here if needed
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch data');
+        }
+
+        const data = await response.json();
+        setDecorations(data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        // setError('Error fetching data. Please try again later.');
+      } finally {
+        // setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+
   return (
     <>
       <div className="deceration-con">
@@ -81,21 +112,19 @@ const Deceration = () => {
         </div>
         <h1 className="cake-headding">DECERATION</h1>
         <div className="deceration-shop">
-          {Decerationdata.map((item, index) => (
+          {decorations.map((deceration, index) => (
             <div key={index}>
               <div className="cake-box">
-                <img
-                  src={item.imageUrl}
-                  alt={item.name}
-                  className="cake-image"
-                />
-                <p className="cakename">{item.name}</p>
-                <p className="price">{item.price}</p>
+             
+              <img className="cake-image" src={`data:image/jpeg;base64,${deceration.image}`} alt={deceration.decorationName} />
+              
+                <p className="cakename">{deceration.decorationName}</p>
+                <p className="price">{deceration.price}</p>
                 <input
                   type="checkbox"
                   id="checkbox1"
                   name="checkbox1"
-                  onClick={() => calculateCount(parseInt(item.price), index)}
+                  onClick={() => calculateCount(parseInt(deceration.price), index)}
                   checked={checkedItems[index]}
                 />
               </div>
