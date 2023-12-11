@@ -2,10 +2,18 @@ import { useState } from "react";
 import "./form.css";
 import PropTypes from "prop-types";
 import "bootstrap/dist/css/bootstrap.min.css";
-const FormComponent = ({ formData, setFormData }) => {
+
+const FormComponentlarge = ({ formData, setFormData }) => {
   const [errors, setErrors] = useState({});
 
-   
+  const setLocalStorage = (key, value) => {
+    try {
+      localStorage.setItem(key, JSON.stringify(value));
+      console.log(`Data with key '${key}' set in local storage.`);
+    } catch (error) {
+      console.error('Error setting data in local storage:', error);
+    }
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -23,7 +31,21 @@ const FormComponent = ({ formData, setFormData }) => {
       setErrors({ ...errors, [name]: '' });
     }
   };
+   
+  let extraCost = 0; // Initialize extra cost
+
+  if (formData.numOfPeople > 6) {
+    const extraPeople = formData.numOfPeople - 6;
+    extraCost = extraPeople * 399; // Assuming 399 is the cost per additional person
+  }
+  console.log(extraCost);
   
+  // Set extraCost in local storage
+  setLocalStorage('extraCost', extraCost);
+  
+
+  
+
   console.log("no of eople value",formData.numOfPeople);
 
   const handleSubmit = (e) => {
@@ -124,13 +146,14 @@ const FormComponent = ({ formData, setFormData }) => {
         </select>
         {errors.numOfPeople && <span className="error">{errors.numOfPeople}</span>}
       </div>
-      {(parseInt(formData.numOfPeople) > 4 || formData.numOfPeople <1) && (
-            <p className="reminder">Mini should contain more than 0 less than 4 persons</p>
+      {(parseInt(formData.numOfPeople) > 6 || formData.numOfPeople <4) && (
+            <p className="reminder">Large should contain more than 4 less than 6 persons <br/> More than 6 people will charge 399 extra cost per person</p>
           )}
+     
     </form>
   );
 };
-FormComponent.propTypes = {
+FormComponentlarge.propTypes = {
   formData: PropTypes.shape({
     name: PropTypes.string.isRequired,
     mobile: PropTypes.string.isRequired,
@@ -139,4 +162,4 @@ FormComponent.propTypes = {
   }).isRequired,
   setFormData: PropTypes.func.isRequired,
 };
-export default FormComponent;
+export default FormComponentlarge;

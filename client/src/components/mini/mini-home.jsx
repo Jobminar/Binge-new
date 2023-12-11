@@ -21,16 +21,18 @@ const MiniHome = () => {
   };
   const today = new Date().toISOString().split("T")[0];
 
-  const [count, setcount] = useState(0);
+  // const [count, setcount] = useState(1);
   const [hours, sethours] = useState(0);
 
-  const handleIncrement = () => {
-    setcount(count + 1);
-  };
+  
 
-  const handleDecrement = () => {
-    setcount(count - 1);
-  };
+  // const handleIncrement = () => {
+  //   setcount(count + 1);
+  // };
+
+  // const handleDecrement = () => {
+  //   setcount(count - 1);
+  // };
 
   const handleIncrementhours = () => {
     sethours(hours + 1);
@@ -57,9 +59,9 @@ const MiniHome = () => {
       {/* input section */}
       <div className="input-head">
         <p className="input1tittle">Check slot availability</p>
-        <p className="input1tittle">No of People</p>
+        {/* <p className="input1tittle">No of People</p> */}
         <p className="input1tittle">Hours</p>
-        <p className="input1tittle">No of People</p>
+        <p className="input1tittle">Event</p>
       </div>
       <div className="input-section">
         <div className="input-sub">
@@ -72,7 +74,7 @@ const MiniHome = () => {
             min={today}
           />
         </div>
-        <div className="input-sub">
+        {/* <div className="input-sub">
           <div className="input-buttons">
             <input
               type="text"
@@ -80,6 +82,7 @@ const MiniHome = () => {
               name="numberOfPeople"
               value={count}
               onChange={handleInputChange}
+
             />
 
             <span>
@@ -97,10 +100,10 @@ const MiniHome = () => {
               />
             </span>
           </div>
-          {(parseInt(count) > 4 || count <= 0) && (
+          {(parseInt(count) > 4 || count <=0) && (
             <p className="reminder">Mini contains less than 0 to 4 persons</p>
           )}
-        </div>
+        </div> */}
         <div className="input-sub">
           <div className="input-buttons">
             <input
@@ -127,14 +130,23 @@ const MiniHome = () => {
           </div>
         </div>
         <div className="input-sub">
-          <input
-            type="text"
-            className="input4"
-            name="event"
-            value={inputValues.event}
-            onChange={handleInputChange}
-          />
-        </div>
+        <select
+          className="input4"
+          name="event"
+          value={inputValues.event}
+          onChange={handleInputChange}
+          required // Add 'required' if you want to enforce selection
+        >
+          <option value="" disabled selected>
+            Select an event
+          </option>
+          <option value="Birthday">Birthday</option>
+          <option value="Anniversary">Anniversary</option>
+          <option value="Other parties">Other parties</option>
+        </select>
+      </div>
+
+
       </div>
 
       {/* table section */}

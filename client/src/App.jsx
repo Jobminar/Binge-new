@@ -16,6 +16,7 @@ import Whatsapp from "./components/whatsapp/Whatsapp";
 import Gallery from "./components/Gallery/gallery";
 import Refund from "./components/Refundpolicy/refund";
 import Contact from "./components/contactus/contact";
+import Userinputslarge from "./components/userinputsl-large/userinputslarge";
 
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
           <Route path="/cakemain" element={<Cake />}></Route>
           <Route path="/decoration" element={<Deceration />}></Route>
           <Route path="/userinputs" element={<Userinputs />}></Route>
+          <Route path="/userinputslarge" element={<Userinputslarge />}></Route>
           <Route path="/payment" element={<Paymentstep />}></Route>
           <Route path="/adminlogin" element={<AdminAuth />}></Route>
           <Route path="/login" element={<Login />}></Route>

@@ -40,7 +40,7 @@ const Cake = () => {
 
   //   data recive
 
-  const priceFromState = parseInt(price) || 2500;
+  const priceFromState =  1799; //need to change price here
 
   // data send
   const sendamountcake = priceFromState + count;

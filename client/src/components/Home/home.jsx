@@ -45,8 +45,12 @@ const Home = () => {
             <div className="mini-con">
               <img src={mini} />
               <p>
-                Experience intimate cinematic moments and celebrate in style
-                within our mini private theatre's exclusive ambiance.
+                {/* Experience intimate cinematic moments and celebrate in style
+                within our mini private theatre's exclusive ambiance. */}
+                1799 for 4 or less people<br/>
+                399 per extra person <br/>
+                Decoration is included <br/>
+                you can get your own food and cake<br/>
               </p>
               <button
                 onClick={() => {
@@ -59,9 +63,13 @@ const Home = () => {
             <div className="large-con">
               <img src={large} />
               <p>
-                Immerse yourself in grand cinematic experiences and elevate
+                {/* Immerse yourself in grand cinematic experiences and elevate
                 celebrations within our spacious and versatile large private
-                theatre.
+                theatre. */}
+                2999 for 6 or less people <br/>
+                More that 4 people 399 per person <br/>
+                Decoration is included in the price <br/>
+                you can get your own food and cake<br/>
               </p>
               <button
                 onClick={() => {

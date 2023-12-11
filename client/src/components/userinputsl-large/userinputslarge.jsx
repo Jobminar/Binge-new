@@ -1,14 +1,27 @@
-import "./userinputs.css";
+import "../userinputs/userinputs.css";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import FormComponent from "./form";
 import logo from "../../assets/images/logo.png";
 import grid from "../../assets/images/grid.png";
 import calender from "../../assets/images/calender-logo.png";
 import time from "../../assets/images/time-logo.png";
 import nextstep from "../../assets/images/Frame 12.png";
+import FormComponentlarge from "../userinputs/formlarge";
 
-const Userinputs = () => {
+const getLocalStorage = (key) => {
+    try {
+      const value = localStorage.getItem(key);
+      if (value === null) {
+        console.log(`No data found for key '${key}' in local storage.`);
+        return null;
+      }
+      return JSON.parse(value);
+    } catch (error) {
+      console.error('Error getting data from local storage:', error);
+      return null;
+    }
+  };
+const Userinputslarge = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: "",
@@ -16,25 +29,45 @@ const Userinputs = () => {
     email: "",
     numOfPeople: "",
   });
-
+  //setting total cost__________________________________
+  const [Total, setTotal] = useState(0);
+  
   useEffect(() => {
     // Clear local storage and session storage data on component load
     localStorage.clear();
     sessionStorage.clear();
-
+  
     // Check if user details are available in local storage
     const storedUserData = JSON.parse(localStorage.getItem("formData"));
-
+  
     if (storedUserData) {
       // Set form data from local storage
       setFormData({
         name: storedUserData.name || "",
         mobile: storedUserData.mobile || "",
         email: storedUserData.email || "",
-        numOfPeople: storedUserData.numOfPeople ||  "",
+        numOfPeople: storedUserData.numOfPeople || "",
       });
     }
-  }, []);
+  
+    // Calculate Total initially and when parsedExtraCost changes
+    const calculateTotal = () => {
+      const extraCost = getLocalStorage('extraCost');
+      const parsedExtraCost = extraCost ? parseInt(extraCost) : 0;
+      const Totallarge = 2999 + parsedExtraCost;
+      setTotal(Totallarge);
+    };
+  
+    calculateTotal(); // Calculate Total initially
+  
+    // Watch for changes in parsedExtraCost and recalculate Total
+    const interval = setInterval(() => {
+      calculateTotal();
+    }, 1000); // Set the interval time according to your requirement
+  
+    return () => clearInterval(interval); // Clean up the interval
+  }, [getLocalStorage]); // Trigger useEffect when getLocalStorage changes
+  
 
   const handleNextButtonClick = () => {
     // Validate form data
@@ -47,17 +80,27 @@ const Userinputs = () => {
     localStorage.setItem("formData", JSON.stringify(formData));
 
     // Navigate to the next page
-    navigate("/cakemain", {
-      state: {
-        date,
-        numOfPeople: formData.numOfPeople,
-        time,
-        price: 2500, // You can set the default price here or retrieve it from elsewhere
-      },
-    });
+  // Get the extraCost from local storage
+// Get the extraCost from local storage
 
-    // Display a success message
-    alert("Form details submitted successfully!");
+
+const extraCost = getLocalStorage('extraCost');
+
+// If extraCost exists in local storage, parse it as an integer; otherwise, use 0 as default
+const parsedExtraCost = extraCost ? parseInt(extraCost) : 0;
+// const Totallarge = 2999 + parsedExtraCost
+navigate("/cakemain", {
+  state: {
+    date,
+    numOfPeople: formData.numOfPeople,
+    time,
+    price: 2500 + parsedExtraCost, // Calculating price by adding 2500 with the retrieved extraCost
+  },
+});
+
+// Display a success message
+alert("Form details submitted successfully!");
+
   };
 
   const timeinput = "1:00 pm to 3:00 pm";
@@ -72,7 +115,7 @@ const Userinputs = () => {
           </div>
         
           <div className="headding-cake">
-            <h1>MINI</h1>
+            <h1>LARGE</h1>
             <p>Theater</p>
           </div>
           <img
@@ -92,27 +135,14 @@ const Userinputs = () => {
         </div>
         <div className="inputs-con">
           {/* Render the form component with form data and setter function */}
-          <FormComponent formData={formData} setFormData={setFormData} />
+          <FormComponentlarge formData={formData} setFormData={setFormData} />
         </div>
-        {/* <div className="events">
-            <div className="events-sub">
-                <input type="checkbox"/>
-                <label>BIRTHDAY PARTY</label>
-            </div>
-            <div className="events-sub">
-                <input type="checkbox"/>
-                <label>Anniversary</label>
-            </div>
-            <div className="events-sub">
-                <input type="checkbox"/>
-                <label>Party & Events</label>
-            </div>
-        </div> */}
+        
         <div>
           <div className="nextstep-result-con">
             <div className="result-con">
 
-          <h1 className="result-input">Total: 1799</h1>
+          <h1 className="result-input">Total: {Total}</h1>
           <p className="taxes">(All tax Included)</p>
           </div>
           <div className="nextstep">
@@ -127,4 +157,4 @@ const Userinputs = () => {
   );
 };
 
-export default Userinputs;
+export default Userinputslarge;

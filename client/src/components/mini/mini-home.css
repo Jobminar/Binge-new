@@ -64,10 +64,11 @@
 .input-head{
     display: flex;
     /* border: 1px solid green; */
-    justify-content: center;
+    justify-content: space-between;
     align-items:last baseline;
-    column-gap: 7rem;
+    /* column-gap: 7rem; */
     margin-top: 3rem;
+    padding: 0rem 3rem;
     
 }
 .input-head p{
@@ -227,6 +228,20 @@ td{
     text-align: center;
     font-family: IBM Plex Sans;
     font-size: 16px;
+    font-weight: 600;
+    line-height: 21px;
+    letter-spacing: 0em;
+    padding: 0.5rem 0rem;
+    color: rgba(249, 197, 197, 1);
+
+    
+}
+td:hover{
+    width: 20rem;
+    height: 2rem;
+    text-align: center;
+    font-family: IBM Plex Sans;
+    font-size: 20px;
     font-weight: 600;
     line-height: 21px;
     letter-spacing: 0em;
