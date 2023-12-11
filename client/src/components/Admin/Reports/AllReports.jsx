@@ -1,4 +1,3 @@
-// AllReports component
 
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
@@ -6,8 +5,8 @@ import ReportsChart from "./ReportsChart";
 import ReportsTable from "./ReportsTable";
 import ReportsData from "./ReportData";
 import { MdClose } from "react-icons/md";
-import "./AllReports.css"; // Import your CSS file
-import "bootstrap/dist/css/bootstrap.min.css"; // Import Bootstrap CSS
+import "./AllReports.css"; 
+import "bootstrap/dist/css/bootstrap.min.css"; 
 
 const AllReports = ({ initialChartData }) => {
   const [tableData, setTableData] = useState([]);
