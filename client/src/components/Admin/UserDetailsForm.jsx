@@ -1,34 +1,71 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import ReactToPrint from "react-to-print";
 import DatePicker from "react-datepicker";
 import TimePicker from "react-time-picker";
 import PropTypes from "prop-types";
 import PrintShare from "./PrintShare";
+import { FaRegClock } from "react-icons/fa";
 import "react-datepicker/dist/react-datepicker.css";
 import "react-time-picker/dist/TimePicker.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 // Import your custom styles for UserDetailsForm
 
-const UserDetailsForm = ({ onClose }) => {
+const UserDetailsForm = ({ contact, onClose }) => {
   const [formData, setFormData] = useState({
     theaterType: "Mini",
     name: "",
     contact: "",
+    email: "", // Add the email field
     date: null,
     time: "12:00",
     numOfPeople: "",
     addons: "",
     extras: [],
-    generatedBill: null, // Add generatedBill to the form data
+    generatedBill: null,
   });
 
   const [billPopup, setBillPopup] = useState(false);
   const [printShareMode, setPrintShareMode] = useState(false);
-
+  useEffect(() => {
+    if (contact) {
+      setFormData({
+        theaterType: contact.theaterType || "Mini",
+        name: contact.name || "",
+        contact: contact.phone || "",
+        email: contact.mailID || "",
+        date: contact.date ? new Date(contact.date) : null,
+        time: contact.time || "12:00",
+        numOfPeople: contact.numberOfPeople || "",
+        addons: contact.addons || "",
+        extras: contact.extras || [],
+        generatedBill: null,
+      });
+    }
+  }, [contact]);
+  // When updating the form data
   const handleInputChange = (e) => {
     const { name, value, type } = e.target;
     const inputValue = type === "radio" ? value : e.target.value;
-    setFormData((prevData) => ({ ...prevData, [name]: inputValue }));
+
+    // Update price based on theaterType
+    let updatedPrice = formData.generatedBill; // Use existing price as default
+
+    if (name === "theaterType") {
+      // Update price based on theaterType selection
+      updatedPrice = inputValue === "Mini" ? 1799 : 2999;
+    }
+
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: inputValue,
+      generatedBill: updatedPrice,
+    }));
+
+    // Store the updated form data in local storage
+    localStorage.setItem(
+      "formData",
+      JSON.stringify({ ...formData, [name]: inputValue })
+    );
   };
 
   const handleDateChange = (date) => {
@@ -73,11 +110,8 @@ const UserDetailsForm = ({ onClose }) => {
   };
 
   const generateBill = () => {
-    // Calculate and set the generated bill value
     const totalBill = calculateTotal();
     setFormData((prevData) => ({ ...prevData, generatedBill: totalBill }));
-
-    // Open the bill popup
     setBillPopup(true);
   };
 
@@ -196,14 +230,20 @@ const UserDetailsForm = ({ onClose }) => {
               </div>
 
               <div className="mb-3">
-                <label className="form-label text-dark">Time:</label>
-                <TimePicker
-                  onChange={handleTimeChange}
-                  value={formData.time}
-                  className="form-control"
-                  disableClock={true}
-                  clearIcon={null}
-                />
+                <label htmlFor="time" className="form-label text-dark">
+                  Time:
+                </label>
+                <div className="input-group">
+                  <TimePicker
+                    id="time"
+                    onChange={handleTimeChange}
+                    value={formData.time}
+                    className="form-control"
+                    disableClock={true}
+                    clearIcon={null}
+                    clockIcon={<FaRegClock />} // Using React Icons
+                  />
+                </div>
               </div>
             </div>
 
@@ -221,7 +261,17 @@ const UserDetailsForm = ({ onClose }) => {
                   onChange={handleInputChange}
                 />
               </div>
-
+              <div className="mb-3">
+                <label className="form-label text-dark">Email:</label>
+                <input
+                  type="email" // Use 'email' type for email input
+                  className="form-control"
+                  name="email"
+                  placeholder="Enter your email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                />
+              </div>
               <div className="mb-3">
                 <label className="form-label text-dark">Addons:</label>
                 <input
@@ -316,6 +366,7 @@ const UserDetailsForm = ({ onClose }) => {
 
 UserDetailsForm.propTypes = {
   onClose: PropTypes.func.isRequired,
+  contact: PropTypes.object, // Add PropTypes for contact object
 };
 
 export default UserDetailsForm;
