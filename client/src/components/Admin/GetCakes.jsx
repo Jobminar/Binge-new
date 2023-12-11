@@ -100,13 +100,16 @@ const GetCakes = () => {
             <tr key={cake._id}>
               <td>{cake.cakeName}</td>
               <td>{cake.price}</td>
-              <td>
+              <td style={{width:"30%",height:"30%"}}>
                 {cake.image && (
-                  <img
-                    src={`data:${cake.image.contentType};base64,${cake.image.data}`}
-                    alt={cake.cakeName}
-                    className="cake-image"
-                  />
+                  // <img
+                  //   src={`data:${cake.image.contentType};base64,${cake.image.data}`}
+                  //   alt={cake.cakeName}
+                  //   className="cake-image"
+                  // />
+
+                  <img style={{ width: '100%', height: '100%' }} src={`data:image/jpeg;base64,${cake.image}`} alt={cake.cakeName}  className="cake-image" />
+           
                 )}
               </td>
               <td>

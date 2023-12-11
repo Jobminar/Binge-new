@@ -3,31 +3,26 @@ import PropTypes from "prop-types";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const AddDecorations = ({ onClose, onAdd }) => {
-  const [decorationData, setDecorationData] = useState({
-    decorationName: "",
-    price: "",
-    image: null,
-  });
+  const [decorationName, setDecorationName] = useState('');
+  const [price, setPrice] = useState('');
+  const [image, setImage] = useState(null);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setDecorationData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
+    if (name === "decorationName") {
+      setDecorationName(value);
+    } else if (name === "price") {
+      setPrice(value);
+    }
   };
 
   const handleImageChange = (e) => {
-    const file = e.target.files[0];
-
+    setImage(e.target.files[0]);
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
         try {
-          setDecorationData((prevData) => ({
-            ...prevData,
-            image: reader.result,
-          }));
+          setImage(reader.result);
         } catch (error) {
           console.error("Error reading image file:", error);
         }
@@ -38,25 +33,36 @@ const AddDecorations = ({ onClose, onAdd }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const formData = new FormData();
+    formData.append('decorationName', decorationName);
+    formData.append('price', price);
+    formData.append('image', image);
+
     try {
-      // Simulate an API call (replace with actual API call)
-      console.log("Simulating API call to add decoration:", decorationData);
+      const response = await fetch('http://localhost:3000/postdecorations', {
+        method: 'POST',
+        body: formData,
+      });
 
-      // Simulate a successful response (replace with actual response handling)
-      console.log("Decoration added successfully!");
+      if (!response.ok) {
+        throw new Error(`Failed to add decoration: ${response.statusText}`);
+      }
 
-      // Trigger the onAdd callback to update the decorations list
+      const data = await response.json();
+      console.log('Decoration created:', data);
+
+      
       onAdd();
 
-      // Close the modal
+      
       onClose();
     } catch (error) {
-      console.error("Error submitting decoration data:", error);
+      console.error('Error creating decoration:', error.message);
     }
   };
 
   const handleClose = () => {
-    // Close the modal
     onClose();
   };
 
@@ -83,7 +89,7 @@ const AddDecorations = ({ onClose, onAdd }) => {
                 className="form-control"
                 id="decorationName"
                 name="decorationName"
-                value={decorationData.decorationName}
+                value={decorationName}
                 onChange={handleInputChange}
                 placeholder="Enter decoration name"
                 required
@@ -98,7 +104,7 @@ const AddDecorations = ({ onClose, onAdd }) => {
                 className="form-control"
                 id="price"
                 name="price"
-                value={decorationData.price}
+                value={price}
                 onChange={handleInputChange}
                 placeholder="Enter price"
                 required
@@ -122,9 +128,9 @@ const AddDecorations = ({ onClose, onAdd }) => {
                   Choose file
                 </label>
               </div>
-              {decorationData.image && (
+              {image && (
                 <img
-                  src={decorationData.image}
+                  src={image}
                   alt="Decoration Preview"
                   className="preview-image"
                 />
@@ -132,7 +138,7 @@ const AddDecorations = ({ onClose, onAdd }) => {
             </div>
             <div className="text-center">
               <button type="submit" className="btn btn-primary">
-                Add Decoration
+                Add Decoration..
               </button>
             </div>
           </form>

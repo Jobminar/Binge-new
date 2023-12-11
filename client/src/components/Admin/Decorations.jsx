@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import AddDecorations from "./AddDecorations";
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -6,6 +6,7 @@ const GetDecorations = () => {
   const [decorations, setDecorations] = useState([]);
   const [error, setError] = useState(null);
   const [isAddDecorationOpen, setAddDecorationOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchData();
@@ -23,9 +24,11 @@ const GetDecorations = () => {
 
       const jsonData = await response.json();
       setDecorations(jsonData);
+      setLoading(false);
     } catch (error) {
       console.error("Error fetching decorations:", error.message);
       setError("An error occurred while fetching decorations.");
+      setLoading(false);
     }
   };
 
@@ -60,7 +63,7 @@ const GetDecorations = () => {
   };
 
   return (
-    <div className="container mt-4">
+    <div  className="container mt-4">
       <h2 className="text-center mb-4">Decorations</h2>
       {error && <p className="alert alert-danger">Error: {error}</p>}
 
@@ -96,34 +99,34 @@ const GetDecorations = () => {
           </tr>
         </thead>
         <tbody>
-          {decorations.map((decoration, index) => (
-            <tr key={index}>
-              <td>{decoration.decorationName}</td>
-              <td>{decoration.price}</td>
-              <td>
-                {decoration.image && (
-                  <img
-                    src={`data:image/png;base64,${btoa(
-                      String.fromCharCode.apply(
-                        null,
-                        new Uint8Array(decoration.image.data)
-                      )
-                    )}`}
-                    alt={decoration.decorationName || "Decoration Image"}
-                    className="img-thumbnail"
-                  />
-                )}
-              </td>
-              <td>
-                <button
-                  className="btn btn-danger"
-                  onClick={() => handleDeleteDecoration(decoration._id)}
-                >
-                  Delete
-                </button>
+          {!loading && !error && decorations.length > 0 ? (
+            decorations.map((decoration) => (
+              <tr key={decoration._id}>
+                <td>{decoration.decorationName}</td>
+                <td>${decoration.price}</td>
+                <td style={{width:"30%",height:"30%"}}>
+                  
+
+<img style={{ width: "100%", height: '100%' }} src={`data:image/jpeg;base64,${decoration.image}`} alt={decoration.decorationName} />
+            
+                </td>
+                <td>
+                  <button
+                    className="btn btn-danger"
+                    onClick={() => handleDeleteDecoration(decoration._id)}
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan="4" className="text-center">
+                {loading ? "Loading..." : "No decorations available."}
               </td>
             </tr>
-          ))}
+          )}
         </tbody>
       </table>
     </div>

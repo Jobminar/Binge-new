@@ -7,7 +7,8 @@ import GetUsers from "./GetUsers";
 import GetSlots from "./GetSlots";
 import GetCakes from "./GetCakes";
 import GetOrders from "./GetOrders";
-import GetContactUs from "./GetContactUs";
+// import GetContactUs from "./GetContactUs";
+import Getbookings from "./GetBookings";
 import Decorations from "./Decorations";
 import AllReports from "./Reports/AllReports";
 import TheatrePrice from "./TheatrePricing";
@@ -33,8 +34,8 @@ const AdminDashboard = ({ handleLogout }) => {
         return <GetCakes />;
       case "GetOrders":
         return <GetOrders />;
-      case "GetContactUs":
-        return <GetContactUs />;
+      case "GetBookings":
+        return <Getbookings />;
       case "Decorations":
         return <Decorations />;
       case "Reports":

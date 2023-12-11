@@ -13,7 +13,7 @@ const Bookings = () => {
   const fetchData = async () => {
     try {
       const response = await fetch(
-        "https://binge-be.onrender.com/getcontactus"
+        "http://localhost:3000/getbookings"
       );
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -47,7 +47,7 @@ const Bookings = () => {
             <th>Name</th>
             <th>Email</th>
             <th>Phone</th>
-            <th>Message</th>
+            <th>Number of People</th>
             <th>Action</th>
           </tr>
         </thead>
@@ -57,7 +57,7 @@ const Bookings = () => {
               <td>{contact.name}</td>
               <td>{contact.mailID}</td>
               <td>{contact.phone}</td>
-              <td>{contact.message}</td>
+              <td>{contact.numberOfPeople}</td>
               <td>
                 <button
                   onClick={handleManageClick}

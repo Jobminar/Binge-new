@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { FaTrash, FaPhone, FaEnvelope } from "react-icons/fa";
 
-const GetContactUs = () => {
+const Getbookings = () => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
@@ -11,7 +11,7 @@ const GetContactUs = () => {
   const fetchData = async () => {
     try {
       const response = await fetch(
-        "https://binge-be.onrender.com/getcontactus"
+        "https://binge-be.onrender.com/getbookings"
       );
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -111,4 +111,4 @@ const GetContactUs = () => {
   );
 };
 
-export default GetContactUs;
+export default Getbookings;

@@ -1,33 +1,37 @@
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PricingPopup from "./PricingPopup";
 import "react-datepicker/dist/react-datepicker.css";
 
 const TheatrePrice = () => {
-  // State for showing/hiding Pricing Popup
+  const [data, setData] = useState([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/gettheater");
+        const data1 = await response.json();
+        setData(data1);
+      } catch (error) {
+        console.log(error, "...........");
+      }
+    };
+    fetchData();
+  }, []);
+
   const [showPricingPopup, setShowPricingPopup] = useState(false);
-
-  // State for new pricing value
   const [newPricing, setNewPricing] = useState(1000);
-
-  // State for number of people
   const [noOfPeople, setNoOfPeople] = useState(0);
 
-  // State for MINI prices and number of people
   const [miniPrices, setMiniPrices] = useState({
-    pricing: 0,
-    noOfPeople: 0,
+    pricing: data.length > 0 ? data[0].price : "", // Assuming data is an array of objects
+    noOfPeople: data.length > 0 ? data[0].numberOfPeople : "",
   });
 
-  // State for MAX prices and number of people
   const [maxPrices, setMaxPrices] = useState({
-    pricing: 0,
-    noOfPeople: 0,
+    pricing: "",
+    noOfPeople: "",
   });
 
-  // State to track whether the pricing input is selected
   const [isPricingInputSelected, setIsPricingInputSelected] = useState(false);
-
-  // State to track whether the number of people input is selected
   const [isNoOfPeopleInputSelected, setIsNoOfPeopleInputSelected] =
     useState(false);
 
@@ -75,31 +79,26 @@ const TheatrePrice = () => {
   };
 
   const handlePricingSubmit = () => {
-    // Assuming you have a function to calculate MINI and MAX values based on form inputs
     const miniValues = calculateMiniValues(newPricing, noOfPeople);
     const maxValues = calculateMaxValues(newPricing, noOfPeople);
 
-    // Update state with the new MINI and MAX values
     setMiniPrices(miniValues);
     setMaxPrices(maxValues);
 
-    // Close the Pricing Popup
     handleClosePricingPopup();
   };
 
   const calculateMiniValues = (pricing, noOfPeople) => {
-    // Your logic to calculate MINI values
     return {
-      pricing: pricing * 0.8, // Example: 80% of the input pricing
-      noOfPeople: noOfPeople + 2, // Example: Increase by 2 people
+      pricing: pricing * 0.8,
+      noOfPeople: noOfPeople + 2,
     };
   };
 
   const calculateMaxValues = (pricing, noOfPeople) => {
-    // Your logic to calculate MAX values
     return {
-      pricing: pricing * 1.2, // Example: 120% of the input pricing
-      noOfPeople: noOfPeople + 5, // Example: Increase by 5 people
+      pricing: pricing * 1.2,
+      noOfPeople: noOfPeople + 5,
     };
   };
 
@@ -109,7 +108,6 @@ const TheatrePrice = () => {
         Theatre Pricing
       </h2>
 
-      {/* Button to show Pricing Popup */}
       <button
         id="pricing-popup-button"
         type="button"
@@ -119,7 +117,6 @@ const TheatrePrice = () => {
         Add Pricing
       </button>
 
-      {/* Pricing Popup */}
       <PricingPopup
         show={showPricingPopup}
         handleClose={handleClosePricingPopup}
@@ -136,10 +133,14 @@ const TheatrePrice = () => {
         setNoOfPeople={setNoOfPeople}
       />
 
-      {/* Display current prices and no of people values for MINI and MAX */}
       <div>
         <h3>MINI:</h3>
-        <p>Pricing: {miniPrices.pricing}</p>
+        {data.map((ele, ind) => (
+          <div key={ind}>
+            <div>Pricing: {ele.price}</div>
+            <div>No of People: {ele.numberOfPeople}</div>
+          </div>
+        ))}
         <p>No of People: {miniPrices.noOfPeople}</p>
       </div>
       <div>
