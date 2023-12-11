@@ -10,7 +10,7 @@ const TheatrePrice = () => {
 
   const fetchData = async () => {
     try {
-      const response = await fetch("http://localhost:3000/gettheater");
+      const response = await fetch("https://binge-be.onrender.com/gettheater");
       const data1 = await response.json();
       setData(data1);
     } catch (error) {
@@ -20,7 +20,7 @@ const TheatrePrice = () => {
 
   const postTheaterData = async (newTheaterData) => {
     try {
-      const response = await fetch("http://localhost:3000/posttheater", {
+      const response = await fetch("https://binge-be.onrender.com/posttheater", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

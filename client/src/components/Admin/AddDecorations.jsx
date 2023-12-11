@@ -40,7 +40,7 @@ const AddDecorations = ({ onClose, onAdd }) => {
     formData.append('image', image);
 
     try {
-      const response = await fetch('http://localhost:3000/postdecorations', {
+      const response = await fetch('https://binge-be.onrender.com/postdecorations', {
         method: 'POST',
         body: formData,
       });
