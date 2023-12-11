@@ -110,8 +110,48 @@ const UserDetailsForm = ({ contact, onClose }) => {
   };
 
   const generateBill = () => {
-    const totalBill = calculateTotal();
-    setFormData((prevData) => ({ ...prevData, generatedBill: totalBill }));
+    const addonsTotal = parseFloat(formData.addons) || 0;
+    const extrasTotal = formData.extras.reduce(
+      (total, extra) => total + (parseFloat(extra.price) || 0),
+      0
+    );
+
+    const theaterTypePrice = formData.theaterType === "Mini" ? 1799 : 2999;
+    const totalBill = addonsTotal + extrasTotal + theaterTypePrice;
+
+    const formattedBill = `
+      =========================
+        Binge-in Bill
+      =========================
+      Type of Theatre: ${formData.theaterType}
+      Name: ${formData.name}
+      Contact: ${formData.contact}
+      Email: ${formData.email}
+      Date: ${formData.date.toLocaleDateString()}
+      Time: ${formData.time}
+      Number of People: ${formData.numOfPeople}
+      Addons: ${formData.addons}
+      Extras:
+        ${formData.extras
+          .map(
+            (extra, index) =>
+              `  ${index + 1}. ${extra.itemName}: $${extra.price}`
+          )
+          .join("\n")}
+      -------------------------
+      Subtotal: $${addonsTotal + extrasTotal}
+      Theater Type Price: $${theaterTypePrice}
+      -------------------------
+      Total: $${totalBill}
+      =========================
+    `;
+
+    console.log(formattedBill);
+
+    setFormData((prevData) => ({
+      ...prevData,
+      generatedBill: totalBill,
+    }));
     setBillPopup(true);
   };
 

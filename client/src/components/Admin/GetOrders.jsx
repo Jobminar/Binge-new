@@ -11,7 +11,6 @@ const Bookings = () => {
   useEffect(() => {
     fetchData();
   }, []);
-
   const fetchData = async () => {
     try {
       const response = await fetch("https://binge-be.onrender.com/getbookings");
@@ -20,8 +19,13 @@ const Bookings = () => {
       }
 
       const jsonData = await response.json();
-      setData(jsonData);
-      setExpandedDetails(Array(jsonData.length).fill(false));
+      // Add totalPrice property to each contact object
+      const contactsWithData = jsonData.map((contact) => ({
+        ...contact,
+        totalPrice: contact.totalPrice || 0,
+      }));
+      setData(contactsWithData);
+      setExpandedDetails(Array(contactsWithData.length).fill(false));
     } catch (error) {
       console.error(
         "Error fetching data:",
