@@ -5,24 +5,46 @@ import "react-datepicker/dist/react-datepicker.css";
 const TheatrePrice = () => {
   const [data, setData] = useState([]);
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch("http://localhost:3000/gettheater");
-        const data1 = await response.json();
-        setData(data1);
-      } catch (error) {
-        console.log(error, "...........");
-      }
-    };
     fetchData();
   }, []);
+
+  const fetchData = async () => {
+    try {
+      const response = await fetch("https://binge-be.onrender.com/gettheater");
+      const data1 = await response.json();
+      setData(data1);
+    } catch (error) {
+      console.log(error, "...........");
+    }
+  };
+
+  const postTheaterData = async (newTheaterData) => {
+    try {
+      const response = await fetch("https://binge-be.onrender.com/posttheater", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newTheaterData),
+      });
+
+      if (response.ok) {
+        console.log("Theater data posted successfully!");
+        fetchData(); // Update the local data after posting
+      } else {
+        console.error("Failed to post theater data");
+      }
+    } catch (error) {
+      console.error("Error posting theater data:", error);
+    }
+  };
 
   const [showPricingPopup, setShowPricingPopup] = useState(false);
   const [newPricing, setNewPricing] = useState(1000);
   const [noOfPeople, setNoOfPeople] = useState(0);
 
   const [miniPrices, setMiniPrices] = useState({
-    pricing: data.length > 0 ? data[0].price : "", // Assuming data is an array of objects
+    pricing: data.length > 0 ? data[0].price : "",
     noOfPeople: data.length > 0 ? data[0].numberOfPeople : "",
   });
 
@@ -86,6 +108,11 @@ const TheatrePrice = () => {
     setMaxPrices(maxValues);
 
     handleClosePricingPopup();
+
+    postTheaterData({
+      price: newPricing,
+      numberOfPeople: noOfPeople,
+    });
   };
 
   const calculateMiniValues = (pricing, noOfPeople) => {
@@ -101,7 +128,7 @@ const TheatrePrice = () => {
       noOfPeople: noOfPeople + 5,
     };
   };
-//commit the data
+
   return (
     <div id="main-container" className="mt-3">
       <h2 id="main-title" className="text-center mb-4">
@@ -114,9 +141,9 @@ const TheatrePrice = () => {
         className="btn btn-primary mb-3 custom-button"
         onClick={handleShowPricingPopup}
       >
-        Add Pricing
+        Add Pricing..
       </button>
- 
+
       <PricingPopup
         show={showPricingPopup}
         handleClose={handleClosePricingPopup}
@@ -145,8 +172,15 @@ const TheatrePrice = () => {
       </div>
       <div>
         <h3>MAX:</h3>
-        <p>Pricing: {maxPrices.pricing}</p>
-        <p>No of People: {maxPrices.noOfPeople}</p>
+        {/* <p>Pricing: {maxPrices.pricing}</p>
+        <p>No of People: {maxPrices.noOfPeople}</p> */}
+
+{data.map((ele, ind) => (
+          <div key={ind}>
+            <div>Pricing: {ele.price}</div>
+            <div>No of People: {ele.numberOfPeople}</div>
+          </div>
+        ))}
       </div>
     </div>
   );

@@ -14,7 +14,7 @@ const GetDecorations = () => {
 
   const fetchData = async () => {
     try {
-      const response = await fetch("http://localhost:3000/getdecorations");
+      const response = await fetch("https://binge-be.onrender.com/getdecorations");
 
       if (!response.ok) {
         throw new Error(
@@ -35,7 +35,7 @@ const GetDecorations = () => {
   const handleDeleteDecoration = async (decorationId) => {
     try {
       const response = await fetch(
-        `http://localhost:3000/decorations/${decorationId}`,
+        `https://binge-be.onrender.com/decorations/${decorationId}`,
         {
           method: "DELETE",
         }
