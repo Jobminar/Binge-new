@@ -95,13 +95,22 @@ const Largehome = () => {
       setSelectedSlot(null);
     }
   };
+  // Function to handle the "Book Now" button click
 
   //functionality to go to next page
+  const navigateToNextPage = () => {
+    navigate("/userinputslarge");
+  };
+
+  // Function to handle the "Book Now" button click
   const handleNextPage = () => {
     const selectedSlot = sessionStorage.getItem("selectedSlot");
-    if (selectedSlot) {
-      navigate("/userinputslarge");
+
+    if (selectedSlot !== null && selectedSlot !== undefined) {
+      // If a slot is selected, navigate to the next page
+      navigateToNextPage();
     } else {
+      // If no slot is selected, show an alert
       alert("Please select a slot before proceeding.");
     }
   };
