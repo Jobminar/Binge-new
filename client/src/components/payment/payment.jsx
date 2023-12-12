@@ -52,24 +52,64 @@ const Paymentstep = () => {
       reverseButtons: true,
     }).then((result) => {
       if (result.isConfirmed) {
+        // Display a success alert
         alert(
           "Payment Successful! Your payment has been processed successfully."
         );
 
+        // Extract data from location state
         const { date, numOfPeople, time, price } = location.state;
         console.log("Date:", date);
         console.log("Number of People:", numOfPeople);
         console.log("Time:", time);
         console.log("Final Price:", price);
 
+        // Generate a random payment ID
         const paymentID = generateRandomPaymentID();
 
-        navigate("/whatsapp", {
-          state: {
-            ...generatePaymentData(),
-            paymentID,
+        // Prepare data for API request
+        const orderData = {
+          date: date || "N/A",
+          numOfPeople: numOfPeople || "N/A",
+          name: formData.name || "N/A",
+          email: formData.email || "N/A",
+          mobile: formData.mobile || "N/A",
+          totalAmount: price || 0,
+        };
+
+        // Make the API call
+        fetch("https://binge-be.onrender.com/postorders", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
           },
-        });
+          body: JSON.stringify({
+            paymentID,
+            totalPrice: orderData.totalAmount,
+            dateTime: new Date(),
+            name: orderData.name,
+            phoneNumber: orderData.mobile,
+            numberOfPeople: orderData.numOfPeople,
+            email: orderData.email,
+          }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            // Handle the API response here
+            console.log("API Response:", data);
+
+            // Continue with navigation or other actions as needed
+            navigate("/whatsapp", {
+              state: {
+                ...orderData,
+                paymentID,
+              },
+            });
+          })
+          .catch((error) => {
+            console.error("Error posting order:", error);
+            // Handle the error as needed
+          });
       }
     });
   };

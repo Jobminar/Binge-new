@@ -193,10 +193,10 @@ const AdminDashboard = ({ handleLogout }) => {
                 <a
                   id="contact-us-link"
                   className={`nav-link ${
-                    activeModule === "GetContactUs" ? "active" : ""
+                    activeModule === "GetBookings" ? "active" : ""
                   }`}
                   href="#"
-                  onClick={() => handleNavItemClick("GetContactUs")}
+                  onClick={() => handleNavItemClick("GetBookings")}
                 >
                   ENQUIRIES
                 </a>

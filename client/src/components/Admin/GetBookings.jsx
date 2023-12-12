@@ -10,9 +10,7 @@ const Getbookings = () => {
 
   const fetchData = async () => {
     try {
-      const response = await fetch(
-        "https://binge-be.onrender.com/getbookings"
-      );
+      const response = await fetch("https://binge-be.onrender.com/getorders");
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
@@ -30,7 +28,7 @@ const Getbookings = () => {
   const handleDeleteContactUs = async (contactId) => {
     try {
       const response = await fetch(
-        `https://binge-be.onrender.com/deletecontactus/${contactId}`,
+        `https://binge-be.onrender.com/deleteorders/${contactId}`,
         {
           method: "DELETE",
         }
@@ -72,7 +70,7 @@ const Getbookings = () => {
             <th>Name</th>
             <th>Email</th>
             <th>Phone</th>
-            <th>Message</th>
+
             <th>Action</th>
           </tr>
         </thead>
@@ -80,9 +78,9 @@ const Getbookings = () => {
           {data.map((contact, index) => (
             <tr key={index}>
               <td>{contact.name}</td>
-              <td>{contact.mailID}</td>
-              <td>{contact.phone}</td>
-              <td>{contact.message}</td>
+              <td>{contact.email}</td>
+              <td>{contact.phoneNumber}</td>
+
               <td>
                 <button
                   onClick={() => handleDeleteContactUs(contact._id)}
