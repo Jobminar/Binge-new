@@ -1,50 +1,48 @@
 import { useState } from "react";
+import Swal from "sweetalert2";
 import PropTypes from "prop-types";
-import {
-  IoMdCalendar,
-  IoMdCheckbox,
-  IoMdRadioButtonOn,
-  IoMdPerson,
-} from "react-icons/io";
+import { IoMdCheckbox, IoMdRadioButtonOn } from "react-icons/io";
 import {
   MdEventSeat,
   MdAccessTime,
   MdAttachMoney,
   MdSend,
-  MdLocationOn,
   MdClose,
 } from "react-icons/md";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { IconContext } from "react-icons";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const PostSlots = ({ onClose, visible }) => {
   const [slotData, setSlotData] = useState({
-    date: "",
+    date: new Date(),
     availability: true,
     numberOfPeople: 0,
     time: "",
     price: 0,
-    type: "MINI", // Default value
-    location: "",
-    organizer: "",
+    type: "",
   });
 
-  const {
-    date,
-    availability,
-    numberOfPeople,
-    time,
-    price,
-    type,
-    location,
-    organizer,
-  } = slotData;
+  const { date, availability, numberOfPeople, time, price, type } = slotData;
 
-  const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
+  const handleChange = (name, value) => {
+    let updatedPrice = slotData.price;
+
+    if (name === "type") {
+      updatedPrice = value === "STANDARD" ? 1799 : value === "LUXI" ? 2999 : 0;
+    }
+
+    // Manually adjust the date to account for the time zone offset
+    const updatedDate =
+      name === "date"
+        ? new Date(value.getTime() - value.getTimezoneOffset() * 60000)
+        : value;
+
     setSlotData({
       ...slotData,
-      [name]: type === "checkbox" ? checked : value,
+      [name]: updatedDate,
+      price: updatedPrice,
     });
   };
 
@@ -66,8 +64,22 @@ const PostSlots = ({ onClose, visible }) => {
 
       const result = await response.json();
       console.log("Slot Posted:", result);
+
+      // Display success message using Swal
+      Swal.fire({
+        icon: "success",
+        title: "Success",
+        text: "Your slot has been added successfully!",
+      });
     } catch (error) {
       console.error("Error posting slot:", error.message);
+
+      // Display error message using Swal
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Failed to add slot. Please try again.",
+      });
     }
   };
 
@@ -78,7 +90,7 @@ const PostSlots = ({ onClose, visible }) => {
     transform: "translate(-50%, -50%)",
     display: visible ? "block" : "none",
     zIndex: "1000",
-    overflowX: "hidden", // Add this line to remove horizontal overflow
+    overflowX: "hidden",
   };
 
   return (
@@ -105,37 +117,37 @@ const PostSlots = ({ onClose, visible }) => {
                   <div className="custom-radio">
                     <input
                       type="radio"
-                      id="mini"
+                      id="standard"
                       name="type"
-                      value="MINI"
-                      checked={type === "MINI"}
-                      onChange={handleChange}
+                      value="STANDARD"
+                      checked={type === "STANDARD"}
+                      onChange={() => handleChange("type", "STANDARD")}
                     />
-                    <label htmlFor="mini">MINI</label>
+                    <label htmlFor="standard">STANDARD</label>
                   </div>
                   <div className="custom-radio">
                     <input
                       type="radio"
-                      id="max"
+                      id="luxi"
                       name="type"
-                      value="MAX"
-                      checked={type === "MAX"}
-                      onChange={handleChange}
+                      value="LUXI"
+                      checked={type === "LUXI"}
+                      onChange={() => handleChange("type", "LUXI")}
                     />
-                    <label htmlFor="max">MAX</label>
+                    <label htmlFor="luxi">LUXI</label>
                   </div>
                 </div>
                 <div className="mb-3">
                   <label htmlFor="date" className="form-label">
-                    <IoMdCalendar /> Date:
+                    Date:
                   </label>
-                  <input
-                    type="date"
+                  <DatePicker
                     id="date"
                     name="date"
-                    value={date}
-                    onChange={handleChange}
+                    selected={date}
+                    onChange={(date) => handleChange("date", date)}
                     className="form-control"
+                    dateFormat="dd-MM-yyyy"
                   />
                 </div>
                 <div className="mb-3 form-check">
@@ -152,7 +164,9 @@ const PostSlots = ({ onClose, visible }) => {
                     id="numberOfPeople"
                     name="numberOfPeople"
                     value={numberOfPeople}
-                    onChange={handleChange}
+                    onChange={(e) =>
+                      handleChange("numberOfPeople", e.target.value)
+                    }
                     className="form-control"
                   />
                 </div>
@@ -160,40 +174,27 @@ const PostSlots = ({ onClose, visible }) => {
                   <label htmlFor="time" className="form-label">
                     <MdAccessTime /> Time:
                   </label>
-                  <input
-                    type="text"
+                  <select
                     id="time"
                     name="time"
                     value={time}
-                    onChange={handleChange}
-                    className="form-control"
-                  />
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="location" className="form-label">
-                    <MdLocationOn /> Location:
-                  </label>
-                  <input
-                    type="text"
-                    id="location"
-                    name="location"
-                    value={location}
-                    onChange={handleChange}
-                    className="form-control"
-                  />
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="organizer" className="form-label">
-                    <IoMdPerson /> Organizer:
-                  </label>
-                  <input
-                    type="text"
-                    id="organizer"
-                    name="organizer"
-                    value={organizer}
-                    onChange={handleChange}
-                    className="form-control"
-                  />
+                    onChange={(e) => handleChange("time", e.target.value)}
+                    className="form-select"
+                  >
+                    <option value="">Select Time</option>
+                    <option value="10:00 am - 01:00 pm">
+                      10:00 am - 01:00 pm
+                    </option>
+                    <option value="02:00 pm - 05:00 pm">
+                      02:00 pm - 05:00 pm
+                    </option>
+                    <option value="06:00 pm - 09:00 pm">
+                      06:00 pm - 09:00 pm
+                    </option>
+                    <option value="10:00 pm - 12:00 am">
+                      10:00 pm - 12:00 am
+                    </option>
+                  </select>
                 </div>
                 <div className="mb-3">
                   <label htmlFor="price" className="form-label">
@@ -204,7 +205,7 @@ const PostSlots = ({ onClose, visible }) => {
                     id="price"
                     name="price"
                     value={price}
-                    onChange={handleChange}
+                    onChange={(e) => handleChange("price", e.target.value)}
                     className="form-control"
                   />
                 </div>

@@ -1,3 +1,4 @@
+import React from "react";
 import { useEffect, useState } from "react";
 import PostSlot from "./PostSlot";
 import DatePicker from "react-datepicker";
@@ -5,21 +6,13 @@ import "react-datepicker/dist/react-datepicker.css";
 
 const GetSlots = () => {
   const [isPostSlotsVisible, setIsPostSlotsVisible] = useState(true);
-
-  const handleClosePostSlots = () => {
-    setIsPostSlotsVisible(false);
-  };
-  // State for slot data
   const [data, setData] = useState([]);
-
-  // State for availability filter
   const [availabilityFilter, setAvailabilityFilter] = useState("all");
-
-  // State for showing/hiding Add Slot Modal
   const [showModal, setShowModal] = useState(false);
-
-  // State for calendar date
   const [selectedDate, setSelectedDate] = useState(null);
+  const determineTypeFromPrice = (price) => {
+    return price === 1799 ? "STANDARD" : price === 2999 ? "LUXI" : "";
+  };
 
   useEffect(() => {
     fetchData();
@@ -33,7 +26,7 @@ const GetSlots = () => {
       }
 
       const jsonData = await response.json();
-      const filteredData =
+      let filteredData =
         availabilityFilter === "all"
           ? jsonData
           : jsonData.filter((item) => item.availability === availabilityFilter);
@@ -41,9 +34,15 @@ const GetSlots = () => {
       const dateFilteredData =
         selectedDate === null
           ? filteredData
-          : filteredData.filter((item) => item.date === selectedDate);
+          : filteredData.filter(
+              (item) => item.date === selectedDate.toISOString().split("T")[0]
+            );
 
-      setData(dateFilteredData);
+      filteredData = dateFilteredData.sort(
+        (a, b) => new Date(b.date) - new Date(a.date)
+      );
+
+      setData(filteredData);
     } catch (error) {
       console.error(
         "Error fetching data:",
@@ -84,48 +83,56 @@ const GetSlots = () => {
     setIsPostSlotsVisible(true);
     setShowModal(true);
   };
-  const handleCloseModal = () => setShowModal(false);
+
+  const handleClosePostSlots = () => {
+    setIsPostSlotsVisible(false);
+  };
 
   const handleDateChange = (date) => {
     setSelectedDate(date);
   };
 
+  const handleSlotClick = (slot) => {
+    // Access the "type" value from the slot object
+    const type = slot.type;
+
+    // Now you can use the "type" value as needed
+    console.log("Clicked slot type:", type);
+
+    // Add any other logic you need to perform when a slot is clicked
+  };
+
   return (
-    <div id="main-container" className="mt-3">
-      <h2 id="main-title" className="text-center mb-4">
-        SLOTS
-      </h2>
+    <div className="container mt-3">
+      <h2 className="text-center mb-4">SLOTS</h2>
 
-      <div id="filter-section" className="mb-3">
-        <label id="filter-label" className="mx-2">
-          Filter by Availability:
-        </label>
-        <div className="custom-radio mx-2">
-          <input
-            type="radio"
-            id="allRadio"
-            value="all"
-            checked={availabilityFilter === "all"}
-            onChange={handleAvailabilityChange}
-          />
-          <label htmlFor="allRadio">SOLD</label>
+      <div className="row mb-3">
+        <div className="col-md-6">
+          <label className="mx-2">Filter by Availability:</label>
+          <div className="custom-radio mx-2">
+            <input
+              type="radio"
+              id="allRadio"
+              value="all"
+              checked={availabilityFilter === "all"}
+              onChange={handleAvailabilityChange}
+            />
+            <label htmlFor="allRadio">AVAILABLE</label>
+          </div>
+          <div className="custom-radio mx-2">
+            <input
+              type="radio"
+              id="availableRadio"
+              value="available"
+              checked={availabilityFilter === "available"}
+              onChange={handleAvailabilityChange}
+            />
+            <label htmlFor="availableRadio">SOLD</label>
+          </div>
         </div>
-        <div className="custom-radio mx-2">
-          <input
-            type="radio"
-            id="availableRadio"
-            value="available"
-            checked={availabilityFilter === "available"}
-            onChange={handleAvailabilityChange}
-          />
-          <label htmlFor="availableRadio">AVAILABLE</label>
-        </div>
-      </div>
 
-      {/* Calendar Date Picker */}
-      <div id="calendar-section" className="mb-3">
-        <label id="calendar-label" className="mx-2">
-          Filter by Date:
+        <div className="col-md-6">
+          <label className="mx-2">Filter by Date:</label>
           <DatePicker
             selected={selectedDate}
             onChange={handleDateChange}
@@ -135,63 +142,58 @@ const GetSlots = () => {
             scrollableYearDropdown
             className="mx-2 p-0 text-dark"
           />
-        </label>
+        </div>
       </div>
 
-      {/* Button to show Add Slot Modal */}
-      {availabilityFilter === "available" && (
-        <button
-          id="add-slot-button"
-          type="button"
-          className="btn btn-primary mb-3 custom-button"
-          onClick={handleShowModal}
-        >
-          Add Slot
-        </button>
-      )}
-
-      {/* Slots Table */}
-      <table
-        id="slots-table"
-        className="table-bordered table-hover table-striped"
+      <button
+        type="button"
+        className="btn btn-primary mb-3 custom-button"
+        onClick={handleShowModal}
       >
-        <thead className="table-dark">
-          <tr>
-            <th scope="col">Date</th>
-            <th scope="col">Availability</th>
-            <th scope="col">Price</th>
-            <th scope="col">Number of People</th>
-            <th scope="col">Time</th>
-            <th scope="col">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {data.map((slot, index) => (
-            <tr key={index}>
-              <td>
-                <a href="#" onClick={() => handleSlotClick(slot)}>
-                  {slot.date}
-                </a>
-              </td>
-              <td>{slot.availability}</td>
-              <td>{slot.price}</td>
-              <td>{slot.numberOfPeople}</td>
-              <td>{slot.time}</td>
-              <td>
-                <button
-                  id="delete-slot-button"
-                  onClick={() => handleDeleteSlot(slot._id)}
-                  className="btn btn-danger btn-sm"
-                >
-                  Delete
-                </button>
-              </td>
+        Add Slot
+      </button>
+      <div
+        className="table-responsive overflow-auto"
+        style={{ minHeight: "200px", minWidth: "300px" }}
+      >
+        <table className="table-bordered table-hover table-striped">
+          <thead className="table-dark">
+            <tr>
+              <th scope="col">Date</th>
+              <th scope="col">Type</th>
+              <th scope="col">Price</th>
+              <th scope="col">Number of People</th>
+              <th scope="col">Time</th>
+              <th scope="col">Action</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {data.map((slot, index) => (
+              <tr key={index}>
+                <td>
+                  {/* Pass the entire slot object to handleSlotClick */}
+                  <a href="#" onClick={() => handleSlotClick(slot)}>
+                    {slot.date}
+                  </a>
+                </td>
+                <td>{slot.type || determineTypeFromPrice(slot.price)}</td>
+                <td>{slot.price}</td>
+                <td>{slot.numberOfPeople}</td>
+                <td>{slot.time}</td>
+                <td>
+                  <button
+                    onClick={() => handleDeleteSlot(slot._id)}
+                    className="btn btn-danger btn-sm"
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
 
-      {/* Add Slot Modal */}
       <div
         tabIndex="-1"
         role="dialog"
