@@ -1,9 +1,12 @@
+
+
+ 
+ 
  .Beigein-home-con{
-    /* width: 100%; */
-    margin: 1rem 3rem;
-    background-color:  linear-gradient(180deg, #000000 59.96%, #B46161 134.18%);
+    padding: 1rem 3rem;
+    background-color: black;
     /* border: 1px solid green; */
-    /* background-image: url(../../assets/images/Home-bg-img.jpeg); */
+   
 }
 
 .main-section{
@@ -36,13 +39,7 @@
     line-height: 47px;
     letter-spacing: 0em;
     text-align: left;
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    /* Create a linear gradient using the specified RGB values */
-    background-image: linear-gradient(to right, rgb(180, 97, 97), rgb(252, 195, 182));
-    /* border: 1px solid red; */
-
+    color: white;
 
 }
 .grid-con{
@@ -51,8 +48,8 @@
     justify-content: right;
 }
 .grid-con img{
-    width: 5rem;
-    height: 4rem;
+    width: 4rem;
+    height: 2.5rem;
 }
 .mobileview-text{
     display: none;
@@ -108,7 +105,7 @@
     line-height: 24px;
     letter-spacing: 0em;
     text-align: center;
-    color:  rgba(255, 254, 254, 1);
+    color: white;
     
 
 }
@@ -135,8 +132,8 @@
 .mini-con button{
     position: absolute;
     bottom: 1rem;
-    right: 6rem;
-    width: 10rem;
+    right: 2.5rem;
+    width: 15rem;
     height: 3rem;
     /* border: 1px solid black; */
     background-color: black;
@@ -151,9 +148,10 @@
 
 }
 .mini-con button:hover{
-    width: 11rem;
+    width: 17rem;
     height: 3.5rem;
     cursor: pointer;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
 }
 .large-con button{
     position: absolute;
@@ -177,6 +175,7 @@
     width: 11rem;
     height: 3.5rem;
     cursor: pointer;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
 }
 
 .content-home{
@@ -202,12 +201,7 @@
         color: white;
     margin: 0rem;
     padding: 0rem;
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    /* Create a linear gradient using the specified RGB values */
-    background-image: linear-gradient(to right, rgb(180, 97, 97), rgb(252, 195, 182));
-    /* border: 1px solid red; */
+  
      
 }
 .birthday p{
@@ -217,7 +211,7 @@
     line-height: 21px;
     letter-spacing: 0em;
     text-align: left;
-    color: rgba(250, 192, 180, 1);
+    color: white;
     
 
 }
@@ -423,6 +417,7 @@
         width: 11rem;
         height: 3.5rem;
         cursor: pointer;
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
     }
     .large-con button{
         position: absolute;
@@ -512,8 +507,10 @@
     .socialmedia-links{
         display: flex;
         column-gap: 1rem;
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
     }
     .socialmedia-links img:hover{
         cursor: pointer;
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
     } 
 } 

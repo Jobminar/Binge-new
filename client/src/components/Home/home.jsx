@@ -57,7 +57,7 @@ const Home = () => {
                   navigate("/minihome");
                 }}
               >
-                BOOK MINI
+                BOOK STANDARD
               </button>
             </div>
             <div className="large-con">
@@ -76,7 +76,7 @@ const Home = () => {
                   navigate("/largehome");
                 }}
               >
-                BOOK LARGE
+                BOOK LUXI
               </button>
             </div>
           </div>

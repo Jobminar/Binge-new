@@ -138,7 +138,7 @@ const FormComponentlarge = ({ formData, setFormData }) => {
           required
         >
           {/* Generating options for numbers starting from 1 */}
-          {Array.from({ length: 10 }, (_, index) => index + 1).map((number) => (
+          {Array.from({ length: 8 }, (_, index) => index + 5).map((number) => (
             <option key={number} value={number}>
               {number}
             </option>
@@ -146,9 +146,10 @@ const FormComponentlarge = ({ formData, setFormData }) => {
         </select>
         {errors.numOfPeople && <span className="error">{errors.numOfPeople}</span>}
       </div>
-      {(parseInt(formData.numOfPeople) > 6 || formData.numOfPeople <4) && (
-            <p className="reminder">Large should contain more than 4 less than 6 persons <br/> More than 6 people will charge 399 extra cost per person</p>
+      {(parseInt(formData.numOfPeople) > 6) && (
+            <p className="reminder">Luxi pricing includes only 6 people <br/> You can include upto 6 more guests at 399 per Guest </p>
           )}
+      
      
     </form>
   );
