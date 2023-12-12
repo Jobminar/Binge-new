@@ -14,14 +14,17 @@
     line-height: 21px;
     letter-spacing: 0em;
     text-align: left;
-    color:rgba(255, 232, 232, 1);
+    color:white;
     
 
 }
+label{
+    color: white;
+}
 .input-data{
     margin-top: 1rem;
-    color: rgba(255, 232, 232, 1);
+    color: white;
     text-align: left;
 
 }
-.reminder{color: red;}
+.reminder{color: green;}

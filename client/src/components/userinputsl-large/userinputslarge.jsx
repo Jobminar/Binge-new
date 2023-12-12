@@ -35,7 +35,7 @@ const Userinputslarge = () => {
   useEffect(() => {
     // Clear local storage and session storage data on component load
     localStorage.clear();
-    sessionStorage.clear();
+
   
     // Check if user details are available in local storage
     const storedUserData = JSON.parse(localStorage.getItem("formData"));
@@ -68,6 +68,7 @@ const Userinputslarge = () => {
     return () => clearInterval(interval); // Clean up the interval
   }, [getLocalStorage]); // Trigger useEffect when getLocalStorage changes
   
+
 
   const handleNextButtonClick = () => {
     // Validate form data
@@ -103,12 +104,23 @@ alert("Form details submitted successfully!");
 
   };
 
-  const timeinput = "1:00 pm to 3:00 pm";
-  const date = "20 November 2023";
+
+  // gettime and date
+
+   // get time and date 
+  var sessionData = sessionStorage.getItem('selectedSlot');
+  if (sessionData) {
+    var slotselctionData = JSON.parse(sessionData);
+    console.log(slotselctionData);
+  } else {
+    console.log('No data found in sessionStorage for key "slotselction"');
+  }
+  const  date= slotselctionData.date;
+  const timeinput = slotselctionData.time;
 
   return (
     <>
-      <div className="cake-con">
+      <div className="miniinput-con">
       <div className="main-cake-con">
           <div className="logo-img">
            <img src={logo} alt="logo" id="logo-img" />

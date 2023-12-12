@@ -1,9 +1,14 @@
+
+
+
+
 .mini-home-con{
     margin: 0rem;
     height: auto;
     padding: 0rem 3rem;
+    font-family: Oswald;
     /* border: 1px solid green; */
-    background: linear-gradient(180deg, #000000 59.96%, #B46161 100%);
+    background-color: black;
 }
 .mini-head h1{
     font-family: Oswald;
@@ -13,12 +18,7 @@
     letter-spacing: 0em;
     text-align: center;
     /* border: 1px solid green; */
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    /* Create a linear gradient using the specified RGB values */
-    background-image: linear-gradient(to right, rgb(180, 97, 97), rgb(252, 195, 182));
-    /* border: 1px solid red; */
+   color: white;
     
 }
 .mini-head span{
@@ -58,13 +58,13 @@
     /* border: 1px solid green; */
     padding: 0rem 3rem;
     display: flex;
-    justify-content: space-between;
-   align-items: center;
+    justify-content: space-evenly;
+    align-items: center;
 }
 .input-head{
     display: flex;
     /* border: 1px solid green; */
-    justify-content: space-between;
+    justify-content: space-evenly;
     align-items:last baseline;
     /* column-gap: 7rem; */
     margin-top: 3rem;
@@ -85,7 +85,7 @@ input{
     
     width: 10rem;
     height: 2rem;
-    background-color: #B46161;
+    /* background-color: #B46161; */
     font-size: 25px;
     color: black;
     text-align: center;
@@ -103,42 +103,22 @@ input{
 .input1tittle{
     width: 15rem;
     font-family: IBM Plex Sans;
-font-size: 16px;
-font-weight: 400;
-line-height: 21px;
-letter-spacing: 0em;
-text-align: left;
-color: rgba(250, 192, 180, 1);
-
-}
-
-.input2{
-    padding: 0px;
-    width: 15rem;
-    font-family: IBM Plex Sans;
     font-size: 16px;
-    font-weight: 600;
+    font-weight: 400;
     line-height: 21px;
     letter-spacing: 0em;
-    text-align: center;
-    color: black;
-
-}
-.input3{
-    width: 15rem;
-    font-size: 20px;
+    text-align: left;
     color: white;
-    text-align: center;
-    padding: 0px;
-    color: black;
 
 }
+
 .input4{
     width: 15rem;
     padding: 0px;
     color: black;
     font-size: 25px;
     text-align: center;
+  
 }
 .input-sub{
     display: flex;
@@ -169,7 +149,7 @@ color: rgba(250, 192, 180, 1);
 }
 
 .input-sub p{
-    color: rgba(250, 192, 180, 1);
+    color: white;
     padding: 0rem;
     margin-bottom: 1.5rem;
     font-family: IBM Plex Sans;
@@ -191,9 +171,7 @@ color: rgba(250, 192, 180, 1);
     line-height: 59px;
     letter-spacing: 0em;
     text-align: left;
-    color: linear-gradient(269.75deg, #B46161 4.8%, #FCC3B6 99.83%),
-linear-gradient(0deg, #FFFFFF, #FFFFFF);
-
+    color: white;
 
 }
 .table-section{
@@ -201,7 +179,12 @@ linear-gradient(0deg, #FFFFFF, #FFFFFF);
     color: white;
     padding: 3rem 0rem;
     font-family: Oswald;
-
+ 
+}
+table{
+    /* border: 1px solid green; */
+    margin-left: auto;
+    margin-right: auto;
 }
 .thead{
     
@@ -213,18 +196,13 @@ linear-gradient(0deg, #FFFFFF, #FFFFFF);
     font-weight: 400;
     line-height: 36px;
     letter-spacing: 0em;
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    /* Create a linear gradient using the specified RGB values */
-    background-image: linear-gradient(to right, rgb(180, 97, 97), rgb(252, 195, 182));
-    /* border: 1px solid red; */
+  
 
 
 }
 td{
     width: 20rem;
-    height: 2rem;
+    height: 3rem;
     text-align: center;
     font-family: IBM Plex Sans;
     font-size: 16px;
@@ -232,7 +210,7 @@ td{
     line-height: 21px;
     letter-spacing: 0em;
     padding: 0.5rem 0rem;
-    color: rgba(249, 197, 197, 1);
+    color: white;
 
     
 }

@@ -1,3 +1,11 @@
+.miniinput-con{
+    background-color: black;
+    color: white;
+    height: 100%;
+    padding-bottom: 5rem;
+    
+}
+
 .logo-img-input{
     width: 10rem;
     height: 10rem;
@@ -23,7 +31,7 @@
     margin: 2rem;
     align-items: center;
     column-gap: 2rem;
-    color: ;
+    color: white;
     /* border: 1px solid green; */
 }
 /* mini-home.css */
