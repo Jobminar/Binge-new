@@ -34,7 +34,7 @@ const Largehome = () => {
         const filteredSlots = result.filter(
           (slot) =>
             formatDate(slot.date) === formatDate(inputValues.date) &&
-            slot.price === 1799
+            slot.price === 2999
         );
 
         // Update your state or perform any necessary processing

@@ -1,14 +1,14 @@
-import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
-import { useEffect } from 'react';
-import '../mini/mini-home.css';
-import grid from '../../assets/images/grid.png';
-import Booknow from '../../assets/images/Frame 11.png'
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useEffect } from "react";
+import "../mini/mini-home.css";
+import grid from "../../assets/images/grid.png";
+import Booknow from "../../assets/images/Frame 11.png";
 
-const Minihome = () => {
-
+const Largehome = () => {
   // slot selection usestate
   const [selectedSlot, setSelectedSlot] = useState(null);
+  const [fetchedSlotData, setFetchedSlotData] = useState([]);
   const navigate = useNavigate();
   const [inputValues, setInputValues] = useState({
     date: "",
@@ -17,26 +17,69 @@ const Minihome = () => {
     event: "",
   });
 
+  // slots from admin
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          `https://binge-be.onrender.com/getslots?date=${inputValues.date}`
+        );
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const result = await response.json();
+
+        // Filter slots for the selected date and price === 1799
+        const filteredSlots = result.filter(
+          (slot) =>
+            formatDate(slot.date) === formatDate(inputValues.date) &&
+            slot.price === 1799
+        );
+
+        // Update your state or perform any necessary processing
+        setFetchedSlotData(filteredSlots);
+        console.log("Fetched Slots:", filteredSlots);
+      } catch (error) {
+        console.error("Error fetching slots:", error.message);
+      }
+    };
+
+    // Fetch data when the date changes
+    if (inputValues.date) {
+      fetchData();
+    } else {
+      // If no date is selected, reset the slot data
+      setFetchedSlotData([]);
+    }
+  }, [inputValues.date]);
+
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setInputValues({ ...inputValues, [name]: value });
   };
   const today = new Date().toISOString().split("T")[0];
 
-
-  //  Date update 
+  //  Date update
   const formatDate = (dateString) => {
-    const [year, month, day] = dateString.split('-');
-    return `${day}/${month}/${year}`;
+    const options = { day: "2-digit", month: "2-digit", year: "numeric" };
+    const dateObject = new Date(dateString);
+    return dateObject.toLocaleDateString("en-GB", options);
   };
 
-  const [date, setDate] = useState(formatDate(new Date().toISOString().split("T")[0]));
+  const [date, setDate] = useState(
+    formatDate(new Date().toISOString().split("T")[0])
+  );
 
   useEffect(() => {
-      // Update date state with inputValues.date
-      setDate(inputValues.date ? formatDate(inputValues.date) : formatDate(new Date().toISOString().split("T")[0]));
+    // Update date state with inputValues.date
+    setDate(
+      inputValues.date
+        ? formatDate(inputValues.date)
+        : formatDate(new Date().toISOString().split("T")[0])
+    );
   }, [inputValues.date]);
-
 
   // local storage and slot selction
 
@@ -44,23 +87,31 @@ const Minihome = () => {
     if (event.target.checked) {
       if (!selectedSlot) {
         setSelectedSlot(time);
-        sessionStorage.setItem('selectedSlot', JSON.stringify({ date, time }));
+        sessionStorage.setItem("selectedSlot", JSON.stringify({ date, time }));
       } else {
         event.target.checked = false; // Unchecks the checkbox if already selected
         alert("You can only select one slot.");
       }
     } else {
       setSelectedSlot(null);
-    
     }
   };
-  
-//functionality to go to next page
+  // Function to handle the "Book Now" button click
+
+  //functionality to go to next page
+  const navigateToNextPage = () => {
+    navigate("/userinputs");
+  };
+
+  // Function to handle the "Book Now" button click
   const handleNextPage = () => {
-    const selectedSlot = sessionStorage.getItem('selectedSlot');
-    if (selectedSlot) {
-      navigate("/userinputs");
+    const selectedSlot = sessionStorage.getItem("selectedSlot");
+
+    if (selectedSlot !== null && selectedSlot !== undefined) {
+      // If a slot is selected, navigate to the next page
+      navigateToNextPage();
     } else {
+      // If no slot is selected, show an alert
       alert("Please select a slot before proceeding.");
     }
   };
@@ -80,8 +131,8 @@ const Minihome = () => {
       </div>
       {/* input title section */}
       <div className="input-head">
-          <p className="input1tittle">Check slot availability</p>
-          <p className="input1tittle">Event</p>
+        <p className="input1tittle">Check slot availability</p>
+        <p className="input1tittle">Event</p>
       </div>
       <div className="input-section">
         {/* date input */}
@@ -97,83 +148,50 @@ const Minihome = () => {
         </div>
         {/* Event */}
         <div className="input-sub">
-        <select
-          className="input4"
-          name="event"
-          value={inputValues.event}
-          onChange={handleInputChange}
-          required // Add 'required' if you want to enforce selection
-        >
-          <option value="" disabled selected>
-            Select an event
-          </option>
-          <option value="Birthday">Birthday</option>
-          <option value="Anniversary">Anniversary</option>
-          <option value="Other parties">Others</option>
-        </select>
-      </div>
-
-
+          <select
+            className="input4"
+            name="event"
+            value={inputValues.event}
+            onChange={handleInputChange}
+            required // Add 'required' if you want to enforce selection
+          >
+            <option value="" disabled selected>
+              Select an event
+            </option>
+            <option value="Birthday">Birthday</option>
+            <option value="Anniversary">Anniversary</option>
+            <option value="Other parties">Others</option>
+          </select>
+        </div>
       </div>
 
       {/* table section */}
       <div className="table-section">
         <h2 className="slots">Slots</h2>
         <table>
-          <tr>
-            <th className="thead">Date</th>
-            <th className="thead">Time</th>
-            <th className="thead">Price</th>
-          </tr>
-          <tr>
-            <td>{date}</td>
-            <td>10:00 am - 01:00 pm</td>
-            <td>1799</td>
-            <td>
-            <input
-                                type="checkbox"
-                                onChange={(event) => handleSlotSelection(event, '10:00 am - 01:00 pm')}
-                                disabled={selectedSlot && selectedSlot !== '10:00 am - 01:00 pm'}
-                            />
-                        </td>
-          </tr>
-          <tr>
-            <td>{date}</td>
-            <td>02:00 pm - 05:00 pm</td>
-            <td>1799</td>
-            <td>
-            <input
-                                type="checkbox"
-                                onChange={(event) => handleSlotSelection(event, '02:00 pm - 05:00 pm')}
-                                disabled={selectedSlot && selectedSlot !== '02:00 pm - 05:00 pm'}
-                            />
-                        </td>
-          </tr>
-          <tr>
-            <td>{date}</td>
-            <td>06:00 pm - 09:00 pm</td>
-            <td>1799</td>
-            <td>
-            <input
-                                type="checkbox"
-                                onChange={(event) => handleSlotSelection(event, '06:00 pm - 09:00 pm')}
-                                disabled={selectedSlot && selectedSlot !== '06:00 pm - 09:00 pm'}
-                            />
-                        </td>
-          </tr>
-          <tr>
-            <td>{date}</td>
-           <td>10:00 pm - 12:00 am</td>
-            <td>1799</td>
-            <td>
-            <input
-                                type="checkbox"
-                                onChange={(event) => handleSlotSelection(event, '10:00 pm - 12:00 am')}
-                                disabled={selectedSlot && selectedSlot !== '10:00 pm - 12:00 am'}
-                            />
-                        </td>
-          </tr>
-         
+          <thead>
+            <tr>
+              <th className="thead">Date</th>
+              <th className="thead">Time</th>
+              <th className="thead">Price</th>
+            </tr>
+          </thead>
+          <tbody>
+            {fetchedSlotData.map((slot) => (
+              <tr key={slot._id}>
+                <td>{formatDate(slot.date)}</td>
+                <td>{slot.time}</td>
+                <td>{slot.price}</td>
+                <td>
+                  <input
+                    type="checkbox"
+                    onChange={(event) => handleSlotSelection(event, slot.time)}
+                    disabled={selectedSlot && selectedSlot !== slot.time}
+                  />
+                </td>
+              </tr>
+            ))}
+          </tbody>
         </table>
         <div
           className="book-now"
@@ -248,4 +266,4 @@ const Minihome = () => {
   );
 };
 
-export default Minihome;
+export default Largehome;
