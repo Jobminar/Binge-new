@@ -133,7 +133,13 @@ const Home = () => {
               <img src={call} alt="call" onClick={openCall} />
               <FaMapMarkerAlt
                 onClick={openLocation}
-                style={{ color: "lightpink", fontSize: "24px" }}
+                style={{
+                  color: "black",
+                  fontSize: "2.2rem",
+                  backgroundColor: "#B46161",
+                  borderRadius: "100px",
+                  padding: "5px", // Optional padding for visual appeal
+                }}
               />
             </div>
           </div>

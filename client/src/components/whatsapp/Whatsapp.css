@@ -51,7 +51,7 @@
 /* Default styling for .whatsapp-card */
 .whatsapp-card {
   margin: 3em;
-  background: linear-gradient(to right, #008000, #486747, #008000);
+  background: linear-gradient(to bottom, #000000, rgb(12, 8, 9));
   border-radius: 10px;
   padding: 20px;
   text-align: left;
@@ -130,3 +130,88 @@
 .additional-gradient-3 {
   background: linear-gradient(to right, #800080, #ba55d3, #800080);
 }
+
+
+.qr-code-section {
+  margin-top: 20px;
+}
+
+.qr-code-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.or-heading {
+  color: white;
+  font-size: 1.0em;
+  margin: 0;
+}
+
+
+/* Add this to your existing CSS or create a new CSS file */
+
+/* Add this to your existing CSS or create a new CSS file */
+/* You can customize the styling according to your preferences */
+/* Existing styles for .grid-container */
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-gap: 20px;
+  justify-content: center;
+}
+
+/* Updated styles for .grid-item */
+.grid-item {
+  background: linear-gradient(rgba(81, 0, 0, 0.2), rgba(0, 0, 0, 0.2));
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  color: #fff;
+  transition: transform 0.3s ease-in-out;
+}
+
+.grid-item:hover {
+  transform: scale(1.05);
+}
+
+/* Existing styles for .logo and .header h1 */
+.logo {
+  width: 150px;
+  height: auto;
+}
+
+.header h1 {
+  margin-top: 10px;
+  font-size: 1.8rem;
+}
+
+/* Existing styles for .payment-details, .phone-section, .payment-section */
+.payment-details,
+.phone-section,
+.payment-section {
+  text-align: left;
+}
+
+/* Existing styles for .or-heading and .payment-message */
+.or-heading {
+  font-size: 1.2rem;
+  margin: 10px 0;
+}
+
+.payment-message {
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+}
+
+.img-small {
+  max-width: 350px; /* Adjust the size as needed */
+  max-height: 350px; /* Adjust the size as needed */
+}
+
+/* ... (existing styles) */
+

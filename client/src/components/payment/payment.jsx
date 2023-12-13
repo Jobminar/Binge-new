@@ -42,76 +42,60 @@ const Paymentstep = () => {
   }, []);
 
   const handleProceed = () => {
-    Swal.fire({
-      title: "Are you sure?",
-      text: "Do you want to proceed to checkout?",
-      icon: "question",
-      showCancelButton: true,
-      confirmButtonText: "Yes, proceed!",
-      cancelButtonText: "No, cancel",
-      reverseButtons: true,
-    }).then((result) => {
-      if (result.isConfirmed) {
-        // Display a success alert
-        alert(
-          "Payment Successful! Your payment has been processed successfully."
-        );
+    // Extract data from location state
+    const { date, numOfPeople, time, finalamount } = location.state;
+    console.log("Date:", date);
+    console.log("Number of People:", numOfPeople);
+    console.log("Time:", time);
+    console.log("Final Price:", finalamount);
 
-        // Extract data from location state
-        const { date, numOfPeople, time, price } = location.state;
-        console.log("Date:", date);
-        console.log("Number of People:", numOfPeople);
-        console.log("Time:", time);
-        console.log("Final Price:", price);
+    // Generate a random payment ID
+    const paymentID = generateRandomPaymentID();
 
-        // Generate a random payment ID
-        const paymentID = generateRandomPaymentID();
+    // Prepare data for API request
+    const orderData = {
+      date: date || "N/A",
+      numOfPeople: numOfPeople || "N/A",
+      name: formData.name || "N/A",
+      email: formData.email || "N/A",
+      mobile: formData.mobile || "N/A",
+      totalAmount: finalamount || 0, // Use finalamount instead of price
+    };
 
-        // Prepare data for API request
-        const orderData = {
-          date: date || "N/A",
-          numOfPeople: numOfPeople || "N/A",
-          name: formData.name || "N/A",
-          email: formData.email || "N/A",
-          mobile: formData.mobile || "N/A",
-          totalAmount: price || 0,
-        };
+    // Make the API call
+    fetch("https://binge-be.onrender.com/postorders", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        paymentID,
+        totalPrice: orderData.totalAmount,
+        dateTime: new Date(),
+        name: orderData.name,
+        phoneNumber: orderData.mobile,
+        numberOfPeople: orderData.numOfPeople,
+        email: orderData.email,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        // Handle the API response here
+        console.log("API Response:", data);
 
-        // Make the API call
-        fetch("https://binge-be.onrender.com/postorders", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
+        // Continue with navigation or other actions as needed
+        navigate("/whatsapp", {
+          state: {
+            ...orderData,
             paymentID,
-            totalPrice: orderData.totalAmount,
-            dateTime: new Date(),
-            name: orderData.name,
-            phoneNumber: orderData.mobile,
-            numberOfPeople: orderData.numOfPeople,
-            email: orderData.email,
-          }),
-        })
-          .then((response) => response.json())
-          .then((data) => {
-            // Handle the API response here
-            console.log("API Response:", data);
-
-            // Continue with navigation or other actions as needed
-            navigate("/whatsapp", {
-              state: {
-                ...orderData,
-                paymentID,
-              },
-            });
-          })
-          .catch((error) => {
-            console.error("Error posting order:", error);
-            // Handle the error as needed
-          });
-      }
-    });
+            price: finalamount, // Include TotalAmount in the state
+          },
+        });
+      })
+      .catch((error) => {
+        console.error("Error posting order:", error);
+        // Handle the error as needed
+      });
   };
 
   const generatePaymentData = () => {
@@ -167,30 +151,44 @@ const Paymentstep = () => {
               {!loading && !error && (
                 <>
                   <div className="details-section" id="detailssections">
-                    <p>
-                      <span>Date:</span> {generatePaymentData().date}
-                    </p>
-                    <p>
-                      <span>Number of People:</span>{" "}
-                      {generatePaymentData().numOfPeople}
-                    </p>
-                    <p>
-                      <span>Name:</span> {generatePaymentData().name}
-                    </p>
-                    <p>
-                      <span>Email:</span> {generatePaymentData().email}
-                    </p>
-                    <p>
-                      <span>Phone Number:</span> {generatePaymentData().mobile}
-                    </p>
-                    <p className="mb-0">
-                      <span>Total Amount:</span>{" "}
-                      <strong>${generatePaymentData().totalAmount}</strong>
-                    </p>
-                    <p className="mb-0">
-                      <span>Payment ID:</span>{" "}
-                      <strong>{location.state.paymentID}</strong>
-                    </p>
+                    <table style={{ width: "100%", textAlign: "left" }}>
+                      <tbody>
+                        <tr>
+                          <td style={{ paddingRight: "16px" }}>Date:</td>
+                          <td>{generatePaymentData().date}</td>
+                        </tr>
+                        <tr>
+                          <td style={{ paddingRight: "16px" }}>
+                            Number of People:
+                          </td>
+                          <td>{generatePaymentData().numOfPeople}</td>
+                        </tr>
+                        <tr>
+                          <td style={{ paddingRight: "16px" }}>Name:</td>
+                          <td>{generatePaymentData().name}</td>
+                        </tr>
+                        <tr>
+                          <td style={{ paddingRight: "16px" }}>Email:</td>
+                          <td>{generatePaymentData().email}</td>
+                        </tr>
+                        <tr>
+                          <td style={{ paddingRight: "16px" }}>
+                            Phone Number:
+                          </td>
+                          <td>{generatePaymentData().mobile}</td>
+                        </tr>
+                        <tr>
+                          <td style={{ paddingRight: "16px" }}>
+                            Total Amount:
+                          </td>
+                          <td>
+                            <strong>
+                              ${generatePaymentData().totalAmount}
+                            </strong>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
                   </div>
                 </>
               )}
