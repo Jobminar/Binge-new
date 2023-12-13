@@ -15,10 +15,8 @@ const PricingPopup = ({
   handleNoOfPeopleInputClick,
   noOfPeople,
   setNoOfPeople,
-  pricingType,
-  setPricingType,
   selectedInput,
-  setSelectedInput,
+  
 }) => {
   const [isSuccess, setIsSuccess] = useState(false);
   const [selectedPricingType, setSelectedPricingType] = useState("MINI");
