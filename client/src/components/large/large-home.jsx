@@ -9,6 +9,7 @@ const Largehome = () => {
   // slot selection usestate
   const [selectedSlot, setSelectedSlot] = useState(null);
   const [fetchedSlotData, setFetchedSlotData] = useState([]);
+  const storedEvent = sessionStorage.getItem("selectedEvent") || ""
   const navigate = useNavigate();
   const [inputValues, setInputValues] = useState({
     date: "",
@@ -34,7 +35,7 @@ const Largehome = () => {
         const filteredSlots = result.filter(
           (slot) =>
             formatDate(slot.date) === formatDate(inputValues.date) &&
-            slot.price === 1799
+            slot.price === 2999
         );
 
         // Update your state or perform any necessary processing
@@ -81,20 +82,23 @@ const Largehome = () => {
   }, [inputValues.date]);
 
   // local storage and slot selction
+// Store the selected event in sessionStorage
 
-  const handleSlotSelection = (event, time) => {
-    if (event.target.checked) {
-      if (!selectedSlot) {
-        setSelectedSlot(time);
-        sessionStorage.setItem("selectedSlot", JSON.stringify({ date, time }));
-      } else {
-        event.target.checked = false; // Unchecks the checkbox if already selected
-        alert("You can only select one slot.");
-      }
+
+const handleSlotSelection = (event, time) => {
+  if (event.target.checked) {
+    if (!selectedSlot) {
+      setSelectedSlot(time);
+      sessionStorage.setItem("selectedSlot", JSON.stringify({ date, time }));
     } else {
-      setSelectedSlot(null);
+      event.target.checked = false; // Unchecks the checkbox if already selected
+      alert("You can only select one slot.");
     }
-  };
+  } else {
+    setSelectedSlot(null);
+    sessionStorage.removeItem("selectedSlot"); // Remove the selectedSlot data when unchecked
+  }
+};
   // Function to handle the "Book Now" button click
 
   //functionality to go to next page
@@ -102,18 +106,30 @@ const Largehome = () => {
     navigate("/userinputslarge");
   };
 
+
+
   // Function to handle the "Book Now" button click
   const handleNextPage = () => {
     const selectedSlot = sessionStorage.getItem("selectedSlot");
-
-    if (selectedSlot !== null && selectedSlot !== undefined) {
-      // If a slot is selected, navigate to the next page
-      navigateToNextPage();
-    } else {
+    const storedEvent = sessionStorage.getItem("selectedEvent");
+  
+    if (!inputValues.date || !inputValues.event) {
+      // If the date or event is not selected, show an alert
+      alert("Please select both date and event before proceeding.");
+    } else if (!selectedSlot) {
       // If no slot is selected, show an alert
       alert("Please select a slot before proceeding.");
+    } else {
+      // Store the selected event in sessionStorage
+      sessionStorage.setItem("selectedEvent", inputValues.event);
+  
+      // If all conditions met, navigate to the next page
+      navigateToNextPage();
     }
   };
+  
+  
+ 
   return (
     <div className="mini-home-con">
       <div className="mini-head">
@@ -143,24 +159,27 @@ const Largehome = () => {
             value={inputValues.date}
             onChange={handleInputChange}
             min={today}
+
           />
         </div>
         {/* Event */}
         <div className="input-sub">
-          <select
-            className="input4"
-            name="event"
-            value={inputValues.event}
-            onChange={handleInputChange}
-            required // Add 'required' if you want to enforce selection
-          >
-            <option value="" disabled selected>
-              Select an event
-            </option>
-            <option value="Birthday">Birthday</option>
-            <option value="Anniversary">Anniversary</option>
-            <option value="Other parties">Others</option>
-          </select>
+       <select
+  className="input4"
+  name="event"
+  value={inputValues.event || storedEvent} // Using storedEvent value in the input value
+  onChange={handleInputChange}
+  required
+>
+  <option value="" disabled>
+    Select an event
+  </option>
+  <option value="Birthday">Birthday</option>
+  <option value="Anniversary">Anniversary</option>
+  <option value="Other parties">Others</option>
+</select>
+
+
         </div>
       </div>
 
