@@ -8,7 +8,7 @@ const TheatrePrice = () => {
     fetchData();
   }, []);
 
-
+//this is code
   const fetchData = async () => {
     try {
       const response = await fetch("https://binge-be.onrender.com/getmaxi");
