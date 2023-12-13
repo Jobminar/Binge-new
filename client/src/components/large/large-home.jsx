@@ -9,7 +9,7 @@ const Largehome = () => {
   // slot selection usestate
   const [selectedSlot, setSelectedSlot] = useState(null);
   const [fetchedSlotData, setFetchedSlotData] = useState([]);
-  const storedEvent = sessionStorage.getItem("selectedEvent") || ""
+  const storedEvent = sessionStorage.getItem("selectedEvent") || "";
   const navigate = useNavigate();
   const [inputValues, setInputValues] = useState({
     date: "",
@@ -17,7 +17,34 @@ const Largehome = () => {
     hours: "",
     event: "",
   });
+  //declaring state varibles to advanced bookings
+  //  Date update
+  const formatDate = (dateString) => {
+    const options = { day: "2-digit", month: "2-digit", year: "numeric" };
+    const dateObject = new Date(dateString);
+    return dateObject.toLocaleDateString("en-GB", options);
+  };
+  const [showAdvanceBooking, setShowAdvanceBooking] = useState(false);
+  const [advanceDate, setAdvanceDate] = useState(
+    formatDate(new Date().toISOString().split("T")[0])
+  );
 
+  // Time slots for advanced booking
+  const timeSlots = [
+    "10:00 am - 01:00 pm",
+    "02:00 pm - 05:00 pm",
+    "06:00 pm - 09:00 pm",
+    "10:00 pm - 12:00 am",
+  ];
+  const toggleAdvanceBooking = () => {
+    setShowAdvanceBooking(!showAdvanceBooking);
+  };
+
+  // Function to handle the selection of a date for advanced booking
+  const handleAdvanceDateChange = (event) => {
+    setAdvanceDate(event.target.value);
+  };
+  // here the functions and state variables of advance bookings will  end____
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -61,13 +88,6 @@ const Largehome = () => {
   };
   const today = new Date().toISOString().split("T")[0];
 
-  //  Date update
-  const formatDate = (dateString) => {
-    const options = { day: "2-digit", month: "2-digit", year: "numeric" };
-    const dateObject = new Date(dateString);
-    return dateObject.toLocaleDateString("en-GB", options);
-  };
-
   const [date, setDate] = useState(
     formatDate(new Date().toISOString().split("T")[0])
   );
@@ -82,37 +102,33 @@ const Largehome = () => {
   }, [inputValues.date]);
 
   // local storage and slot selction
-// Store the selected event in sessionStorage
+  // Store the selected event in sessionStorage
 
-
-const handleSlotSelection = (event, time) => {
-  if (event.target.checked) {
-    if (!selectedSlot) {
-      setSelectedSlot(time);
-      sessionStorage.setItem("selectedSlot", JSON.stringify({ date, time }));
+  const handleSlotSelection = (event, time) => {
+    if (event.target.checked) {
+      if (!selectedSlot) {
+        setSelectedSlot(time);
+        sessionStorage.setItem("selectedSlot", JSON.stringify({ date, time }));
+      } else {
+        event.target.checked = false; // Unchecks the checkbox if already selected
+        alert("You can only select one slot.");
+      }
     } else {
-      event.target.checked = false; // Unchecks the checkbox if already selected
-      alert("You can only select one slot.");
+      setSelectedSlot(null);
+      sessionStorage.removeItem("selectedSlot"); // Remove the selectedSlot data when unchecked
     }
-  } else {
-    setSelectedSlot(null);
-    sessionStorage.removeItem("selectedSlot"); // Remove the selectedSlot data when unchecked
-  }
-};
+  };
   // Function to handle the "Book Now" button click
 
   //functionality to go to next page
   const navigateToNextPage = () => {
     navigate("/userinputslarge");
   };
-
-
-
+  const handleAdvanceBookingSelection = () => {};
   // Function to handle the "Book Now" button click
   const handleNextPage = () => {
     const selectedSlot = sessionStorage.getItem("selectedSlot");
-    const storedEvent = sessionStorage.getItem("selectedEvent");
-  
+
     if (!inputValues.date || !inputValues.event) {
       // If the date or event is not selected, show an alert
       alert("Please select both date and event before proceeding.");
@@ -122,14 +138,12 @@ const handleSlotSelection = (event, time) => {
     } else {
       // Store the selected event in sessionStorage
       sessionStorage.setItem("selectedEvent", inputValues.event);
-  
+
       // If all conditions met, navigate to the next page
       navigateToNextPage();
     }
   };
-  
-  
- 
+
   return (
     <div className="mini-home-con">
       <div className="mini-head">
@@ -144,13 +158,14 @@ const handleSlotSelection = (event, time) => {
           }}
         />
       </div>
+
       {/* input title section */}
       <div className="input-head">
         <p className="input1tittle">Check slot availability</p>
         <p className="input1tittle">Event</p>
       </div>
       <div className="input-section">
-        {/* date input */}
+        {/* Date input */}
         <div className="input-sub">
           <input
             type="date"
@@ -159,33 +174,90 @@ const handleSlotSelection = (event, time) => {
             value={inputValues.date}
             onChange={handleInputChange}
             min={today}
-
           />
         </div>
-        {/* Event */}
+
+        {/* Event dropdown */}
         <div className="input-sub">
-       <select
-  className="input4"
-  name="event"
-  value={inputValues.event || storedEvent} // Using storedEvent value in the input value
-  onChange={handleInputChange}
-  required
->
-  <option value="" disabled>
-    Select an event
-  </option>
-  <option value="Birthday">Birthday</option>
-  <option value="Anniversary">Anniversary</option>
-  <option value="Other parties">Others</option>
-</select>
+          <select
+            className="input4"
+            name="event"
+            value={inputValues.event || storedEvent}
+            onChange={handleInputChange}
+            required
+          >
+            <option value="" disabled>
+              Select an event
+            </option>
+            <option value="Birthday">Birthday</option>
+            <option value="Anniversary">Anniversary</option>
+            <option value="Other parties">Others</option>
+          </select>
+        </div>
+        <h2
+          className="advance-title clickable"
+          onClick={() => {
+            toggleAdvanceBooking();
+            handleAdvanceBookingSelection();
+          }}
+        >
+          Advance Booking
+        </h2>
+        {/* Advanced Booking Section */}
+        <div
+          className={`advance-booking-container ${
+            showAdvanceBooking ? "show" : "hide"
+          }`}
+        >
+          <div className="advance-booking-content">
+            {/* Advanced Booking date input */}
+            <div className="input-sub">
+              <input
+                type="date"
+                className="input1"
+                name="advanceDate"
+                value={advanceDate}
+                onChange={handleAdvanceDateChange}
+                min={today}
+              />
+            </div>
 
+            {/* Advanced Booking time dropdown */}
+            <div className="input-sub">
+              <select
+                className="input4"
+                name="advanceTime"
+                defaultValue=""
+                required
+              >
+                <option value="" disabled>
+                  Select a time
+                </option>
+                {timeSlots.map((timeSlot, index) => (
+                  <option key={index} value={timeSlot}>
+                    {timeSlot}
+                  </option>
+                ))}
+              </select>
+            </div>
 
+            {/* Add other necessary input fields for advanced booking */}
+            <button
+              className="advance-booking-button"
+              onClick={toggleAdvanceBooking}
+            >
+              Book Now
+            </button>
+          </div>
         </div>
       </div>
 
       {/* table section */}
       <div className="table-section">
-        <h2 className="slots">Slots</h2>
+        <h6 className="slots" style={{ fontSize: "24px" }}>
+          Select a Slot
+        </h6>
+
         <table>
           <thead>
             <tr>
