@@ -18,6 +18,19 @@ const Largehome = () => {
     event: "",
   });
   //declaring state varibles to advanced bookings
+
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+
+  // Format tomorrow's date as 'YYYY-MM-DD'
+  const tomorrowFormatted = tomorrow.toISOString().split("T")[0];
+
+  const [advanceDate, setAdvanceDate] = useState(tomorrowFormatted);
+
+  const handleAdvanceDateChange = (e) => {
+    // Your onChange logic here
+    setAdvanceDate(e.target.value);
+  };
   //  Date update
   const formatDate = (dateString) => {
     const options = { day: "2-digit", month: "2-digit", year: "numeric" };
@@ -25,9 +38,6 @@ const Largehome = () => {
     return dateObject.toLocaleDateString("en-GB", options);
   };
   const [showAdvanceBooking, setShowAdvanceBooking] = useState(false);
-  const [advanceDate, setAdvanceDate] = useState(
-    formatDate(new Date().toISOString().split("T")[0])
-  );
 
   // Time slots for advanced booking
   const timeSlots = [
@@ -36,14 +46,34 @@ const Largehome = () => {
     "06:00 pm - 09:00 pm",
     "10:00 pm - 12:00 am",
   ];
+  //function to close the toggleadvancebookings________________
   const toggleAdvanceBooking = () => {
+    // Clear any checks or selections when toggling advance booking
+    setSelectedSlot(null);
+    sessionStorage.removeItem("selectedSlot");
+
+    // Uncheck regular slots
+    const regularCheckboxes = document.querySelectorAll(
+      ".table-section tbody input[type='checkbox']"
+    );
+    regularCheckboxes.forEach((checkbox) => {
+      checkbox.checked = false;
+    });
+
+    // Uncheck advanced booking slots
+    const advanceCheckboxes = document.querySelectorAll(
+      ".advance-booking-container tbody input[type='checkbox']"
+    );
+    advanceCheckboxes.forEach((checkbox) => {
+      checkbox.checked = false;
+    });
+
+    // Toggle the visibility of the advanced booking section
     setShowAdvanceBooking(!showAdvanceBooking);
   };
 
   // Function to handle the selection of a date for advanced booking
-  const handleAdvanceDateChange = (event) => {
-    setAdvanceDate(event.target.value);
-  };
+
   // here the functions and state variables of advance bookings will  end____
   useEffect(() => {
     const fetchData = async () => {
@@ -103,21 +133,21 @@ const Largehome = () => {
 
   // local storage and slot selction
   // Store the selected event in sessionStorage
-
-  const handleSlotSelection = (event, time) => {
+  const handleSlotSelection = (event, time, price) => {
     if (event.target.checked) {
-      if (!selectedSlot) {
-        setSelectedSlot(time);
-        sessionStorage.setItem("selectedSlot", JSON.stringify({ date, time }));
-      } else {
-        event.target.checked = false; // Unchecks the checkbox if already selected
-        alert("You can only select one slot.");
-      }
+      // Store the selected slot information in sessionStorage
+      setSelectedSlot({ date: advanceDate, time, price });
+      sessionStorage.setItem(
+        "selectedSlot",
+        JSON.stringify({ date: advanceDate, time, price })
+      );
     } else {
+      // Clear the selected slot when unchecked
       setSelectedSlot(null);
-      sessionStorage.removeItem("selectedSlot"); // Remove the selectedSlot data when unchecked
+      sessionStorage.removeItem("selectedSlot");
     }
   };
+
   // Function to handle the "Book Now" button click
 
   //functionality to go to next page
@@ -126,12 +156,12 @@ const Largehome = () => {
   };
   const handleAdvanceBookingSelection = () => {};
   // Function to handle the "Book Now" button click
+  // Function to handle the "Book Now" button click
   const handleNextPage = () => {
     const selectedSlot = sessionStorage.getItem("selectedSlot");
-
-    if (!inputValues.date || !inputValues.event) {
-      // If the date or event is not selected, show an alert
-      alert("Please select both date and event before proceeding.");
+    if ((!inputValues.date && !advanceDate) || !inputValues.event) {
+      // If neither regular calendar date nor advanced booking date is selected, or if the event is not selected, show an alert
+      alert("Please select a date and event before proceeding.");
     } else if (!selectedSlot) {
       // If no slot is selected, show an alert
       alert("Please select a slot before proceeding.");
@@ -216,44 +246,64 @@ const Largehome = () => {
                 type="date"
                 className="input1"
                 name="advanceDate"
-                value={advanceDate}
+                value={advanceDate || tomorrowFormatted}
                 onChange={handleAdvanceDateChange}
-                min={today}
+                min={tomorrowFormatted}
               />
             </div>
 
-            {/* Advanced Booking time dropdown */}
-            <div className="input-sub">
-              <select
-                className="input4"
-                name="advanceTime"
-                defaultValue=""
-                required
-              >
-                <option value="" disabled>
-                  Select a time
-                </option>
+            {/* Advanced Booking time and price table */}
+            <table>
+              <thead>
+                <tr>
+                  <th className="thead">Date</th>
+                  <th className="thead">Time</th>
+                  <th className="thead">Price</th>
+                  <th className="thead">Select Slot</th>
+                </tr>
+              </thead>
+              <tbody>
+                {/* Map through time slots for advanced booking */}
                 {timeSlots.map((timeSlot, index) => (
-                  <option key={index} value={timeSlot}>
-                    {timeSlot}
-                  </option>
+                  <tr key={index}>
+                    <td>{advanceDate ? formatDate(advanceDate) : "-"}</td>
+                    <td>{timeSlot}</td>
+                    <td>2999/-</td>
+                    <td>
+                      <input
+                        type="checkbox"
+                        onChange={(event) =>
+                          handleSlotSelection(event, timeSlot, 2999)
+                        }
+                        disabled={
+                          selectedSlot && selectedSlot.time !== timeSlot
+                        }
+                      />
+                    </td>
+                  </tr>
                 ))}
-              </select>
-            </div>
+              </tbody>
+            </table>
 
             {/* Add other necessary input fields for advanced booking */}
             <button
               className="advance-booking-button"
               onClick={toggleAdvanceBooking}
             >
-              Book Now
+              Cancel Advance Booking
             </button>
           </div>
         </div>
+        {/*Advance Booking*/}
       </div>
 
       {/* table section */}
-      <div className="table-section">
+
+      {/* table section */}
+      <div
+        className="table-section"
+        style={{ display: showAdvanceBooking ? "none" : "block" }}
+      >
         <h6 className="slots" style={{ fontSize: "24px" }}>
           Select a Slot
         </h6>
@@ -283,15 +333,16 @@ const Largehome = () => {
             ))}
           </tbody>
         </table>
-        <div
-          className="book-now"
-          onClick={() => {
-            handleNextPage();
-          }}
-        >
-          <img src={Booknow} alt="book-now" />
-        </div>
       </div>
+      <div
+        className="book-now m-auto mb-2"
+        onClick={() => {
+          handleNextPage();
+        }}
+      >
+        <img src={Booknow} alt="book-now" />
+      </div>
+
       <div className="mobile-view">
         <div className="date-section">
           <div className="date-sub-section">
