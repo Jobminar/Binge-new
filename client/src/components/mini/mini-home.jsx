@@ -129,7 +129,7 @@ const Largehome = () => {
           }}
         />
       </div>
-      {/* input title section */}
+      {/* input title section   hii*/}
       <div className="input-head">
         <p className="input1tittle">Check slot availability</p>
         <p className="input1tittle">Event</p>

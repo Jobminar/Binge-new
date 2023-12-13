@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+// Updated Whatsapp.js
+>>>>>>> d0eebb1f3a8b7ef2f8200d6848a206317b7519f0
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { FaHome, FaPhone, FaClipboard, FaMoneyBillWave } from "react-icons/fa";
@@ -63,7 +67,11 @@ const Whatsapp = () => {
   return (
     <div
       className="gradient-background"
+<<<<<<< HEAD
       style={{ backgroundImage: `url(${BgImage}) `}}
+=======
+      style={{ backgroundImage: `url(${BgImage})` }}
+>>>>>>> d0eebb1f3a8b7ef2f8200d6848a206317b7519f0
     >
       {/* ... (rest of the code) */}
       <animated.div style={{ ...fadeIn }} className="gradient-background">
