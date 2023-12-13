@@ -257,12 +257,12 @@
     }
     
     .main-section{
-        /* border: 1px solid green; */
+        border: 1px solid green;
         display: grid;
         grid-template-columns: 80% 20%;
         align-items: center;
         padding: 1rem 0rem;
-        
+        justify-content: space-between;
         
        
     } 
