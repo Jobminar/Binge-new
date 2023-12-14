@@ -20,7 +20,7 @@ const Cake = () => {
 
   const { date, numOfPeople, time, price } = location.state || {};
 
-  const timeinput = "1:00 pm to 3:00 pm";
+  
 
   // amountcount
   const [count, setCount] = useState(0);
@@ -94,7 +94,16 @@ useEffect(() => {
   fetchData();
 }, []);
 
-
+// get date and time
+var sessionData = sessionStorage.getItem('selectedSlot');
+if (sessionData) {
+  var slotselctionData = JSON.parse(sessionData);
+  console.log(slotselctionData);
+} else {
+  console.log('No data found in sessionStorage for key "slotselction"');
+}
+const  dates= slotselctionData.date;
+const timeinput = slotselctionData.time;
 
 
   return (
@@ -120,7 +129,7 @@ useEffect(() => {
         </div>
         <div className="dateandtime">
           <img src={calender} alt="calender" />
-          <p>{date}</p>
+          <p>{dates}</p>
           <img src={timelogo} alt="time" />
           <p>{timeinput}</p>
         </div>
@@ -153,7 +162,7 @@ useEffect(() => {
         <h1 className="result">
           Total :  <span>{count + priceFromState}</span>
         </h1>
-      <div>
+      <div className="cake-buttons">
         <div className="skipp-button" onClick={()=>{navigate('/decoration')}}>
            <h1>SKIP</h1>
         </div>

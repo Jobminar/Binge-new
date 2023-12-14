@@ -17,8 +17,7 @@ const Deceration = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const timeinput = "1:00 pm to 3:00 pm";
-  const date = "20 November 2023";
+
 
   const [count, setCount] = useState(0);
   const [checkedItems, setCheckedItems] = useState({});
@@ -84,8 +83,19 @@ const Deceration = () => {
     fetchData();
   }, []);
 
+// date and time
+var sessionData = sessionStorage.getItem('selectedSlot');
+if (sessionData) {
+  var slotselctionData = JSON.parse(sessionData);
+  console.log(slotselctionData);
+} else {
+  console.log('No data found in sessionStorage for key "slotselction"');
+}
+const  dates= slotselctionData.date;
+const timeinput = slotselctionData.time;
 
-  return (
+
+return (
     <>
       <div className="deceration-con">
       <div className="main-cake-con">
@@ -108,7 +118,7 @@ const Deceration = () => {
         </div>
         <div className="dateandtime">
           <img src={calender} alt="calender" />
-          <p>{date}</p>
+          <p>{dates}</p>
           <img src={time} alt="time" />
           <p>{timeinput}</p>
         </div>

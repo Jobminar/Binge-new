@@ -159,11 +159,18 @@ color: rgba(249, 197, 197, 1);
 
 
 }
+.cake-buttons{
+    display: flex;
+    justify-content: space-between;
+    padding: 0rem 3rem;
+    color: rgba(249, 197, 197, 1);
+    padding-bottom: 2rem;
+}
 .nextstep{
     text-align: right;
     /* border: 1px solid gray; */
     padding-bottom: 5rem;
-    padding-right: 3rem ;
+    padding-right: 10rem ;
 }
 .nextstep img{
     width: 10rem;
@@ -177,6 +184,9 @@ color: rgba(249, 197, 197, 1);
 }
 .skipp-button{
     padding-left: 2rem;
+}
+.skipp-button:hover{
+    cursor: pointer;
 }
 @media (min-width: 360px) and (max-width: 600px){
     .main-cake-con{
