@@ -188,6 +188,7 @@
 .header h1 {
   margin-top: 10px;
   font-size: 1.8rem;
+  color:darksalmon;
 }
 
 /* Existing styles for .payment-details, .phone-section, .payment-section */

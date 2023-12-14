@@ -1,7 +1,7 @@
 // Whatsapp.js
 
 import React from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, Link } from "react-router-dom";
 import { FaHome, FaPhone, FaClipboard, FaMoneyBillWave } from "react-icons/fa";
 import { useSpring, animated } from "react-spring";
 import BgImage from "../../assets/images/Home-bg-img.jpeg";
@@ -37,7 +37,7 @@ const Whatsapp = () => {
     window.open(whatsappUrl, "_blank");
   };
 
-  const phoneNumbers = ["+91996382771", "+8074020058"];
+  const phoneNumbers = ["+91996382771", "+918074020058"];
 
   const handleDialNumber = (phoneNumber) => {
     window.open(`tel:${phoneNumber}`);
@@ -74,105 +74,118 @@ const Whatsapp = () => {
     };
   };
   return (
-    <div className="grid-container">
-      <animated.div style={{ ...fadeIn }} className="grid-item">
-        <div className="header">
-          <img src={LogoImg} alt="Logo" className="logo" />
-          <h1 className="dynamic-effect">Share Payment Details via WhatsApp</h1>
-          <button
-            className="btn btn-home hover-effect"
+    <div>
+      {/* Navbar */}
+      <nav className="navbar navbar-expand-lg navbar-dark bg-transparent">
+        <Link className="navbar-brand m-1" to="/">
+          <img
+            src={LogoImg}
+            alt="Logo"
+            className="logo"
             onClick={() => navigate("/")}
-            title="Go Home"
-          >
-            <FaHome />
-          </button>
+          />
+        </Link>
+      </nav>
+
+      {/* Main Content */}
+      <main className="container mt-3">
+        {/* Share via WhatsApp Button */}
+        <div className="row">
+          <div className="col">
+            <h2
+              className="navbar-text dynamic-effect"
+              style={{ marginLeft: "auto", marginRight: "1rem" }}
+            >
+              To confirm the booking, transfer Rs 700/- as booking amount to
+              displayed QR codes
+            </h2>
+          </div>
         </div>
-        <animated.div style={{ ...fadeIn }} className="grid-item">
-          <button
-            className="btn btn-success mt-3 hover-effect"
-            onClick={handleShareViaWhatsapp}
-          >
-            Share via WhatsApp
-          </button>
-        </animated.div>
-        <animated.div style={{ ...fadeIn }} className="grid-item phone-section">
+
+        {/* Phone Section */}
+        <div className="row mt-3">
+          <div className="row mt-3">
+            <div className="col-md-5">
+              <img
+                src={QRCodeImage1}
+                alt="QR Code 1"
+                className="img-fluid animated-image img-large"
+                style={{ objectFit: "cover", height: "100%" }}
+              />
+            </div>
+            <div className="col-md-2 d-flex align-items-center justify-content-center">
+              <h1 className="or-heading m-0 p-0" style={{ fontSize: "3rem" }}>
+                OR
+              </h1>
+            </div>
+            <div className="col-md-5">
+              <img
+                src={QRCodeImage2}
+                alt="QR Code 2"
+                className="img-fluid animated-image img-large"
+                style={{ objectFit: "cover", height: "100%" }}
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* QR Code Section */}
+        <div className="row mt-3">
+          <div className="mb-3 p-3">
+            <h3>
+              Please Share the payment details or Screen Shots via Whatsapp on:{" "}
+            </h3>
+          </div>
           {phoneNumbers.map((phoneNumber, index) => (
-            <div key={index} className="mb-3 p-3 border rounded">
-              <p>
-                <strong>Phone Number:</strong> {phoneNumber}
-              </p>
-              <div className="btn-group" role="group">
-                <button
-                  className="btn btn-primary mr-2"
-                  onClick={() => handleDialNumber(phoneNumber)}
-                >
-                  <FaPhone /> Dial
-                </button>
-                <button
-                  className="btn btn-success"
-                  onClick={() => handleCopyNumber(phoneNumber)}
-                >
-                  <FaClipboard /> Copy
-                </button>
+            <div key={index} className="col-md-4 mb-3">
+              <div className="mb-3 p-3">
+                <p>
+                  <strong>Phone Number:</strong> {phoneNumber}
+                </p>
+                <div className="btn-group" role="group">
+                  <button
+                    className="btn btn-primary mr-2"
+                    onClick={() => handleDialNumber(phoneNumber)}
+                  >
+                    <FaPhone /> Dial
+                  </button>
+                  <button
+                    className="btn btn-success"
+                    onClick={() => handleCopyNumber(phoneNumber)}
+                  >
+                    <FaClipboard /> Copy
+                  </button>
+                </div>
               </div>
             </div>
           ))}
-        </animated.div>
-      </animated.div>
-      <animated.div style={{ ...fadeIn }} className="grid-item">
-        <div className="payment-details">
-          <p>
-            <span style={{ fontSize: "24px" }}>Date:</span>{" "}
-            {generatePaymentData().date}
-          </p>
-          <p>
-            <span style={{ fontSize: "24px" }}>Number of People:</span>{" "}
-            {generatePaymentData().numOfPeople}
-          </p>
-          <p>
-            <span style={{ fontSize: "24px" }}>Name:</span>{" "}
-            {generatePaymentData().name}
-          </p>
-          <p>
-            <span style={{ fontSize: "24px" }}>Email:</span>{" "}
-            {generatePaymentData().email}
-          </p>
-          <p>
-            <span style={{ fontSize: "24px" }}>Phone Number:</span>{" "}
-            {generatePaymentData().mobile}
-          </p>
-          <p className="mb-0">
-            <span style={{ fontSize: "24px" }}>Total Amount:</span>{" "}
-            <strong>${generatePaymentData().totalAmount}</strong>
-          </p>
-          <p className="mb-0">
-            <span style={{ fontSize: "24px" }}>Payment ID:</span>{" "}
-            <strong>{generatePaymentData().paymentID}</strong>
-          </p>
         </div>
-      </animated.div>
-      <animated.div style={{ ...fadeIn }} className="grid-item qr-code-section">
-        <img
-          src={QRCodeImage1}
-          alt="QR Code 1"
-          className="img-fluid animated-image img-small"
-        />
-        <h1 className="or-heading">OR</h1>
-        <img
-          src={QRCodeImage2}
-          alt="QR Code 2"
-          className="img-fluid animated-image img-small"
-        />
-      </animated.div>
+      </main>
 
-      <animated.div style={{ ...fadeIn }} className="grid-item payment-section">
-        <p className="payment-message">
-          To confirm the booking, transfer 700Rs as booking amount to 996382771.
-        </p>
-        <button className="btn btn-success mt-3" onClick={handlePayment}>
-          <FaMoneyBillWave /> Pay Now
-        </button>
-      </animated.div>
+      {/* Footer */}
+      <footer className="footer mt-3">
+        {" "}
+        <ul>
+          <li>
+            <h4>NOTE:</h4>
+          </li>
+
+          <li>
+            We collect an advance amount of 700/- towards the confirmation of
+            your booking. Partial advance amount (Rs 500/-) is refundable if you
+            cancel the slot 72 hours prior to your booking.
+          </li>
+          <li>
+            {" "}
+            <h4
+              style={{ color: "red", cursor: "pointer" }}
+              onClick={() => navigate("/refund")}
+            >
+              To know more
+            </h4>
+          </li>
+        </ul>
+      </footer>
     </div>
   );
 };

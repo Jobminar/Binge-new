@@ -63,10 +63,6 @@ const Navbar = () => {
         >
           Refund
         </div>
-        <div className="login-section">
-          <p>Login for Daily Updates</p>
-          <button onClick={handleLoginClick}>LOGIN</button>
-        </div>
       </div>
     </>
   );
