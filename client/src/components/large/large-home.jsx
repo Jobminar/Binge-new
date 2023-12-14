@@ -79,7 +79,7 @@ const Largehome = () => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `https://binge-be.onrender.com/getslots?date=${inputValues.date}`
+          `https://binge-be.onrender.com/getdatetime`
         );
 
         if (!response.ok) {
@@ -224,21 +224,25 @@ const Largehome = () => {
             <option value="Other parties">Others</option>
           </select>
         </div>
-        <h2
-          className="advance-title clickable"
-          onClick={() => {
-            toggleAdvanceBooking();
-            handleAdvanceBookingSelection();
-          }}
-        >
-          Advance Booking
-        </h2>
+
         {/* Advanced Booking Section */}
+        {/*make inline styling none to display if you want */}
         <div
           className={`advance-booking-container ${
             showAdvanceBooking ? "show" : "hide"
           }`}
+          style={{ display: "none" }}
         >
+          {/*keep this h2 out of this div*/}{" "}
+          <h2
+            className="advance-title clickable"
+            onClick={() => {
+              toggleAdvanceBooking();
+              handleAdvanceBookingSelection();
+            }}
+          >
+            Advance Booking
+          </h2>
           <div className="advance-booking-content">
             {/* Advanced Booking date input */}
             <div className="input-sub">
@@ -300,9 +304,10 @@ const Largehome = () => {
       {/* table section */}
 
       {/* table section */}
+
       <div
         className="table-section"
-        style={{ display: showAdvanceBooking ? "none" : "block" }}
+        style={{ display: showAdvanceBooking ? "display" : "display" }}
       >
         <h6 className="slots" style={{ fontSize: "24px" }}>
           Select a Slot
