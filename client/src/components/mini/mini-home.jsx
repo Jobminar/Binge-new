@@ -5,7 +5,7 @@ import "../mini/mini-home.css";
 import grid from "../../assets/images/grid.png";
 import Booknow from "../../assets/images/Frame 11.png";
 
-const Largehome = () => {
+const Minihome = () => {
   // slot selection usestate
   const [selectedSlot, setSelectedSlot] = useState(null);
   const [fetchedSlotData, setFetchedSlotData] = useState([]);
@@ -19,6 +19,9 @@ const Largehome = () => {
   });
 
   useEffect(() => {
+
+    
+
     const fetchData = async () => {
       try {
         const response = await fetch(
@@ -158,6 +161,24 @@ const Largehome = () => {
         </div>
         {/* Event */}
         <div className="input-sub">
+
+            <select
+              className="input4"
+              name="event"
+              value={inputValues.event}
+              onChange={handleInputChange}
+              required
+            >
+              <option value="" disabled>
+                Select an event
+              </option>
+              <option value="Birthday">Birthday</option>
+              <option value="Anniversary">Anniversary</option>
+              <option value="Other parties">Others</option>
+            </select>
+
+
+
           <select
             className="input4"
             name="event"
@@ -172,6 +193,7 @@ const Largehome = () => {
             <option value="Anniversary">Anniversary</option>
             <option value="Other parties">Others</option>
           </select>
+
         </div>
       </div>
 
@@ -212,8 +234,9 @@ const Largehome = () => {
           <img src={Booknow} alt="book-now" />
         </div>
       </div>
+
     </div>
   );
 };
 
-export default Largehome;
+export default Minihome;

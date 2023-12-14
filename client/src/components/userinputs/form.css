@@ -28,3 +28,16 @@ label{
 
 }
 .reminder{color: green;}
+
+
+@media (min-width: 360px) and (max-width: 600px){
+    .user-input{
+        width: 20rem;
+        height: 3rem;
+        background: rgba(255, 232, 232, 1);
+        color: black;
+        padding: 0px;
+        border: 1px solid rgba(0, 0, 0, 0.34);
+        font-size: 20px;
+    }
+}

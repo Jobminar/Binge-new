@@ -209,6 +209,22 @@ const Largehome = () => {
 
         {/* Event dropdown */}
         <div className="input-sub">
+
+        <select
+              className="input4"
+              name="event"
+              value={inputValues.event}
+              onChange={handleInputChange}
+              required
+            >
+              <option value="" disabled>
+                Select an event
+              </option>
+              <option value="Birthday">Birthday</option>
+              <option value="Anniversary">Anniversary</option>
+              <option value="Other parties">Others</option>
+            </select>
+
           <select
             className="input4"
             name="event"
@@ -251,6 +267,7 @@ const Largehome = () => {
                 min={tomorrowFormatted}
               />
             </div>
+
 
             {/* Advanced Booking time and price table */}
             <table>

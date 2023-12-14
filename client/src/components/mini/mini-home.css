@@ -1,4 +1,5 @@
 
+
 /* In your CSS file */
 
 /* Style to make the title clickable */
@@ -20,6 +21,7 @@
     display: none;
   }
   
+
 
 
 .mini-home-con{
@@ -68,10 +70,9 @@
     padding: 0rem;
     display: flex;
     justify-content: left;
-    width: 95%;
-    margin-left: auto;
-    margin-right: auto;
-    /* border: 1px solid green; */
+    width: 100%;
+    
+    border: 1px solid green;
 
 }
 .input-section{
@@ -249,7 +250,7 @@ td:hover{
     
 }
 .mobile-view{
-    display: none;
+    display: block;
 }
 .book-now{
 
@@ -269,24 +270,23 @@ td:hover{
 }
 /* responsive */
 
+
+
+
+
 @media (min-width: 360px) and (max-width: 600px){
     .mini-home-con{
         margin: 0rem;
-        padding: 0rem 1rem;
-        /* border: 1px solid green; */
+        padding: 1rem 1rem;
+        border: 1px solid green;
         height: auto;
         background: none;
-        
     }
     .mini-head h1{
 
-        font-size: 86px;
+        font-size: 46px;
 
-        line-height: 90px;
-    
-        color: linear-gradient(to right, rgb(180,97,97), rgb(252,195,182));
- 
-        
+        line-height: 55px;
     }
 
     .mini-head{
@@ -303,18 +303,17 @@ td:hover{
         height: 2rem;
     }
     .input-section{
-        /* border: 1px solid green; */
+        border: 1px solid green;
         padding: 0rem 1rem;
         display: flex;
-        flex-direction: column;
         justify-content: space-between;
         align-items: center;
     
     }
     input{
     
-        width: 15rem;
-        height: 2rem;
+        width: 7rem;
+        height: 2.5rem;
        
     }
    
@@ -413,13 +412,13 @@ td:hover{
      text-align: right;
      /* border: 1px solid green; */
      
-}
-.book-now:hover{
-    cursor: pointer;
-}
-.book-now img{
-    width: 10rem;
-    height: 3rem;
-}
+    }
+    .book-now:hover{
+        cursor: pointer;
+    }
+    .book-now img{
+        width: 10rem;
+        height: 3rem;
+    }
 }
 
