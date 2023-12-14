@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import Swal from "sweetalert2";
+
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./payment.css";
 
@@ -98,8 +98,8 @@ const Paymentstep = () => {
       });
   };
 
-  const selectedCake = sessionStorage.getItem('selectedCakeName');
-  const selectedDeceration = sessionStorage.getItem('selectedDecoration');
+  const selectedCake = sessionStorage.getItem("selectedCakeName");
+  const selectedDeceration = sessionStorage.getItem("selectedDecoration");
 
   const generatePaymentData = () => {
     return {
@@ -180,16 +180,13 @@ const Paymentstep = () => {
                           </td>
                           <td>{generatePaymentData().mobile}</td>
                         </tr>
+
                         <tr>
-                          <td style={{ paddingRight: "16px" }}>
-                            Cake:
-                          </td>
+                          <td style={{ paddingRight: "16px" }}>Cake:</td>
                           <td>{selectedCake}</td>
                         </tr>
                         <tr>
-                          <td style={{ paddingRight: "16px" }}>
-                            Deceration:
-                          </td>
+                          <td style={{ paddingRight: "16px" }}>Deceration:</td>
                           <td>{selectedDeceration}</td>
                         </tr>
                         <tr>
