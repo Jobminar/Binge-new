@@ -189,6 +189,14 @@ const Paymentstep = () => {
                           <td>{selectedDeceration}</td>
                         </tr>
                         <tr>
+                          <td style={{ paddingRight: "16px" }}>Cake:</td>
+                          <td>{selectedCake}</td>
+                        </tr>
+                        <tr>
+                          <td style={{ paddingRight: "16px" }}>Deceration:</td>
+                          <td>{selectedDeceration}</td>
+                        </tr>
+                        <tr>
                           <td style={{ paddingRight: "16px" }}>
                             Total Amount:
                           </td>
