@@ -26,7 +26,7 @@ const Whatsapp = () => {
       Name: ${name}
       Email: ${email}
       Mobile: ${mobile}
-      Total Amount: $${totalAmount}
+      Total Amount: ${totalAmount}
       Payment ID: ${paymentID}`;
 
     const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
