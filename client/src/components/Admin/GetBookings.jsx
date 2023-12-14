@@ -4,13 +4,18 @@ import { FaTrash, FaPhone, FaEnvelope } from "react-icons/fa";
 const Getbookings = () => {
   const [data, setData] = useState([]);
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const recordsPerPage = 5;
+
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [currentPage]);
 
   const fetchData = async () => {
     try {
-      const response = await fetch("https://binge-be.onrender.com/getorders");
+      const response = await fetch(
+        `https://binge-be.onrender.com/getorders?page=${currentPage}&limit=${recordsPerPage}`
+      );
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
@@ -60,51 +65,73 @@ const Getbookings = () => {
     console.log(`Sending email to ${email}`);
   };
 
+  const totalPages = Math.ceil(data.total / recordsPerPage);
+
   return (
-    <div>
+    <div style={{ minHeight: "300px" }}>
       <h2>Enquiries</h2>
 
-      <table>
+      <table style={{ width: "100%", borderCollapse: "collapse" }}>
         <thead style={{ textAlign: "center" }}>
           <tr>
             <th>Name</th>
             <th>Email</th>
             <th>Phone</th>
-
             <th>Action</th>
           </tr>
         </thead>
         <tbody>
-          {data.map((contact, index) => (
+          {(data.results ?? []).map((contact, index) => (
             <tr key={index}>
               <td>{contact.name}</td>
               <td>{contact.email}</td>
               <td>{contact.phoneNumber}</td>
-
               <td>
                 <button
                   onClick={() => handleDeleteContactUs(contact._id)}
-                  style={{ background: "none", border: "none" }} // No background and no border
+                  style={{ background: "none", border: "none" }}
                 >
-                  <FaTrash style={{ color: "red" }} /> {/* Red delete icon */}
+                  <FaTrash style={{ color: "red" }} />
                 </button>
                 <button
                   onClick={() => handlePhoneCall(contact.phone)}
-                  style={{ background: "none", border: "none" }} // No background and no border
+                  style={{ background: "none", border: "none" }}
                 >
-                  <FaPhone style={{ color: "red" }} /> {/* Red phone icon */}
+                  <FaPhone style={{ color: "red" }} />
                 </button>
                 <button
                   onClick={() => handleSendEmail(contact.mailID)}
-                  style={{ background: "none", border: "none" }} // No background and no border
+                  style={{ background: "none", border: "none" }}
                 >
-                  <FaEnvelope style={{ color: "red" }} /> {/* Red email icon */}
+                  <FaEnvelope style={{ color: "red" }} />
                 </button>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
+
+      <div style={{ textAlign: "center", marginTop: "10px" }}>
+        <button
+          onClick={() =>
+            setCurrentPage((prevPage) => Math.max(prevPage - 1, 1))
+          }
+          disabled={currentPage === 1}
+        >
+          Previous
+        </button>
+        <span style={{ margin: "0 10px" }}>
+          Page {currentPage} of {totalPages}
+        </span>
+        <button
+          onClick={() =>
+            setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages))
+          }
+          disabled={currentPage === totalPages}
+        >
+          Next
+        </button>
+      </div>
     </div>
   );
 };

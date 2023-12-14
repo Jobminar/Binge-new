@@ -10,7 +10,7 @@ body {
 
 .admin-dashboard-container {
   position: relative;
-  height: 100vh;
+  height: 100%;
   margin: 0; /* Remove margin */
   overflow: hidden; /* Ensure no content spills out of the container */
 

@@ -1,245 +1,183 @@
-import React, { useState, useEffect } from "react";
-import PricingPopup from "./PricingPopup";
-import "react-datepicker/dist/react-datepicker.css";
+import React, { useEffect, useState } from "react";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
 
 const TheatrePrice = () => {
   const [data, setData] = useState([]);
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-//this is code
-  const fetchData = async () => {
-    try {
-      const response = await fetch("https://binge-be.onrender.com/getmaxi");
-      const data1 = await response.json();
-      setData(data1);
-    } catch (error) {
-      console.log(error, "...........");
-    }
-  };
-
   const [data1, setData1] = useState([]);
-  useEffect(() => {
-   
-const fetchData1=async()=>{
-  try{
-    const responce=await fetch("https://binge-be.onrender.com/getmini")
-    const trans=await responce.json()
-    setData1(trans)
+  const [edit, setEdit] = useState(-1);
+  const [show, setShow] = useState({ price: "", numberOfPeople: "" });
+  const [open, setOpen] = React.useState(false);
+  const [isMaxi, setIsMaxi] = useState(true);
 
-  }
-  catch(error){
-  console.log("error display",error)
-  }
-}
-
-fetchData1()
-
-  }, []);
-
-  const handleEditTheater = (id) => {
-    
-    const theaterToEdit = data.find((theater) => theater.id === id);
-
-    if (theaterToEdit) {
-      setNewPricing(theaterToEdit.price);
-      setNoOfPeople(theaterToEdit.numberOfPeople);
-      setIsPricingInputSelected(true);
-      setIsNoOfPeopleInputSelected(true);
-
-      
-      handleShowPricingPopup();
-    }
+  const handleClickOpen = (item, isMaxi) => {
+    setEdit(item);
+    setShow(isMaxi ? data[item] : data1[item]);
+    setOpen(true);
+    setIsMaxi(isMaxi);
   };
 
-  
+  const handleClose = () => {
+    setOpen(false);
+  };
 
-  const handleUpdateTheater = async (id, updatedData) => {
+  const changeHandler = (e) => {
+    setShow({ ...show, [e.target.name]: e.target.value });
+  };
+
+  const handleUpdate = async () => {
     try {
-      const response = await fetch(`https://binge-be.onrender.com/updatemaxi/${id}`, {
+      const endpoint = isMaxi
+        ? `https://binge-be.onrender.com/updatemaxi/${data[edit]._id}`
+        : `https://binge-be.onrender.com/updatemini/${data1[edit]._id}`;
+
+      const response = await fetch(endpoint, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(updatedData),
+        body: JSON.stringify(show),
       });
 
       if (response.ok) {
-        console.log("Theater data updated successfully!");
-        fetchData(); // Update the local data after updating
+        console.log(
+          `${isMaxi ? "MAXI" : "MINI"} Theater data updated successfully!`
+        );
+        isMaxi ? fetchData() : fetchData1();
+        handleClose();
       } else {
-        console.error("Failed to update theater data");
+        console.error(
+          `Failed to update ${isMaxi ? "MAXI" : "MINI"} theater data`
+        );
       }
     } catch (error) {
-      console.error("Error updating theater data:", error);
+      console.error(
+        `Error updating ${isMaxi ? "MAXI" : "MINI"} theater data:`,
+        error
+      );
     }
   };
-  const handleEditSubmit = (id) => {
-    const updatedTheaterData = {
-      price: newPricing,
-      numberOfPeople: noOfPeople,
+
+  useEffect(() => {
+    const fetchData1 = async () => {
+      try {
+        const response = await fetch("https://binge-be.onrender.com/getmini");
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const trans = await response.json();
+        setData1(trans);
+      } catch (error) {
+        console.log(error, "display error message");
+      }
     };
 
-    handleUpdateTheater(id, updatedTheaterData);
-    handleClosePricingPopup();
-  };
+    fetchData1();
+  }, []);
 
+  useEffect(() => {
+    fetchData();
+  }, []);
 
+  const fetchData = async () => {
+    try {
+      const response = await fetch("https://binge-be.onrender.com/getmaxi");
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
 
-
-
-  
-  const [showPricingPopup, setShowPricingPopup] = useState(false);
-  const [newPricing, setNewPricing] = useState(1000);
-  const [noOfPeople, setNoOfPeople] = useState(0);
-
-  const [miniPrices, setMiniPrices] = useState({
-    pricing: data.length > 0 ? data[0].price : "",
-    noOfPeople: data.length > 0 ? data[0].numberOfPeople : "",
-  });
-
-  const [maxPrices, setMaxPrices] = useState({
-    pricing: "",
-    noOfPeople: "",
-  });
-
-  const [isPricingInputSelected, setIsPricingInputSelected] = useState(false);
-  const [isNoOfPeopleInputSelected, setIsNoOfPeopleInputSelected] =
-    useState(false);
-
-  const handleShowPricingPopup = () => setShowPricingPopup(true);
-  const handleClosePricingPopup = () => setShowPricingPopup(false);
-
-  const handleIncreasePricing = () => {
-    if (isPricingInputSelected) {
-      setNewPricing((prevPricing) => prevPricing + 1);
-    } else {
-      setIsPricingInputSelected(true);
+      const trans = await response.json();
+      setData(trans);
+    } catch (error) {
+      console.log(error, "error message");
     }
   };
 
-  const handleDecreasePricing = () => {
-    if (isPricingInputSelected) {
-      setNewPricing((prevPricing) => Math.max(prevPricing - 1, 0));
-    } else {
-      setIsPricingInputSelected(true);
+  const fetchData1 = async () => {
+    try {
+      const response = await fetch("https://binge-be.onrender.com/getmini");
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const trans = await response.json();
+      setData1(trans);
+    } catch (error) {
+      console.log(error, "error message");
     }
-  };
-
-  const handlePricingInputClick = () => {
-    setIsPricingInputSelected(true);
-  };
-
-  const handleIncreaseNoOfPeople = () => {
-    if (isNoOfPeopleInputSelected) {
-      setNoOfPeople((prevNoOfPeople) => prevNoOfPeople + 1);
-    } else {
-      setIsNoOfPeopleInputSelected(true);
-    }
-  };
-
-  const handleDecreaseNoOfPeople = () => {
-    if (isNoOfPeopleInputSelected) {
-      setNoOfPeople((prevNoOfPeople) => Math.max(prevNoOfPeople - 1, 0));
-    } else {
-      setIsNoOfPeopleInputSelected(true);
-    }
-  };
-
-  const handleNoOfPeopleInputClick = () => {
-    setIsNoOfPeopleInputSelected(true);
-  };
-
-  const handlePricingSubmit = () => {
-    const miniValues = calculateMiniValues(newPricing, noOfPeople);
-    const maxValues = calculateMaxValues(newPricing, noOfPeople);
-
-    setMiniPrices(miniValues);
-    setMaxPrices(maxValues);
-
-    handleClosePricingPopup();
-
-    postTheaterData({
-      price: newPricing,
-      numberOfPeople: noOfPeople,
-    });
-  };
-
-  const calculateMiniValues = (pricing, noOfPeople) => {
-    return {
-      pricing: pricing * 0.8,
-      noOfPeople: noOfPeople + 2,
-    };
-  };
-
-  const calculateMaxValues = (pricing, noOfPeople) => {
-    return {
-      pricing: pricing * 1.2,
-      noOfPeople: noOfPeople + 5,
-    };
   };
 
   return (
-    <div id="main-container" className="mt-3">
-      <h2 id="main-title" className="text-center mb-4">
-        Theatre Pricing
-      </h2>
-
-      <button
-        id="pricing-popup-button"
-        type="button"
-        className="btn btn-primary mb-3 custom-button"
-        // onClick={handleShowPricingPopup}
-        onClick={handleEditSubmit}
-      >
-        Add Pricing
-      </button>
-
-      <PricingPopup
-        show={showPricingPopup}
-        handleClose={handleClosePricingPopup}
-        handleIncreasePricing={handleIncreasePricing}
-        handleDecreasePricing={handleDecreasePricing}
-        handlePricingInputClick={handlePricingInputClick}
-        handleIncreaseNoOfPeople={handleIncreaseNoOfPeople}
-        handleDecreaseNoOfPeople={handleDecreaseNoOfPeople}
-        handleNoOfPeopleInputClick={handleNoOfPeopleInputClick}
-        handlePricingSubmit={handlePricingSubmit}
-        newPricing={newPricing}
-        setNewPricing={setNewPricing}
-        noOfPeople={noOfPeople}
-        setNoOfPeople={setNoOfPeople}
-      />
-
+    <div>
       <div>
-        <h3>MINI:</h3>
+        <h2>MAXI</h2>
         {data.map((ele, ind) => (
           <div key={ind}>
-            <div>Pricing: {ele.price}<button onClick={() => handleEditTheater(ele.id)}>Edit</button></div>
-            <div>No of People: {ele.numberOfPeople}<button onClick={() => handleEditTheater(ele.id)}>Edit</button></div>
-
-            </div>
-        ))}
-       
-        
-        
-
-
-      </div>
-
-
-      <div>
-        <h3>MAX:</h3>
-      
-
-{data1.map((ele, ind) => (
-          <div key={ind}>
-            <div>Pricing: {ele.price}</div>
-            <div>No of People: {ele.numberOfPeople}</div>
+            <p>
+              Price: {ele.price}
+              <Button onClick={() => handleClickOpen(ind, true)}>edit</Button>
+            </p>
+            <p>
+              Number Of People: {ele.numberOfPeople}
+              <Button onClick={() => handleClickOpen(ind, true)}>edit</Button>
+            </p>
           </div>
         ))}
       </div>
+
+      <div>
+        <h2>MINI</h2>
+        {data1.map((ele, ind) => (
+          <div key={ind}>
+            <p>
+              Price: {ele.price}{" "}
+              <Button onClick={() => handleClickOpen(ind, false)}>edit</Button>
+            </p>
+            <p>
+              Number of People: {ele.numberOfPeople}{" "}
+              <Button onClick={() => handleClickOpen(ind, false)}>edit</Button>
+            </p>
+          </div>
+        ))}
+      </div>
+
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>Edit Theater</DialogTitle>
+        <DialogContent>
+          <TextField
+            autoFocus
+            margin="dense"
+            id="price"
+            label="Price"
+            type="text"
+            fullWidth
+            variant="standard"
+            value={show.price}
+            onChange={changeHandler}
+            name="price"
+          />
+          <TextField
+            margin="dense"
+            id="numberOfPeople"
+            label="Number of People"
+            type="text"
+            fullWidth
+            variant="standard"
+            value={show.numberOfPeople}
+            onChange={changeHandler}
+            name="numberOfPeople"
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Close</Button>
+          <Button onClick={handleUpdate}>Update</Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };

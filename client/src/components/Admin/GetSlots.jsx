@@ -3,7 +3,8 @@ import { useEffect, useState } from "react";
 import PostSlot from "./PostSlot";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-
+import { FaCalendarAlt } from "react-icons/fa";
+import Swal from "sweetalert2";
 const GetSlots = () => {
   const [isPostSlotsVisible, setIsPostSlotsVisible] = useState(true);
   const [data, setData] = useState([]);
@@ -20,12 +21,13 @@ const GetSlots = () => {
 
   const fetchData = async () => {
     try {
-      const response = await fetch("https://binge-be.onrender.com/getslots");
+      const response = await fetch("https://binge-be.onrender.com/getdatetime");
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
 
       const jsonData = await response.json();
+
       let filteredData =
         availabilityFilter === "all"
           ? jsonData
@@ -35,14 +37,16 @@ const GetSlots = () => {
         selectedDate === null
           ? filteredData
           : filteredData.filter(
-              (item) => item.date === selectedDate.toISOString().split("T")[0]
+              (item) =>
+                new Date(item.date).toDateString() ===
+                selectedDate.toDateString()
             );
 
-      filteredData = dateFilteredData.sort(
+      const sortedData = dateFilteredData.sort(
         (a, b) => new Date(b.date) - new Date(a.date)
       );
 
-      setData(filteredData);
+      setData(sortedData);
     } catch (error) {
       console.error(
         "Error fetching data:",
@@ -58,24 +62,42 @@ const GetSlots = () => {
   const handleDeleteSlot = async (slotId) => {
     try {
       const response = await fetch(
-        `https://binge-be.onrender.com/slots/${slotId}`,
+        `https://binge-be.onrender.com/deletedatetime/${slotId}`,
         {
           method: "DELETE",
         }
       );
 
       if (response.ok) {
-        fetchData();
+        // Remove the deleted slot from the state
+        setData((prevSlot) => prevSlot.filter((slot) => slot._id !== slotId));
+
+        // Show success notification
+        Swal.fire({
+          icon: "success",
+          title: "Slot Deleted!",
+          showConfirmButton: false,
+          timer: 1500, // Adjust as needed
+        });
       } else {
+        // Show error notification if deletion fails
         console.error(
           `Failed to delete slot with ID ${slotId}. Status: ${response.status}`
         );
+        Swal.fire({
+          icon: "error",
+          title: "Deletion Failed",
+          text: `Failed to delete slot with ID ${slotId}. Status: ${response.status}`,
+        });
       }
     } catch (error) {
-      console.error(
-        "Error deleting slot:",
-        error.message || "An error occurred while deleting slot."
-      );
+      // Show error notification if an exception occurs
+      console.error("Error deleting slot:", error.message);
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: `Error deleting slot: ${error.message}`,
+      });
     }
   };
 
@@ -93,13 +115,9 @@ const GetSlots = () => {
   };
 
   const handleSlotClick = (slot) => {
-    // Access the "type" value from the slot object
     const type = slot.type;
 
-    // Now you can use the "type" value as needed
     console.log("Clicked slot type:", type);
-
-    // Add any other logic you need to perform when a slot is clicked
   };
 
   return (
@@ -133,15 +151,34 @@ const GetSlots = () => {
 
         <div className="col-md-6">
           <label className="mx-2">Filter by Date:</label>
-          <DatePicker
-            selected={selectedDate}
-            onChange={handleDateChange}
-            dateFormat="MM/dd/yyyy"
-            isClearable
-            showYearDropdown
-            scrollableYearDropdown
-            className="mx-2 p-0 text-dark"
-          />
+          <div className="input-group">
+            <DatePicker
+              selected={selectedDate}
+              onChange={handleDateChange}
+              dateFormat="dd/MM/yyyy"
+              isClearable
+              showYearDropdown
+              scrollableYearDropdown
+              className="form-control p-0 text-dark"
+              style={{
+                fontFamily: "Arial, sans-serif",
+                color: "#333", // Set your desired text color
+              }}
+            />
+            <div className="input-group-append">
+              <span
+                className="input-group-text"
+                style={{
+                  backgroundColor: "rgb(179,108,108)", // Set your desired pink color
+                  borderColor: "rgb(179,108,108)", // Set the border color to match the background color
+                  color: "#fff", // Set the text color to white or a contrasting color
+                  cursor: "pointer", // Add pointer cursor for better UX
+                }}
+              >
+                <FaCalendarAlt />
+              </span>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -169,13 +206,13 @@ const GetSlots = () => {
           </thead>
           <tbody>
             {data.map((slot, index) => (
-              <tr key={index}>
+              <tr className="overflow-scroll" key={index}>
                 <td>
-                  {/* Pass the entire slot object to handleSlotClick */}
                   <a href="#" onClick={() => handleSlotClick(slot)}>
-                    {slot.date}
+                    {new Date(slot.date).toLocaleDateString("en-GB")}
                   </a>
                 </td>
+
                 <td>{slot.type || determineTypeFromPrice(slot.price)}</td>
                 <td>{slot.price}</td>
                 <td>{slot.numberOfPeople}</td>

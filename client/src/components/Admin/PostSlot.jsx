@@ -48,14 +48,31 @@ const PostSlots = ({ onClose, visible }) => {
       price: updatedPrice,
     });
   };
-  //adding ONE YEAR SLOTS_________________________________________________________
+  //delete ONE YEAR SLOTS_________________________________________________________
   // ... (existing code)
+  const deleteAllBatch = async () => {
+    try {
+      const response = await fetch(
+        "https://binge-be.onrender.com/deletealldatetime",
+        {
+          method: "DELETE",
+        }
+      );
+
+      const data = await response.json();
+      toast.success(data.message); // Display success message using Toastify
+    } catch (error) {
+      console.error("Error deleting all batch data:", error.message);
+      toast.error("Failed to delete all batch data. Please try again."); // Display error message using Toastify
+    }
+  };
+  //adding ONE YEAR SLOTS_________________________________________________________
   const addAllSlots = async () => {
     setLoading(true);
 
     const currentDate = new Date();
     const endDate = new Date(currentDate);
-    endDate.setDate(endDate.getDate() + 31);
+    endDate.setDate(endDate.getDate() + 365);
 
     const timeSlots = [
       "10:00 am - 01:00 pm",
@@ -64,7 +81,7 @@ const PostSlots = ({ onClose, visible }) => {
       "10:00 pm - 12:00 am",
     ];
 
-    const batchSize = 31; // Adjust the batch size as needed
+    const batchSize = 365; // Adjust the batch size as needed
     const slotsToAdd = [];
 
     for (
@@ -79,7 +96,7 @@ const PostSlots = ({ onClose, visible }) => {
         slotsToAdd.push({
           date: new Date(date),
           availability: true,
-          numberOfPeople: 0,
+          numberOfPeople: 6,
           time: timeSlot,
           price: 1799, // Standard price
           type: "STANDARD",
@@ -89,7 +106,7 @@ const PostSlots = ({ onClose, visible }) => {
         slotsToAdd.push({
           date: new Date(date),
           availability: true,
-          numberOfPeople: 0,
+          numberOfPeople: 12,
           time: timeSlot,
           price: 2999, // Luxi price
           type: "LUXI",
@@ -105,7 +122,7 @@ const PostSlots = ({ onClose, visible }) => {
 
       for (const batch of batches) {
         const response = await fetch(
-          "https://binge-be.onrender.com/postslotsall",
+          "https://binge-be.onrender.com/postdatetime",
           {
             method: "POST",
             headers: {
@@ -137,13 +154,16 @@ const PostSlots = ({ onClose, visible }) => {
     e.preventDefault();
 
     try {
-      const response = await fetch("https://binge-be.onrender.com/postslots", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(slotData),
-      });
+      const response = await fetch(
+        "https://binge-be.onrender.com/postdatetime",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(slotData),
+        }
+      );
 
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -204,6 +224,14 @@ const PostSlots = ({ onClose, visible }) => {
               disabled={loading}
             >
               Add All Slots
+            </button>
+            <button
+              type="button"
+              className="btn btn-danger mr-2 mt-2"
+              onClick={deleteAllBatch}
+              disabled={loading}
+            >
+              Delete All Slots
             </button>
           </div>
           <ToastContainer

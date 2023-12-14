@@ -1,5 +1,5 @@
 import "./cake.css";
-import sampleData from "./cakedata.js";
+// import sampleData from "./cakedata.js";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
@@ -10,7 +10,7 @@ import calender from "../../assets/images/calender-logo.png";
 import timelogo from "../../assets/images/time-logo.png";
 import nextstep from "../../assets/images/Frame 12.png";
 import { useState } from "react";
-import CakeList from "./getcake.jsx";
+// import CakeList from "./getcake.jsx";
 
 const Cake = () => {
   const [cakes, setCakes] = useState([]);
@@ -26,21 +26,24 @@ const Cake = () => {
   const [count, setCount] = useState(0);
   const [checkedItems, setCheckedItems] = useState({});
 
-  const calculateCount = (cakeprice, index) => {
-    // Toggle the checked state for the clicked checkbox
-    const updatedCheckedItems = { ...checkedItems };
-    updatedCheckedItems[index] = !updatedCheckedItems[index];
-
-    // Update checked state
-    setCheckedItems(updatedCheckedItems);
-
-    // Update count based on checked state
-    const isChecked = updatedCheckedItems[index];
-    const increment = isChecked ? cakeprice : -cakeprice;
-    //    const priceFromState = parseInt(price) || 0; // Parse price to integer or default to 0 if price is undefined
-    //    setCount(priceFromState + increment);
-    setCount(count + increment);
+  const calculateCount = (cakeprice, index, cakeName) => {
+    const updatedCheckedItems = {};
+  
+    const isAlreadyChecked = checkedItems[index];
+  
+    if (isAlreadyChecked) {
+      setCheckedItems({});
+      setCount(0);
+      sessionStorage.removeItem('selectedCakeName'); // Remove from session storage if unchecked
+    } else {
+      updatedCheckedItems[index] = true;
+      setCheckedItems(updatedCheckedItems);
+      setCount(cakeprice);
+      sessionStorage.setItem('selectedCakeName', cakeName); // Store cake name in session storage
+    }
   };
+  
+  
 
   //   data recive
 
@@ -91,27 +94,7 @@ useEffect(() => {
   fetchData();
 }, []);
 
-// delete cake
-// const handleDelete = async (cakeId) => {
-//   try {
-//     const response = await fetch(`https://binge-be.onrender.com/cakes/${cakeId}`, {
-//       method: 'DELETE',
-//       headers: {
-//         // Your headers here if needed
-//       },
-//     });
 
-//     if (!response.ok) {
-//       throw new Error('Failed to delete cake');
-//     }
-
-//     // Filter out the deleted cake from the state
-//     setCakes((prevCakes) => prevCakes.filter((cake) => cake._id !== cakeId));
-//   } catch (error) {
-//     console.error('Error deleting cake:', error);
-//     // setError('Error deleting cake. Please try again later.');
-//   }
-// };
 
 
   return (
@@ -122,10 +105,10 @@ useEffect(() => {
            <img src={logo} alt="logo" id="logo-img" />
           </div>
         
-          <div className="headding-cake">
+          {/* <div className="headding-cake">
             <h1>MINI</h1>
             <p>Theater</p>
-          </div>
+          </div> */}
           <img
             src={grid}
             alt="grid"
@@ -158,7 +141,7 @@ useEffect(() => {
                   type="checkbox"
                   id="checkbox1"
                   name="checkbox1"
-                  onClick={() => calculateCount(parseInt(cake.price), index)}
+                  onClick={() => calculateCount(parseInt(cake.price), index, cake.cakeName)}
                   checked={checkedItems[index]}
                 />
               </div>
@@ -170,6 +153,10 @@ useEffect(() => {
         <h1 className="result">
           Total :  <span>{count + priceFromState}</span>
         </h1>
+      <div>
+        <div className="skipp-button" onClick={()=>{navigate('/decoration')}}>
+           <h1>SKIP</h1>
+        </div>
         <div
           className="nextstep"
           onClick={() => {
@@ -183,7 +170,9 @@ useEffect(() => {
               navigate("/deceration");
             }}
           />
+      </div>
         </div>
+        
         {/* <h1 className='final'>{sendamountcake}</h1> */}
       </div>
     </>

@@ -23,17 +23,19 @@ const Deceration = () => {
   const [count, setCount] = useState(0);
   const [checkedItems, setCheckedItems] = useState({});
 
-  const calculateCount = (decorationPrice, index) => {
-    const updatedCheckedItems = { ...checkedItems };
-    updatedCheckedItems[index] = !updatedCheckedItems[index];
-
+  const calculateCount = (decorationPrice, decorationName, index) => {
+    const updatedCheckedItems = {};
+    updatedCheckedItems[index] = true;
+  
     setCheckedItems(updatedCheckedItems);
-
-    const isChecked = updatedCheckedItems[index];
-    const increment = isChecked ? decorationPrice : -decorationPrice;
-    setCount(count + increment);
+  
+    const increment = decorationPrice;
+    setCount(increment);
+  
+    // Store decorationName in sessionStorage
+    sessionStorage.setItem('selectedDecoration', decorationName);
   };
-
+  
   const pricedecoration = location.state && location.state.sendamountcake;
   const pricetotalbefore = parseInt(pricedecoration) || 0;
 
@@ -91,10 +93,10 @@ const Deceration = () => {
            <img src={logo} alt="logo" id="logo-img" />
           </div>
         
-          <div className="headding-cake">
+          {/* <div className="headding-cake">
             <h1>MINI</h1>
             <p>Theater</p>
-          </div>
+          </div> */}
           <img
             src={grid}
             alt="grid"
@@ -119,14 +121,15 @@ const Deceration = () => {
               <img className="cake-image" src={`data:image/jpeg;base64,${deceration.image}`} alt={deceration.decorationName} />
               
                 <p className="cakename">{deceration.decorationName}</p>
-                <p className="price">{deceration.price}</p>
+                {/* <p className="price">{deceration.price}</p> */}
                 <input
-                  type="checkbox"
-                  id="checkbox1"
-                  name="checkbox1"
-                  onClick={() => calculateCount(parseInt(deceration.price), index)}
-                  checked={checkedItems[index]}
-                />
+                    type="checkbox"
+                    id="checkbox1"
+                    name="checkbox1"
+                    onClick={() => calculateCount(parseInt(deceration.price), deceration.decorationName, index)}
+                    checked={checkedItems[index]}
+                  />
+
               </div>
             </div>
           ))}
