@@ -106,7 +106,7 @@ return (
           {/* <div className="headding-cake">
             <h1>MINI</h1>
             <p>Theater</p>
-          </div> */}
+          </div> hiii */}
           <img
             src={grid}
             alt="grid"
