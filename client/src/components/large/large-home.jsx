@@ -79,7 +79,7 @@ const Largehome = () => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `https://binge-be.onrender.com/getslots?date=${inputValues.date}`
+          `https://binge-be.onrender.com/getdatetime`
         );
 
         if (!response.ok) {
@@ -209,26 +209,10 @@ const Largehome = () => {
 
         {/* Event dropdown */}
         <div className="input-sub">
-
-        <select
-              className="input4"
-              name="event"
-              value={inputValues.event}
-              onChange={handleInputChange}
-              required
-            >
-              <option value="" disabled>
-                Select an event
-              </option>
-              <option value="Birthday">Birthday</option>
-              <option value="Anniversary">Anniversary</option>
-              <option value="Other parties">Others</option>
-            </select>
-
           <select
             className="input4"
             name="event"
-            value={inputValues.event || storedEvent}
+            value={inputValues.event}
             onChange={handleInputChange}
             required
           >
@@ -240,21 +224,25 @@ const Largehome = () => {
             <option value="Other parties">Others</option>
           </select>
         </div>
-        <h2
-          className="advance-title clickable"
-          onClick={() => {
-            toggleAdvanceBooking();
-            handleAdvanceBookingSelection();
-          }}
-        >
-          Advance Booking
-        </h2>
+
         {/* Advanced Booking Section */}
+        {/*make inline styling none to display if you want */}
         <div
           className={`advance-booking-container ${
             showAdvanceBooking ? "show" : "hide"
           }`}
+          style={{ display: "none" }}
         >
+          {/*keep this h2 out of this div*/}{" "}
+          <h2
+            className="advance-title clickable"
+            onClick={() => {
+              toggleAdvanceBooking();
+              handleAdvanceBookingSelection();
+            }}
+          >
+            Advance Booking
+          </h2>
           <div className="advance-booking-content">
             {/* Advanced Booking date input */}
             <div className="input-sub">
@@ -267,7 +255,6 @@ const Largehome = () => {
                 min={tomorrowFormatted}
               />
             </div>
-
 
             {/* Advanced Booking time and price table */}
             <table>
@@ -317,9 +304,10 @@ const Largehome = () => {
       {/* table section */}
 
       {/* table section */}
+
       <div
         className="table-section"
-        style={{ display: showAdvanceBooking ? "none" : "block" }}
+        style={{ display: showAdvanceBooking ? "display" : "display" }}
       >
         <h6 className="slots" style={{ fontSize: "24px" }}>
           Select a Slot
@@ -358,67 +346,6 @@ const Largehome = () => {
         }}
       >
         <img src={Booknow} alt="book-now" />
-      </div>
-
-      <div className="mobile-view">
-        <div className="date-section">
-          <div className="date-sub-section">
-            <h1>DATE</h1>
-            <p>20 November 2023</p>
-          </div>
-          <div className="date-sub-section">
-            <h1>Availability</h1>
-            <p>Available</p>
-          </div>
-        </div>
-        <div className="mobile-table">
-          <table>
-            <tr>
-              <th>No.of People</th>
-              <th>Time</th>
-
-              <th>Price</th>
-            </tr>
-            <tr>
-              <td>2-4 people</td>
-              <td>7:00 pm - 10:00 pm</td>
-
-              <td>2500</td>
-            </tr>
-            <tr>
-              <td>2-4 people</td>
-              <td>7:00 pm - 10:00 pm</td>
-
-              <td>2500</td>
-            </tr>
-            <tr>
-              <td>2-4 people</td>
-              <td>7:00 pm - 10:00 pm</td>
-
-              <td>2500</td>
-            </tr>
-            <tr>
-              <td>2-4 people</td>
-              <td>7:00 pm - 10:00 pm</td>
-
-              <td>2500</td>
-            </tr>
-            <tr>
-              <td>2-4 people</td>
-              <td>7:00 pm - 10:00 pm</td>
-
-              <td>2500</td>
-            </tr>
-          </table>
-          <div
-            className="book-now"
-            onClick={() => {
-              navigate("/userinputslarge");
-            }}
-          >
-            <img src={Booknow} alt="book-now" />
-          </div>
-        </div>
       </div>
     </div>
   );

@@ -17,15 +17,63 @@ const Minihome = () => {
     hours: "",
     event: "",
   });
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
 
+  // Format tomorrow's date as 'YYYY-MM-DD'
+  const tomorrowFormatted = tomorrow.toISOString().split("T")[0];
+
+  const [advanceDate, setAdvanceDate] = useState(tomorrowFormatted);
+
+  const handleAdvanceDateChange = (e) => {
+    // Your onChange logic here
+    setAdvanceDate(e.target.value);
+  };
+  //  Date update
+  const formatDate = (dateString) => {
+    const options = { day: "2-digit", month: "2-digit", year: "numeric" };
+    const dateObject = new Date(dateString);
+    return dateObject.toLocaleDateString("en-GB", options);
+  };
+  const [showAdvanceBooking, setShowAdvanceBooking] = useState(false);
+
+  // Time slots for advanced booking
+  const timeSlots = [
+    "10:00 am - 01:00 pm",
+    "02:00 pm - 05:00 pm",
+    "06:00 pm - 09:00 pm",
+    "10:00 pm - 12:00 am",
+  ];
+  //function to close the toggleadvancebookings________________
+  const toggleAdvanceBooking = () => {
+    // Clear any checks or selections when toggling advance booking
+    setSelectedSlot(null);
+    sessionStorage.removeItem("selectedSlot");
+
+    // Uncheck regular slots
+    const regularCheckboxes = document.querySelectorAll(
+      ".table-section tbody input[type='checkbox']"
+    );
+    regularCheckboxes.forEach((checkbox) => {
+      checkbox.checked = false;
+    });
+
+    // Uncheck advanced booking slots
+    const advanceCheckboxes = document.querySelectorAll(
+      ".advance-booking-container tbody input[type='checkbox']"
+    );
+    advanceCheckboxes.forEach((checkbox) => {
+      checkbox.checked = false;
+    });
+
+    // Toggle the visibility of the advanced booking section
+    setShowAdvanceBooking(!showAdvanceBooking);
+  };
   useEffect(() => {
-
-    
-
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `https://binge-be.onrender.com/getslots?date=${inputValues.date}`
+          `https://binge-be.onrender.com/getdatetime`
         );
 
         if (!response.ok) {
@@ -65,11 +113,6 @@ const Minihome = () => {
   const today = new Date().toISOString().split("T")[0];
 
   //  Date update
-  const formatDate = (dateString) => {
-    const options = { day: "2-digit", month: "2-digit", year: "numeric" };
-    const dateObject = new Date(dateString);
-    return dateObject.toLocaleDateString("en-GB", options);
-  };
 
   const [date, setDate] = useState(
     formatDate(new Date().toISOString().split("T")[0])
@@ -86,7 +129,7 @@ const Minihome = () => {
 
   // local storage and slot selction
   // Store the selected event in sessionStorage
-
+  const handleAdvanceBookingSelection = () => {};
   const handleSlotSelection = (event, time) => {
     if (event.target.checked) {
       if (!selectedSlot) {
@@ -111,7 +154,6 @@ const Minihome = () => {
   // Function to handle the "Book Now" button click
   const handleNextPage = () => {
     const selectedSlot = sessionStorage.getItem("selectedSlot");
-    const storedEvent = sessionStorage.getItem("selectedEvent");
 
     if (!inputValues.date || !inputValues.event) {
       // If the date or event is not selected, show an alert
@@ -161,28 +203,10 @@ const Minihome = () => {
         </div>
         {/* Event */}
         <div className="input-sub">
-
-            <select
-              className="input4"
-              name="event"
-              value={inputValues.event}
-              onChange={handleInputChange}
-              required
-            >
-              <option value="" disabled>
-                Select an event
-              </option>
-              <option value="Birthday">Birthday</option>
-              <option value="Anniversary">Anniversary</option>
-              <option value="Other parties">Others</option>
-            </select>
-
-
-
           <select
             className="input4"
             name="event"
-            value={inputValues.event || storedEvent} // Using storedEvent value in the input value
+            value={inputValues.event}
             onChange={handleInputChange}
             required
           >
@@ -193,13 +217,88 @@ const Minihome = () => {
             <option value="Anniversary">Anniversary</option>
             <option value="Other parties">Others</option>
           </select>
-
         </div>
       </div>
+      {/* Advanced Booking Section */}
+      {/*make inline styling none to display if you want */}
+      <div
+        className={`advance-booking-container ${
+          showAdvanceBooking ? "show" : "hide"
+        }`}
+        style={{ display: "none" }}
+      >
+        {/*keep this h2 out of this div*/}{" "}
+        <h2
+          className="advance-title clickable"
+          onClick={() => {
+            toggleAdvanceBooking();
+            handleAdvanceBookingSelection();
+          }}
+        >
+          Advance Booking
+        </h2>
+        <div className="advance-booking-content">
+          {/* Advanced Booking date input */}
+          <div className="input-sub">
+            <input
+              type="date"
+              className="input1"
+              name="advanceDate"
+              value={advanceDate || tomorrowFormatted}
+              onChange={handleAdvanceDateChange}
+              min={tomorrowFormatted}
+            />
+          </div>
 
+          {/* Advanced Booking time and price table */}
+          <table>
+            <thead>
+              <tr>
+                <th className="thead">Date</th>
+                <th className="thead">Time</th>
+                <th className="thead">Price</th>
+                <th className="thead">Select Slot</th>
+              </tr>
+            </thead>
+            <tbody>
+              {/* Map through time slots for advanced booking */}
+              {timeSlots.map((timeSlot, index) => (
+                <tr key={index}>
+                  <td>{advanceDate ? formatDate(advanceDate) : "-"}</td>
+                  <td>{timeSlot}</td>
+                  <td>2999/-</td>
+                  <td>
+                    <input
+                      type="checkbox"
+                      onChange={(event) =>
+                        handleSlotSelection(event, timeSlot, 2999)
+                      }
+                      disabled={selectedSlot && selectedSlot.time !== timeSlot}
+                    />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+
+          {/* Add other necessary input fields for advanced booking */}
+          <button
+            className="advance-booking-button"
+            onClick={toggleAdvanceBooking}
+          >
+            Cancel Advance Booking
+          </button>
+        </div>
+      </div>
+      {/*Advance Booking*/}
       {/* table section */}
-      <div className="table-section">
-        <h2 className="slots">Slots</h2>
+      <div
+        className="table-section"
+        style={{ display: showAdvanceBooking ? "display" : "display" }}
+      >
+        <h6 className="slots" style={{ fontSize: "24px" }}>
+          Select a Slot
+        </h6>
         <table>
           <thead>
             <tr>
@@ -234,7 +333,6 @@ const Minihome = () => {
           <img src={Booknow} alt="book-now" />
         </div>
       </div>
-
     </div>
   );
 };
