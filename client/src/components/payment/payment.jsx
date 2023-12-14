@@ -182,6 +182,7 @@ const Paymentstep = () => {
                         </tr>
                         <tr>
                           <td style={{ paddingRight: "16px" }}>
+
                             Cake:
                           </td>
                           <td>{selectedCake}</td>
@@ -194,6 +195,7 @@ const Paymentstep = () => {
                         </tr>
                         <tr>
                           <td style={{ paddingRight: "16px" }}>
+
                             Total Amount:
                           </td>
                           <td>

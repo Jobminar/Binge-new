@@ -2,9 +2,9 @@
 
 /* General styling */
 
-
 #wcontainer {
     height: 100vh;
+    background-color: #1a1a1a; /* Darker gray background color */
 }
 
 #shadowcard {
@@ -12,7 +12,7 @@
     border: 2px solid #d55f80; /* Dark pink border */
     border-radius: 10px;
     box-shadow: 0px 0px 20px rgba(213, 95, 128, 0.5); /* Light pink shadow */
-    background-color: #1f1f1f; /* Dark gray background color */
+    background-color: #1f1f1f; /* Dark gray background color for the card */
 }
 
 #cardtitles {
@@ -23,8 +23,8 @@
 /* Header styling with logo */
 #headers {
     display: flex;
-    justify-content: center;
-    align-items: center;
+    justify-content: start;
+    align-items: start;
     flex-direction: column;
     margin-bottom: 20px;
 }
@@ -36,8 +36,8 @@
 }
 
 /* Loading and error styles */
-#textcenters {
-    text-align: center;
+#textstarts {
+    text-align: start;
 }
 
 #textdangers {
@@ -47,6 +47,8 @@
 /* Details section styling */
 #detailssections {
     margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
 }
 
 #detailssections p {
@@ -54,11 +56,15 @@
     font-size: 16px;
     color: #bbb;
     transition: color 0.3s ease-in-out; /* Hover effect for text color */
+    display: flex;
+    justify-content: space-between;
 }
 
 #detailssections span {
     font-weight: bold;
     color: #b03060; /* Dark maroon */
+    min-width: 150px;
+    text-align: start;
 }
 
 #detailssections strong {
@@ -94,15 +100,6 @@
     transform: translateY(-10px);
     animation: fadeInUp 0.5s forwards ease-in-out;
     animation-delay: 0.2s; /* Add delay for staggered animation */
-}
-
-/* Add background and logo styling */
-#wcontainer {
-    background-color: #1a1a1a; /* Darker gray background color */
-}
-
-#shadowcard{
-    background-color: #1f1f1f; /* Dark gray background color for the card */
 }
 
 /* Add hover effects for text */

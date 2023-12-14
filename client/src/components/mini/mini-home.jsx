@@ -9,7 +9,7 @@ const Minihome = () => {
   // slot selection usestate
   const [selectedSlot, setSelectedSlot] = useState(null);
   const [fetchedSlotData, setFetchedSlotData] = useState([]);
-  const storedEvent = sessionStorage.getItem("selectedEvent") || ""
+  const storedEvent = sessionStorage.getItem("selectedEvent") || "";
   const navigate = useNavigate();
   const [inputValues, setInputValues] = useState({
     date: "",
@@ -85,23 +85,22 @@ const Minihome = () => {
   }, [inputValues.date]);
 
   // local storage and slot selction
-// Store the selected event in sessionStorage
+  // Store the selected event in sessionStorage
 
-
-const handleSlotSelection = (event, time) => {
-  if (event.target.checked) {
-    if (!selectedSlot) {
-      setSelectedSlot(time);
-      sessionStorage.setItem("selectedSlot", JSON.stringify({ date, time }));
+  const handleSlotSelection = (event, time) => {
+    if (event.target.checked) {
+      if (!selectedSlot) {
+        setSelectedSlot(time);
+        sessionStorage.setItem("selectedSlot", JSON.stringify({ date, time }));
+      } else {
+        event.target.checked = false; // Unchecks the checkbox if already selected
+        alert("You can only select one slot.");
+      }
     } else {
-      event.target.checked = false; // Unchecks the checkbox if already selected
-      alert("You can only select one slot.");
+      setSelectedSlot(null);
+      sessionStorage.removeItem("selectedSlot"); // Remove the selectedSlot data when unchecked
     }
-  } else {
-    setSelectedSlot(null);
-    sessionStorage.removeItem("selectedSlot"); // Remove the selectedSlot data when unchecked
-  }
-};
+  };
   // Function to handle the "Book Now" button click
 
   //functionality to go to next page
@@ -109,12 +108,11 @@ const handleSlotSelection = (event, time) => {
     navigate("/userinputs");
   };
 
-
   // Function to handle the "Book Now" button click
   const handleNextPage = () => {
     const selectedSlot = sessionStorage.getItem("selectedSlot");
     const storedEvent = sessionStorage.getItem("selectedEvent");
-  
+
     if (!inputValues.date || !inputValues.event) {
       // If the date or event is not selected, show an alert
       alert("Please select both date and event before proceeding.");
@@ -124,14 +122,12 @@ const handleSlotSelection = (event, time) => {
     } else {
       // Store the selected event in sessionStorage
       sessionStorage.setItem("selectedEvent", inputValues.event);
-  
+
       // If all conditions met, navigate to the next page
       navigateToNextPage();
     }
   };
-  
-  
- 
+
   return (
     <div className="mini-home-con">
       <div className="mini-head">
@@ -161,11 +157,11 @@ const handleSlotSelection = (event, time) => {
             value={inputValues.date}
             onChange={handleInputChange}
             min={today}
-
           />
         </div>
         {/* Event */}
         <div className="input-sub">
+
             <select
               className="input4"
               name="event"
@@ -182,6 +178,21 @@ const handleSlotSelection = (event, time) => {
             </select>
 
 
+
+          <select
+            className="input4"
+            name="event"
+            value={inputValues.event || storedEvent} // Using storedEvent value in the input value
+            onChange={handleInputChange}
+            required
+          >
+            <option value="" disabled>
+              Select an event
+            </option>
+            <option value="Birthday">Birthday</option>
+            <option value="Anniversary">Anniversary</option>
+            <option value="Other parties">Others</option>
+          </select>
 
         </div>
       </div>
@@ -223,7 +234,7 @@ const handleSlotSelection = (event, time) => {
           <img src={Booknow} alt="book-now" />
         </div>
       </div>
-     
+
     </div>
   );
 };

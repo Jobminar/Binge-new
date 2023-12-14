@@ -8,9 +8,10 @@ const TheatrePrice = () => {
     fetchData();
   }, []);
 
+//this is code
   const fetchData = async () => {
     try {
-      const response = await fetch("https://binge-be.onrender.com/gettheater");
+      const response = await fetch("https://binge-be.onrender.com/getmaxi");
       const data1 = await response.json();
       setData(data1);
     } catch (error) {
@@ -18,27 +19,77 @@ const TheatrePrice = () => {
     }
   };
 
-  const postTheaterData = async (newTheaterData) => {
-    try {
-      const response = await fetch("https://binge-be.onrender.com/posttheater", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(newTheaterData),
-      });
+  const [data1, setData1] = useState([]);
+  useEffect(() => {
+   
+const fetchData1=async()=>{
+  try{
+    const responce=await fetch("https://binge-be.onrender.com/getmini")
+    const trans=await responce.json()
+    setData1(trans)
 
-      if (response.ok) {
-        console.log("Theater data posted successfully!");
-        fetchData(); // Update the local data after posting
-      } else {
-        console.error("Failed to post theater data");
-      }
-    } catch (error) {
-      console.error("Error posting theater data:", error);
+  }
+  catch(error){
+  console.log("error display",error)
+  }
+}
+
+fetchData1()
+
+  }, []);
+
+  const handleEditTheater = (id) => {
+    
+    const theaterToEdit = data.find((theater) => theater.id === id);
+
+    if (theaterToEdit) {
+      setNewPricing(theaterToEdit.price);
+      setNoOfPeople(theaterToEdit.numberOfPeople);
+      setIsPricingInputSelected(true);
+      setIsNoOfPeopleInputSelected(true);
+
+      
+      handleShowPricingPopup();
     }
   };
 
+  
+
+  const handleUpdateTheater = async (id, updatedData) => {
+    try {
+      const response = await fetch(`https://binge-be.onrender.com/updatemaxi/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedData),
+      });
+
+      if (response.ok) {
+        console.log("Theater data updated successfully!");
+        fetchData(); // Update the local data after updating
+      } else {
+        console.error("Failed to update theater data");
+      }
+    } catch (error) {
+      console.error("Error updating theater data:", error);
+    }
+  };
+  const handleEditSubmit = (id) => {
+    const updatedTheaterData = {
+      price: newPricing,
+      numberOfPeople: noOfPeople,
+    };
+
+    handleUpdateTheater(id, updatedTheaterData);
+    handleClosePricingPopup();
+  };
+
+
+
+
+
+  
   const [showPricingPopup, setShowPricingPopup] = useState(false);
   const [newPricing, setNewPricing] = useState(1000);
   const [noOfPeople, setNoOfPeople] = useState(0);
@@ -139,9 +190,10 @@ const TheatrePrice = () => {
         id="pricing-popup-button"
         type="button"
         className="btn btn-primary mb-3 custom-button"
-        onClick={handleShowPricingPopup}
+        // onClick={handleShowPricingPopup}
+        onClick={handleEditSubmit}
       >
-        Add Pricing..
+        Add Pricing
       </button>
 
       <PricingPopup
@@ -164,18 +216,24 @@ const TheatrePrice = () => {
         <h3>MINI:</h3>
         {data.map((ele, ind) => (
           <div key={ind}>
-            <div>Pricing: {ele.price}</div>
-            <div>No of People: {ele.numberOfPeople}</div>
-          </div>
+            <div>Pricing: {ele.price}<button onClick={() => handleEditTheater(ele.id)}>Edit</button></div>
+            <div>No of People: {ele.numberOfPeople}<button onClick={() => handleEditTheater(ele.id)}>Edit</button></div>
+
+            </div>
         ))}
-        <p>No of People: {miniPrices.noOfPeople}</p>
+       
+        
+        
+
+
       </div>
+
+
       <div>
         <h3>MAX:</h3>
-        {/* <p>Pricing: {maxPrices.pricing}</p>
-        <p>No of People: {maxPrices.noOfPeople}</p> */}
+      
 
-{data.map((ele, ind) => (
+{data1.map((ele, ind) => (
           <div key={ind}>
             <div>Pricing: {ele.price}</div>
             <div>No of People: {ele.numberOfPeople}</div>
