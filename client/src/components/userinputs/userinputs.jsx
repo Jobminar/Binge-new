@@ -100,7 +100,7 @@ navigate("/cakemain", {
 });
 
 // Display a success message
-alert("Form details submitted successfully!");
+// alert("Form details submitted successfully!");
 
   };
 

@@ -309,9 +309,9 @@ const Largehome = () => {
         className="table-section"
         style={{ display: showAdvanceBooking ? "display" : "display" }}
       >
-        <h6 className="slots" style={{ fontSize: "24px" }}>
+        {/* <h6 className="slots" style={{ fontSize: "24px" }}>
           Select a Slot
-        </h6>
+        </h6> */}
 
         <table>
           <thead>
@@ -319,6 +319,7 @@ const Largehome = () => {
               <th className="thead">Date</th>
               <th className="thead">Time</th>
               <th className="thead">Price</th>
+              <th className="thead">Select slot</th>
             </tr>
           </thead>
           <tbody>

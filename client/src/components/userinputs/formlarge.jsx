@@ -146,6 +146,9 @@ const FormComponentlarge = ({ formData, setFormData }) => {
         </select>
         {errors.numOfPeople && <span className="error">{errors.numOfPeople}</span>}
       </div>
+      {(parseInt(formData.numOfPeople) < 12) && (
+            <p className="reminder">Pricing includes Decoration <br/> You can get your own Food and Cake </p>
+          )}
       {(parseInt(formData.numOfPeople) > 6) && (
             <p className="reminder">Luxi pricing includes only 6 people <br/> You can include upto 6 more guests at 399 per Guest </p>
           )}

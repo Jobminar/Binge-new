@@ -146,6 +146,10 @@ const FormComponentmini = ({ formData, setFormData }) => {
         </select>
         {errors.numOfPeople && <span className="error">{errors.numOfPeople}</span>}
       </div>
+      {(parseInt(formData.numOfPeople) < 6) && (
+            <p className="reminder">Pricing includes Decoration <br/> You can get yout own food and cake </p>
+          )}
+      
       {(parseInt(formData.numOfPeople) > 4) && (
             <p className="reminder">Standard pricing includes only 4 people <br/> You can include upto 2 more guests at 399 per Guest </p>
           )}

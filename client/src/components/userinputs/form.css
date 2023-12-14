@@ -27,7 +27,17 @@ label{
     text-align: left;
 
 }
-.reminder{color: green;}
+.reminder{
+    font-family: IBM Plex Sans;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 21px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: rgba(250, 192, 180, 1);
+    
+
+}
 
 
 @media (min-width: 360px) and (max-width: 600px){

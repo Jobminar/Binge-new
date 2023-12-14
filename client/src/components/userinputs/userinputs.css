@@ -3,7 +3,7 @@
     color: white;
     height: 100%;
     padding-bottom: 5rem;
-    border: 1px solid green;
+    /* border: 1px solid green; */
 }
 
 .logo-img-input{
@@ -97,7 +97,7 @@
     font-weight: 400;
     line-height: 21px;
     letter-spacing: 0em;
-    text-align: center;
+    text-align: left;
     color: rgba(250, 192, 180, 1);
 
 }
