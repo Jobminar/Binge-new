@@ -13,12 +13,12 @@ import { useState } from "react";
 // import CakeList from "./getcake.jsx";
 
 const Cake = () => {
+  const location = useLocation();
+  const { date, numOfPeople, time, price } = location.state || {};
   const [cakes, setCakes] = useState([]);
   const [Total, setTotal] = useState(0);
+  const [priceFromState, setPriceFromState] = useState(price);
   const navigate = useNavigate();
-  const location = useLocation();
-
-  const { date, numOfPeople, time, price } = location.state || {};
 
   const timeinput = "1:00 pm to 3:00 pm";
 
@@ -26,24 +26,34 @@ const Cake = () => {
   const [count, setCount] = useState(0);
   const [checkedItems, setCheckedItems] = useState({});
 
+  useEffect(() => {
+    // Initialize priceFromState when price changes
+    setPriceFromState(price || 0);
+  }, [price]);
+
   const calculateCount = (cakeprice, index, cakeName) => {
     const updatedCheckedItems = {};
     const isAlreadyChecked = checkedItems[index];
 
     if (isAlreadyChecked) {
       setCheckedItems({});
-      setCount(0);
       sessionStorage.removeItem("selectedCakeName");
     } else {
       updatedCheckedItems[index] = true;
       setCheckedItems(updatedCheckedItems);
-      setCount(cakeprice);
+      setCount((prevCount) => prevCount + cakeprice);
       sessionStorage.setItem("selectedCakeName", cakeName);
     }
   };
 
-  //   data recive
-  const priceFromState = price;
+  //   skip button functionality
+  const isSkipButtonVisible = Object.values(checkedItems).every(
+    (value) => !value
+  );
+
+  const handleSkip = () => {
+    handlecakeandtheater();
+  };
   // data send
   const sendamountcake = priceFromState + count;
   const handlecakeandtheater = () => {
@@ -63,9 +73,11 @@ const Cake = () => {
   };
 
   useEffect(() => {
-    // Update Total whenever count or priceFromState changes
-    setTotal(count + price);
-  }, [count, price]);
+    console.log("count:", count);
+    console.log("priceFromState:", priceFromState);
+    console.log("Total:", count + priceFromState);
+    setTotal(count + priceFromState);
+  }, [count, priceFromState]);
   // get cake----------------------------------------
   useEffect(() => {
     const fetchData = async () => {
@@ -153,14 +165,11 @@ const Cake = () => {
           </h1>
         </h1>
         <div>
-          <div
-            className="skipp-button"
-            onClick={() => {
-              navigate("/decoration");
-            }}
-          >
-            <h1>SKIP</h1>
-          </div>
+          {isSkipButtonVisible && (
+            <div className="skipp-button" onClick={handleSkip}>
+              <h1 style={{ color: "#895D5F" }}>SKIP</h1>
+            </div>
+          )}
           <div
             className="nextstep"
             onClick={() => {

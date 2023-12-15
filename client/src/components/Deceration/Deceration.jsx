@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
 
-
 import logo from "../../assets/images/logo.png";
 import grid from "../../assets/images/grid.png";
 import calender from "../../assets/images/calender-logo.png";
@@ -26,16 +25,16 @@ const Deceration = () => {
   const calculateCount = (decorationPrice, decorationName, index) => {
     const updatedCheckedItems = {};
     updatedCheckedItems[index] = true;
-  
+
     setCheckedItems(updatedCheckedItems);
-  
-    const increment = decorationPrice;
-    setCount(increment);
-  
+
+    // Increment count by decorationPrice
+    setCount((prevCount) => prevCount + decorationPrice);
+
     // Store decorationName in sessionStorage
-    sessionStorage.setItem('selectedDecoration', decorationName);
+    sessionStorage.setItem("selectedDecoration", decorationName);
   };
-  
+
   const pricedecoration = location.state && location.state.sendamountcake;
   const pricetotalbefore = parseInt(pricedecoration) || 0;
 
@@ -57,24 +56,26 @@ const Deceration = () => {
     });
   };
 
-
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('https://binge-be.onrender.com/getdecorations', {
-          headers: {
-            // Your headers here if needed
-          },
-        });
+        const response = await fetch(
+          "https://binge-be.onrender.com/getdecorations",
+          {
+            headers: {
+              // Your headers here if needed
+            },
+          }
+        );
 
         if (!response.ok) {
-          throw new Error('Failed to fetch data');
+          throw new Error("Failed to fetch data");
         }
 
         const data = await response.json();
         setDecorations(data);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error("Error fetching data:", error);
         // setError('Error fetching data. Please try again later.');
       } finally {
         // setLoading(false);
@@ -84,15 +85,14 @@ const Deceration = () => {
     fetchData();
   }, []);
 
-
   return (
     <>
       <div className="deceration-con">
-      <div className="main-cake-con">
+        <div className="main-cake-con">
           <div className="logo-img">
-           <img src={logo} alt="logo" id="logo-img" />
+            <img src={logo} alt="logo" id="logo-img" />
           </div>
-        
+
           {/* <div className="headding-cake">
             <h1>MINI</h1>
             <p>Theater</p>
@@ -117,25 +117,33 @@ const Deceration = () => {
           {decorations.map((deceration, index) => (
             <div key={index}>
               <div className="cake-box">
-             
-              <img className="cake-image" src={`data:image/jpeg;base64,${deceration.image}`} alt={deceration.decorationName} />
-              
+                <img
+                  className="cake-image"
+                  src={`data:image/jpeg;base64,${deceration.image}`}
+                  alt={deceration.decorationName}
+                />
+
                 <p className="cakename">{deceration.decorationName}</p>
                 {/* <p className="price">{deceration.price}</p> */}
                 <input
-                    type="checkbox"
-                    id="checkbox1"
-                    name="checkbox1"
-                    onClick={() => calculateCount(parseInt(deceration.price), deceration.decorationName, index)}
-                    checked={checkedItems[index]}
-                  />
-
+                  type="checkbox"
+                  id="checkbox1"
+                  name="checkbox1"
+                  onClick={() =>
+                    calculateCount(
+                      parseInt(deceration.price),
+                      deceration.decorationName,
+                      index
+                    )
+                  }
+                  checked={checkedItems[index]}
+                />
               </div>
             </div>
           ))}
         </div>
         <h1 className="result">
-          Total :  <span>{count + pricetotalbefore}</span>
+          Total : <span>{count + pricetotalbefore}</span>
         </h1>
         <div
           className="nextstep"
