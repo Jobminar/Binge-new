@@ -30,27 +30,26 @@ const Userinputs = () => {
     numOfPeople: "",
   });
 
+  const [extraCost, setExtraCost] = useState(0);
   const [Total, setTotal] = useState(0);
 
   useEffect(() => {
     const calculateTotal = () => {
-      const extraCost = getLocalStorage("extraCost");
-      const parsedExtraCost = extraCost ? parseInt(extraCost) : 0;
+      let basePrice = 1799;
+
       const additionalPeople = Math.max(0, formData.numOfPeople - 4);
       const additionalPeopleCost =
         additionalPeople > 0 ? additionalPeople * 399 : 0;
-      const Totallarge = 1799 + parsedExtraCost + additionalPeopleCost;
-      setTotal(Totallarge);
+
+      const total = basePrice + extraCost + additionalPeopleCost;
+      setTotal(total);
     };
 
-    calculateTotal();
+    calculateTotal(); // Initial calculation
+  }, [extraCost, formData]);
 
-    const interval = setInterval(() => {
-      calculateTotal();
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, [getLocalStorage, formData.numOfPeople]);
+  // No need for the interval and cleanup
+  // Include formData in the dependency array
 
   const handleNextButtonClick = () => {
     if (!formData.name || !formData.mobile) {
@@ -60,21 +59,17 @@ const Userinputs = () => {
 
     localStorage.setItem("formData", JSON.stringify(formData));
 
-    const extraCost = getLocalStorage("extraCost");
-    const parsedExtraCost = extraCost ? parseInt(extraCost) : 0;
-
     navigate("/cakemain", {
       state: {
         date,
         numOfPeople: formData.numOfPeople,
         time,
-        price: 1799 + parsedExtraCost,
+        price: Total,
       },
     });
 
     alert("Form details submitted successfully!");
   };
-
   var sessionData = sessionStorage.getItem("selectedSlot");
   if (sessionData) {
     var slotselctionData = JSON.parse(sessionData);

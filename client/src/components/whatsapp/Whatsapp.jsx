@@ -77,7 +77,11 @@ const Whatsapp = () => {
     <div>
       {/* Navbar */}
       <nav className="navbar navbar-expand-lg navbar-dark bg-transparent">
-        <Link className="navbar-brand m-1" to="/">
+        <Link
+          className="navbar-brand p-1 ml-1"
+          to="/"
+          style={{ marginLeft: "50px" }}
+        >
           <img
             src={LogoImg}
             alt="Logo"
@@ -105,7 +109,8 @@ const Whatsapp = () => {
         {/* Phone Section */}
         <div className="row mt-3">
           <div className="row mt-3">
-            <div className="col-md-5">
+            <div className="col-md-1"></div>
+            <div className="col-md-4">
               <img
                 src={QRCodeImage1}
                 alt="QR Code 1"
@@ -118,7 +123,7 @@ const Whatsapp = () => {
                 OR
               </h1>
             </div>
-            <div className="col-md-5">
+            <div className="col-md-4">
               <img
                 src={QRCodeImage2}
                 alt="QR Code 2"
@@ -126,6 +131,7 @@ const Whatsapp = () => {
                 style={{ objectFit: "cover", height: "100%" }}
               />
             </div>
+            <div className="col-md-1"></div>
           </div>
         </div>
 
@@ -167,21 +173,18 @@ const Whatsapp = () => {
         {" "}
         <ul>
           <li>
-            <h4>NOTE:</h4>
+            <h4 className="mb-0">NOTE:</h4>
           </li>
 
           <li>
             We collect an advance amount of 700/- towards the confirmation of
             your booking. Partial advance amount (Rs 500/-) is refundable if you
-            cancel the slot 72 hours prior to your booking.
-          </li>
-          <li>
-            {" "}
+            cancel the slot 72 hours prior to your booking...
             <h4
               style={{ color: "red", cursor: "pointer" }}
               onClick={() => navigate("/refund")}
             >
-              To know more
+              know more..
             </h4>
           </li>
         </ul>

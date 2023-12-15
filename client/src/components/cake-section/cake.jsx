@@ -14,7 +14,7 @@ import { useState } from "react";
 
 const Cake = () => {
   const [cakes, setCakes] = useState([]);
-
+  const [Total, setTotal] = useState(0);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -28,27 +28,22 @@ const Cake = () => {
 
   const calculateCount = (cakeprice, index, cakeName) => {
     const updatedCheckedItems = {};
-  
     const isAlreadyChecked = checkedItems[index];
-  
+
     if (isAlreadyChecked) {
       setCheckedItems({});
       setCount(0);
-      sessionStorage.removeItem('selectedCakeName'); // Remove from session storage if unchecked
+      sessionStorage.removeItem("selectedCakeName");
     } else {
       updatedCheckedItems[index] = true;
       setCheckedItems(updatedCheckedItems);
       setCount(cakeprice);
-      sessionStorage.setItem('selectedCakeName', cakeName); // Store cake name in session storage
+      sessionStorage.setItem("selectedCakeName", cakeName);
     }
   };
-  
-  
 
   //   data recive
-
-  const priceFromState =  1799; //need to change price here
-
+  const priceFromState = price;
   // data send
   const sendamountcake = priceFromState + count;
   const handlecakeandtheater = () => {
@@ -62,49 +57,50 @@ const Cake = () => {
         date,
         numOfPeople,
         time,
-        sendamountcake,
+        sendamountcake: Total,
       },
     });
   };
 
-// get cake----------------------------------------
-useEffect(() => {
-  const fetchData = async () => {
-    try {
-      const response = await fetch('https://binge-be.onrender.com/getcakes', {
-        headers: {
-          // Your headers here if needed
-        },
-      });
+  useEffect(() => {
+    // Update Total whenever count or priceFromState changes
+    setTotal(count + price);
+  }, [count, price]);
+  // get cake----------------------------------------
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("https://binge-be.onrender.com/getcakes", {
+          headers: {
+            // Your headers here if needed
+          },
+        });
 
-      if (!response.ok) {
-        throw new Error('Failed to fetch data');
+        if (!response.ok) {
+          throw new Error("Failed to fetch data");
+        }
+
+        const data = await response.json();
+        setCakes(data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        // setError('Error fetching data. Please try again later.');
+      } finally {
+        // setLoading(false);
       }
+    };
 
-      const data = await response.json();
-      setCakes(data);
-    } catch (error) {
-      console.error('Error fetching data:', error);
-      // setError('Error fetching data. Please try again later.');
-    } finally {
-      // setLoading(false);
-    }
-  };
-
-  fetchData();
-}, []);
-
-
-
+    fetchData();
+  }, []);
 
   return (
     <>
       <div className="cake-con">
         <div className="main-cake-con">
           <div className="logo-img">
-           <img src={logo} alt="logo" id="logo-img" />
+            <img src={logo} alt="logo" id="logo-img" />
           </div>
-        
+
           {/* <div className="headding-cake">
             <h1>MINI</h1>
             <p>Theater</p>
@@ -129,50 +125,58 @@ useEffect(() => {
           {cakes.map((cake, index) => (
             <div key={index}>
               <div className="cake-box">
-              
-                <img className="cake-image" src={`data:image/jpeg;base64,${cake.image}`} alt={cake.cakeName} />
+                <img
+                  className="cake-image"
+                  src={`data:image/jpeg;base64,${cake.image}`}
+                  alt={cake.cakeName}
+                />
 
-                
-             
-               
                 <p className="cakename">{cake.cakeName}</p>
                 <p className="price">{cake.price}</p>
                 <input
                   type="checkbox"
                   id="checkbox1"
                   name="checkbox1"
-                  onClick={() => calculateCount(parseInt(cake.price), index, cake.cakeName)}
+                  onClick={() =>
+                    calculateCount(parseInt(cake.price), index, cake.cakeName)
+                  }
                   checked={checkedItems[index]}
                 />
               </div>
             </div>
           ))}
-          
         </div>
 
         <h1 className="result">
-          Total :  <span>{count + priceFromState}</span>
+          <h1 className="result">
+            Total : <span>{Total}</span>
+          </h1>
         </h1>
-      <div>
-        <div className="skipp-button" onClick={()=>{navigate('/decoration')}}>
-           <h1>SKIP</h1>
-        </div>
-        <div
-          className="nextstep"
-          onClick={() => {
-            handlecakeandtheater();
-          }}
-        >
-          <img
-            src={nextstep}
-            alt="nextstep"
+        <div>
+          <div
+            className="skipp-button"
             onClick={() => {
-              navigate("/deceration");
+              navigate("/decoration");
             }}
-          />
-      </div>
+          >
+            <h1>SKIP</h1>
+          </div>
+          <div
+            className="nextstep"
+            onClick={() => {
+              handlecakeandtheater();
+            }}
+          >
+            <img
+              src={nextstep}
+              alt="nextstep"
+              onClick={() => {
+                navigate("/deceration");
+              }}
+            />
+          </div>
         </div>
-        
+
         {/* <h1 className='final'>{sendamountcake}</h1> */}
       </div>
     </>

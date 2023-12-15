@@ -5,6 +5,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./payment.css";
 import LogoImg from "../../assets/images/logo.png";
 import BgImage from "../../assets/images/Home-bg-img.jpeg";
+import { Height } from "@mui/icons-material";
 
 const generateRandomPaymentID = () => {
   return `PAY-${Math.random().toString(36).substring(7).toUpperCase()}`;
@@ -124,7 +125,10 @@ const Paymentstep = () => {
               )}
 
               {!loading && !error && (
-                <div className="details-section m-0 mb-0">
+                <div
+                  className="details-section m-0 mb-0 pb-5"
+                  style={{ height: "720px" }}
+                >
                   <ul className="payment-list">
                     <li>
                       <dt>Date:</dt>
