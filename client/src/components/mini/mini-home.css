@@ -1,22 +1,66 @@
 
 
 /* In your CSS file */
+.mini-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
 /* Add this to your "mini-home.css" file */
 @media (max-width: 768px) {
-    .table-section {
-      display: block !important; /* Override the inline styles */
+    .mini-head {
+      flex-direction: column; /* Stack items vertically */
+      align-items: flex-end; /* Align items to the right */
     }
-    .advance-booking-container {
-      display: none !important; /* Hide the advance booking container on small screens */
+  
+    .mini-head img {
+      margin-top: 10px;
+      margin-left: 180px; /* Optional: Add top margin for spacing */
     }
+  }
+/* Media query for smaller screens */
+@media (max-width: 768px) {
+    .input-sub {
+      width: 100%;
+      margin-bottom: 10px; /* Add space between input sections */
+    }
+  
+    .input1,
+    .input4 {
+      width: calc(50% - 10px); /* Make input fields 50% width with a slight margin */
+      margin-bottom: 10px; /* Add space between input fields */
+      margin-right: 10px; /* Add right margin to create space between the fields */
+    }
+  
+    /* Add any additional styles for mobile layout as needed */
   }
   @media (max-width: 768px) {
+    .table-section {
+      display: block !important;
+       /* Override the inline styles */
+    }
+  
     .advance-booking-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+  
+    /* Adjust font size for specific elements within the table section */
+    .table-section table {
+      font-size: 2px; 
+      margin: auto;/* Adjust the font size as needed */
+    }
+  
+    /* Adjust font size for specific elements within the advance booking container */
+    .advance-booking-container {
+      font-size: 4px; /* Adjust the font size as needed */
     }
   }
+/* Add this to your "mini-home.css" file */
+@media (max-width: 768px) {
+  }
+
   .table-section {
     display: block;
   }

@@ -319,6 +319,7 @@ const Largehome = () => {
               <th className="thead">Date</th>
               <th className="thead">Time</th>
               <th className="thead">Price</th>
+              <th className="thead">Select Slot</th>
             </tr>
           </thead>
           <tbody>
