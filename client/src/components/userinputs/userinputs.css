@@ -3,7 +3,7 @@
     color: white;
     height: 100%;
     padding-bottom: 5rem;
-    border: 1px solid green;
+   
 }
 
 .logo-img-input{
@@ -226,7 +226,7 @@
         align-items: center;
     }
     .input-event{
-        border: 5px solid green;
+       
         margin: 0rem;
     }
 }

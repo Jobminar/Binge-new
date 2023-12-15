@@ -248,12 +248,12 @@
  .Beigein-home-con{
     padding: 0rem 0rem;
     background-color: black;
-    border: 1px solid green;
+   
    
 }
 
 .main-section{
-    border: 1px solid green;
+ 
     display: grid;
     grid-template-columns: 70% 20%;
     justify-content: space-between;
@@ -294,7 +294,7 @@
     .theater-part{
         width: 100%;
         height: auto;
-        border: 1px solid green;
+      
         display: grid;
         grid-template-columns: 100%;
         padding-top: 0.5rem;
@@ -303,7 +303,7 @@
     }
     .routing-home{
         display: flex;
-        border: 1px solid green;
+       
         justify-content: space-evenly;
         column-gap: 0.5rem;
         flex-direction: column;
@@ -445,8 +445,7 @@
             linear-gradient(0deg, #FFFFFF, #FFFFFF); */
             color: white;
         margin: 0rem;
-        padding: 0rem;
-         
+        padding: 0rem;     
     }
     .party p{
         font-family: IBM Plex Sans;
