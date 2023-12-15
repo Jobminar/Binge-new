@@ -1,122 +1,22 @@
-/* payment.css */
-
-/* General styling */
-
-#wcontainer {
-    height: 100vh;
-    background-color: #1a1a1a; /* Darker gray background color */
-}
-
-#shadowcard {
-    margin: 1em;
-    border: 2px solid #d55f80; /* Dark pink border */
-    border-radius: 10px;
-    box-shadow: 0px 0px 20px rgba(213, 95, 128, 0.5); /* Light pink shadow */
-    background-color: #1f1f1f; /* Dark gray background color for the card */
-}
-
-#cardtitles {
-    font-size: 24px;
-    color: #b03060; /* Dark maroon */
-}
-
-/* Header styling with logo */
-#headers {
-    display: flex;
-    justify-content: start;
-    align-items: start;
-    flex-direction: column;
-    margin-bottom: 20px;
-}
-
-#logos {
-    width: 100px;
-    height: auto;
-    filter: drop-shadow(0px 0px 8px #ff7eac); /* Lighter pink drop shadow */
-}
-
-/* Loading and error styles */
-#textstarts {
-    text-align: start;
-}
-
-#textdangers {
-    color: #d55f80; /* Light pink for errors */
-}
-
-/* Details section styling */
-#detailssections {
-    margin-bottom: 20px;
-    display: flex;
-    flex-direction: column;
-}
-
-#detailssections p {
-    margin-bottom: 8px;
-    font-size: 16px;
-    color: #bbb;
-    transition: color 0.3s ease-in-out; /* Hover effect for text color */
+.payment-list {
+    list-style: none;
+    padding: 100px;
+  }
+  
+  .payment-list li {
     display: flex;
     justify-content: space-between;
-}
-
-#detailssections span {
+    margin-bottom: 1px;
+  }
+  
+  .payment-list dt {
     font-weight: bold;
-    color: #b03060; /* Dark maroon */
-    min-width: 150px;
-    text-align: start;
-}
-
-#detailssections strong {
-    color: #b03060; /* Dark maroon */
-}
-
-/* Proceed button styling */
-#btn-prime {
-    background-color: #d55f80; /* Light pink */
-    border: none;
-    padding: 12px 20px;
-    border-radius: 5px;
-    color: #fff;
-    font-size: 18px;
-    transition: background-color 0.3s ease-in-out; /* Hover effect for background color */
-}
-
-#btn-prime:hover {
-    background-color: #ff7eac; /* Lighter pink on hover */
-}
-
-/* Animation for card entrance */
-@keyframes fadeInUp {
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* Additional animations */
-#detailssections p {
-    opacity: 0;
-    transform: translateY(-10px);
-    animation: fadeInUp 0.5s forwards ease-in-out;
-    animation-delay: 0.2s; /* Add delay for staggered animation */
-}
-
-/* Add hover effects for text */
-#detailssections p:hover {
-    color: #d55f80; /* Light pink on hover */
-}
-
-/* Border animations */
-#shadowcard:hover {
-    border-color: #ff7eac; /* Lighter pink on hover */
-    box-shadow: 0px 0px 20px rgba(255, 126, 172, 0.8); /* Lighter pink shadow on hover */
-    transform: scale(1.05);
-    transition: all 0.3s ease-in-out;
-}
-
-/* Popping animation for logo on hover */
-#logos:hover {
-    transform: scale(1.1);
-    transition: transform 0.3s ease-in-out;
-}
+  }
+  
+  .payment-list dd {
+    margin-left: 10px;
+  }
+  .btn-primary{
+    background-color: darksalmon;
+  }
+  .btn-primary:hover{background-color: rgb(240, 147, 147)}

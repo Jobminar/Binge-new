@@ -2,7 +2,7 @@ import { useState } from "react";
 import "./form.css";
 import PropTypes from "prop-types";
 import "bootstrap/dist/css/bootstrap.min.css";
-//this file changed in 11-12-2023
+//this file changed in 11-12-2023, this is form
 const FormComponentmini = ({ formData, setFormData }) => {
   const [errors, setErrors] = useState({});
 
@@ -11,27 +11,30 @@ const FormComponentmini = ({ formData, setFormData }) => {
       localStorage.setItem(key, JSON.stringify(value));
       console.log(`Data with key '${key}' set in local storage.`);
     } catch (error) {
-      console.error('Error setting data in local storage:', error);
+      console.error("Error setting data in local storage:", error);
     }
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-  
-    if (name === 'numOfPeople') {
-      if (value === '' || parseInt(value) < 1) {
-        setErrors({ ...errors, [name]: 'Number of People should be 1 or more' });
-        setFormData({ ...formData, [name]: '1' }); // Set default value as '1'
+
+    if (name === "numOfPeople") {
+      if (value === "" || parseInt(value) < 1) {
+        setErrors({
+          ...errors,
+          [name]: "Number of People should be 1 or more",
+        });
+        setFormData({ ...formData, [name]: "1" }); // Set default value as '1'
       } else {
-        setErrors({ ...errors, [name]: '' });
+        setErrors({ ...errors, [name]: "" });
         setFormData({ ...formData, [name]: value });
       }
     } else {
       setFormData({ ...formData, [name]: value });
-      setErrors({ ...errors, [name]: '' });
+      setErrors({ ...errors, [name]: "" });
     }
   };
-   
+
   let extraCost = 0; // Initialize extra cost
 
   if (formData.numOfPeople > 4) {
@@ -40,20 +43,16 @@ const FormComponentmini = ({ formData, setFormData }) => {
   }
   console.log(extraCost);
   // Set extraCost in local storage
-  setLocalStorage('extraCost', extraCost);
-   
-  
+  setLocalStorage("extraCost", extraCost);
 
-  
-
-  console.log("no of eople value",formData.numOfPeople);
+  console.log("no of eople value", formData.numOfPeople);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-  console.log("no of eople value",formData.numOfPeople);
+    console.log("no of eople value", formData.numOfPeople);
     let errorsData = {};
     if (parseInt(formData.numOfPeople) < 1) {
-      alert('Number of People should be 1 or more');
+      alert("Number of People should be 1 or more");
       return; // Prevent further execution of form submission
     }
     // Validation: Mobile number should contain exactly 10 digits
@@ -144,13 +143,16 @@ const FormComponentmini = ({ formData, setFormData }) => {
             </option>
           ))}
         </select>
-        {errors.numOfPeople && <span className="error">{errors.numOfPeople}</span>}
+        {errors.numOfPeople && (
+          <span className="error">{errors.numOfPeople}</span>
+        )}
       </div>
-      {(parseInt(formData.numOfPeople) > 4) && (
-            <p className="reminder">Standard pricing includes only 4 people <br/> You can include upto 2 more guests at 399 per Guest </p>
-          )}
-      
-     
+      {parseInt(formData.numOfPeople) > 4 && (
+        <p className="reminder">
+          Standard pricing includes only 4 people <br /> You can include upto 2
+          more guests at 399 per Guest{" "}
+        </p>
+      )}
     </form>
   );
 };
