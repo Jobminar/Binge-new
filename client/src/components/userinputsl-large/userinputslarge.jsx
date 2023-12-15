@@ -36,7 +36,7 @@ const Userinputslarge = () => {
     const calculateTotal = () => {
       let basePrice = 2999;
 
-      const additionalPeople = Math.max(0, formData.numOfPeople - 4);
+      const additionalPeople = Math.max(0, formData.numOfPeople - 6);
       const additionalPeopleCost =
         additionalPeople > 0 ? additionalPeople * 399 : 0;
 
