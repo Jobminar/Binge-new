@@ -49,13 +49,13 @@ const Navbar = () => {
         >
           CONTACT US
         </div>
-        <div
+        {/* <div
           onClick={() => {
             navigate("/blogs");
           }}
         >
           BLOGS
-        </div>
+        </div> */}
         <div
           onClick={() => {
             navigate("/refund");
