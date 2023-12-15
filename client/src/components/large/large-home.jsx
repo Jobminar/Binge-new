@@ -212,7 +212,7 @@ const Largehome = () => {
           <select
             className="input4"
             name="event"
-            value={inputValues.event || storedEvent}
+            value={inputValues.event}
             onChange={handleInputChange}
             required
           >
@@ -346,67 +346,6 @@ const Largehome = () => {
         }}
       >
         <img src={Booknow} alt="book-now" />
-      </div>
-
-      <div className="mobile-view">
-        <div className="date-section">
-          <div className="date-sub-section">
-            <h1>DATE</h1>
-            <p>20 November 2023</p>
-          </div>
-          <div className="date-sub-section">
-            <h1>Availability</h1>
-            <p>Available</p>
-          </div>
-        </div>
-        <div className="mobile-table">
-          <table>
-            <tr>
-              <th>No.of People</th>
-              <th>Time</th>
-
-              <th>Price</th>
-            </tr>
-            <tr>
-              <td>2-4 people</td>
-              <td>7:00 pm - 10:00 pm</td>
-
-              <td>2500</td>
-            </tr>
-            <tr>
-              <td>2-4 people</td>
-              <td>7:00 pm - 10:00 pm</td>
-
-              <td>2500</td>
-            </tr>
-            <tr>
-              <td>2-4 people</td>
-              <td>7:00 pm - 10:00 pm</td>
-
-              <td>2500</td>
-            </tr>
-            <tr>
-              <td>2-4 people</td>
-              <td>7:00 pm - 10:00 pm</td>
-
-              <td>2500</td>
-            </tr>
-            <tr>
-              <td>2-4 people</td>
-              <td>7:00 pm - 10:00 pm</td>
-
-              <td>2500</td>
-            </tr>
-          </table>
-          <div
-            className="book-now"
-            onClick={() => {
-              navigate("/userinputslarge");
-            }}
-          >
-            <img src={Booknow} alt="book-now" />
-          </div>
-        </div>
       </div>
     </div>
   );

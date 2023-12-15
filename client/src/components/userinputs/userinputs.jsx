@@ -6,7 +6,6 @@ import grid from "../../assets/images/grid.png";
 import calender from "../../assets/images/calender-logo.png";
 import time from "../../assets/images/time-logo.png";
 import nextstep from "../../assets/images/Frame 12.png";
-import FormComponentlarge from "../userinputs/formlarge";
 import FormComponentmini from "../userinputs/form";
 
 const getLocalStorage = (key) => {

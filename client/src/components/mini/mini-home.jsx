@@ -206,7 +206,7 @@ const Minihome = () => {
           <select
             className="input4"
             name="event"
-            value={inputValues.event || storedEvent} // Using storedEvent value in the input value
+            value={inputValues.event}
             onChange={handleInputChange}
             required
           >

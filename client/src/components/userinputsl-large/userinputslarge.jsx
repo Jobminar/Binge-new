@@ -95,7 +95,7 @@ navigate("/cakemain", {
     date,
     numOfPeople: formData.numOfPeople,
     time,
-    price: 2500 + parsedExtraCost, // Calculating price by adding 2500 with the retrieved extraCost
+    price: 2999 + parsedExtraCost, // Calculating price by adding 2500 with the retrieved extraCost
   },
 });
 

@@ -1,3 +1,4 @@
+
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useEffect } from "react";
@@ -229,3 +230,4 @@ const handleSlotSelection = (event, time) => {
 };
 
 export default Minihome;
+
