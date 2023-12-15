@@ -332,7 +332,7 @@ const Minihome = () => {
         >
           <img src={Booknow} alt="book-now" />
         </div>
-        <div className="mobile-view">
+        {/* <div className="mobile-view">
           <div className="date-section">
             <div className="date-sub-section">
               <h1>DATE</h1>
@@ -391,7 +391,7 @@ const Minihome = () => {
               <img src={Booknow} alt="book-now" />
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );
